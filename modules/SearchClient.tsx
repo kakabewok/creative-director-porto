@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo, useCallback } from 'react'
+import { useState, useMemo } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
@@ -44,63 +44,69 @@ export default function SearchClient({ projects }: Props) {
   const showResults = query.trim() !== '' || activeCategory !== null
 
   return (
-    <div className="min-h-screen bg-black pt-24 pb-40 px-6 md:px-10">
-      {/* Search input */}
-      <div className="max-w-2xl mx-auto mb-12">
-        <div className="relative">
-          <Search
-            size={16}
-            className="absolute left-4 top-1/2 -translate-y-1/2 text-white/25 pointer-events-none"
-          />
-          <input
-            id="search-input"
-            type="search"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="search for a title or term"
-            aria-label="Search projects"
-            autoComplete="off"
-            className="w-full bg-transparent border-b border-white/15 pl-10 pr-4 py-4 text-white/70 text-sm font-light tracking-wide placeholder:text-white/20 focus:outline-none focus:border-white/40 transition-colors"
-          />
+    // Fix 8: full height centering — input sits in upper-middle via flex + pt
+    <div className="min-h-screen bg-black flex flex-col">
+
+      {/* ── Upper section: search + categories (centered, upper-middle) ── */}
+      <div className="flex flex-col items-center justify-center pt-[22vh] pb-12 px-6">
+
+        {/* Search input — max width, centered */}
+        <div className="w-full max-w-xl mb-10">
+          <div className="relative">
+            <Search
+              size={15}
+              className="absolute left-0 top-1/2 -translate-y-1/2 text-white/25 pointer-events-none"
+            />
+            <input
+              id="search-input"
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="search for a title or term"
+              aria-label="Search projects"
+              autoComplete="off"
+              className="w-full bg-transparent border-b border-white/15 pl-7 pr-4 py-3 text-white/70 text-sm font-light tracking-wide placeholder:text-white/20 focus:outline-none focus:border-white/40 transition-colors text-center placeholder:text-center"
+            />
+          </div>
+        </div>
+
+        {/* Categories — centered under input */}
+        <div className="flex flex-col items-center gap-5">
+          <p className="text-white/20 text-[10px] tracking-[0.25em] uppercase">or explore by</p>
+          <div className="flex flex-wrap justify-center gap-2">
+            {CATEGORIES.map((cat) => (
+              <button
+                key={cat}
+                id={`category-${cat.toLowerCase().replace(/\s+/g, '-')}`}
+                onClick={() => setActiveCategory(activeCategory === cat ? null : cat)}
+                aria-pressed={activeCategory === cat}
+                className={`px-5 py-2 rounded-full text-xs tracking-widest uppercase font-light border transition-all duration-200 ${
+                  activeCategory === cat
+                    ? 'bg-white text-black border-white'
+                    : 'border-white/15 text-white/40 hover:border-white/40 hover:text-white/70'
+                }`}
+              >
+                {cat} ({categoryCounts[cat] ?? 0})
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* Categories */}
-      <div className="max-w-2xl mx-auto mb-16">
-        <p className="text-white/20 text-xs tracking-widest uppercase mb-6">or explore by</p>
-        <div className="flex flex-wrap gap-3">
-          {CATEGORIES.map((cat) => (
-            <button
-              key={cat}
-              id={`category-${cat.toLowerCase().replace(/\s+/g, '-')}`}
-              onClick={() => setActiveCategory(activeCategory === cat ? null : cat)}
-              aria-pressed={activeCategory === cat}
-              className={`px-5 py-2 rounded-full text-xs tracking-widest uppercase font-light border transition-all duration-200 ${
-                activeCategory === cat
-                  ? 'bg-white text-black border-white'
-                  : 'border-white/15 text-white/40 hover:border-white/40 hover:text-white/70'
-              }`}
-            >
-              {cat} ({categoryCounts[cat] ?? 0})
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Results */}
+      {/* ── Results ── */}
       {showResults && (
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.35 }}
-          className="max-w-5xl mx-auto"
+          className="flex-1 px-6 md:px-10 pb-24"
         >
           {results.length === 0 ? (
-            <p className="text-white/20 text-sm tracking-widest text-center py-20">
+            <p className="text-white/20 text-sm tracking-widest text-center py-16">
               No results found.
             </p>
           ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+            <div className="max-w-5xl mx-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
               {results.map((project, i) => {
                 const src = getProjectCoverSrc(project, 600)
                 return (
@@ -128,7 +134,6 @@ export default function SearchClient({ projects }: Props) {
                         ) : (
                           <div className="absolute inset-0 bg-zinc-800" />
                         )}
-                        {/* Hover overlay */}
                         <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-3">
                           <span className="text-white text-xs tracking-widest uppercase">
                             {project.title}

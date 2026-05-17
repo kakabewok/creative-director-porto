@@ -25,7 +25,9 @@ export default async function InformationPage() {
   const profileSrc = urlForImage(user.profileImage, 800)
 
   return (
-    <main className="min-h-screen bg-black pt-20 pb-24" aria-label="Information page">
+    <main className="min-h-screen bg-black pt-20 pb-28" aria-label="Information page">
+      {/* Floating section nav — rendered here, positioned fixed via CSS */}
+      <InformationNav />
       <div className="max-w-6xl mx-auto px-6 md:px-10">
         {/* ── Two-column layout ── */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 pt-12 mb-20">
@@ -54,26 +56,21 @@ export default async function InformationPage() {
             <p className="mt-4 text-white/30 text-xs tracking-widest uppercase">{user.name}</p>
           </div>
 
-          {/* Right — about text + nav */}
-          <div className="flex flex-col justify-between gap-12">
-            <div>
-              <h1 className="text-white text-3xl md:text-4xl font-extralight tracking-tight mb-8 leading-snug">
-                {user.tagline ?? 'Creative Director & Visual Storyteller'}
-              </h1>
+          {/* Right — about text */}
+          <div className="flex flex-col gap-8">
+            <h1 className="text-white text-3xl md:text-4xl font-extralight tracking-tight leading-snug">
+              {user.tagline ?? 'Creative Director & Visual Storyteller'}
+            </h1>
 
-              {user.aboutText && (
-                <div className="space-y-5">
-                  {user.aboutText.split('\n\n').map((para, i) => (
-                    <p key={i} className="text-white/50 font-light leading-relaxed text-sm">
-                      {para}
-                    </p>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* Internal sticky nav */}
-            <InformationNav />
+            {user.aboutText && (
+              <div className="space-y-5">
+                {user.aboutText.split('\n\n').map((para, i) => (
+                  <p key={i} className="text-white/50 font-light leading-relaxed text-sm">
+                    {para}
+                  </p>
+                ))}
+              </div>
+            )}
           </div>
         </div>
 

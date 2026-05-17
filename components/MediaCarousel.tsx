@@ -6,7 +6,6 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import type { GalleryItem } from '@/types'
 import { urlForImage } from '@/sanity/image'
-import { PLACEHOLDER_IMAGES } from '@/data/mock/projects'
 import { toEmbedUrl } from '@/lib/mediaUtils'
 
 interface Props {
@@ -14,19 +13,17 @@ interface Props {
 }
 
 function resolveImageSrc(item: GalleryItem): string {
-  // Try real Sanity URL first
   if (item.image) {
     const sanityUrl = urlForImage(item.image, 1600)
     if (sanityUrl) return sanityUrl
   }
-  // For gallery items that are the cover image re-used, find a placeholder
-  // by checking if the image alt matches a known project image alt
   return ''
 }
 
 export default function MediaCarousel({ items }: Props) {
   const [current, setCurrent] = useState(0)
   const [direction, setDirection] = useState(0)
+  const [hovered, setHovered] = useState(false)
   const touchStartX = useRef<number | null>(null)
 
   const total = items.length
@@ -66,6 +63,8 @@ export default function MediaCarousel({ items }: Props) {
       className="relative w-full aspect-[16/9] bg-zinc-950 overflow-hidden select-none"
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
       role="region"
       aria-label="Project media carousel"
     >
@@ -91,7 +90,6 @@ export default function MediaCarousel({ items }: Props) {
               sizes="100vw"
             />
           ) : item.type === 'image' && !imgSrc ? (
-            /* Dark placeholder for mock image items */
             <div className="absolute inset-0 bg-zinc-900 flex items-center justify-center">
               <span className="text-white/10 text-xs tracking-widest uppercase">
                 {item.image?.alt ?? 'Image'}
@@ -113,36 +111,58 @@ export default function MediaCarousel({ items }: Props) {
         </motion.div>
       </AnimatePresence>
 
+      {/* Bottom gradient for overlay readability */}
+      <div
+        className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none"
+        aria-hidden="true"
+      />
+
       {/* Caption */}
-      {item.caption && (
-        <div className="absolute bottom-4 left-4 right-4 pointer-events-none">
-          <p className="text-white/40 text-xs tracking-wider">{item.caption}</p>
+      {item.caption && item.type !== 'video' && (
+        <div className="absolute bottom-12 left-4 right-4 pointer-events-none z-10">
+          <p className="text-white/35 text-xs tracking-wider">{item.caption}</p>
         </div>
       )}
 
-      {/* Desktop prev/next */}
+      {/* Fix 6: Prev/Next — desktop only, visible on hover only */}
       {total > 1 && (
         <>
-          <button
-            id="carousel-prev"
-            onClick={() => paginate(-1)}
-            aria-label="Previous slide"
-            className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 items-center justify-center text-white/60 hover:text-white transition-colors rounded-full bg-black/30 backdrop-blur-sm hidden md:flex"
-          >
-            <ChevronLeft size={18} />
-          </button>
-          <button
-            id="carousel-next"
-            onClick={() => paginate(1)}
-            aria-label="Next slide"
-            className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 items-center justify-center text-white/60 hover:text-white transition-colors rounded-full bg-black/30 backdrop-blur-sm hidden md:flex"
-          >
-            <ChevronRight size={18} />
-          </button>
+          <AnimatePresence>
+            {hovered && (
+              <>
+                <motion.button
+                  key="prev"
+                  id="carousel-prev"
+                  initial={{ opacity: 0, x: -6 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -6 }}
+                  transition={{ duration: 0.2 }}
+                  onClick={() => paginate(-1)}
+                  aria-label="Previous slide"
+                  className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 items-center justify-center text-white/70 hover:text-white transition-colors rounded-full bg-black/40 backdrop-blur-sm hidden md:flex z-10"
+                >
+                  <ChevronLeft size={18} />
+                </motion.button>
+                <motion.button
+                  key="next"
+                  id="carousel-next"
+                  initial={{ opacity: 0, x: 6 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 6 }}
+                  transition={{ duration: 0.2 }}
+                  onClick={() => paginate(1)}
+                  aria-label="Next slide"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 items-center justify-center text-white/70 hover:text-white transition-colors rounded-full bg-black/40 backdrop-blur-sm hidden md:flex z-10"
+                >
+                  <ChevronRight size={18} />
+                </motion.button>
+              </>
+            )}
+          </AnimatePresence>
 
-          {/* Index dots */}
+          {/* Dot indicators — always visible, small */}
           <div
-            className="absolute bottom-4 right-4 flex gap-1.5"
+            className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5 z-10"
             aria-label="Slide indicators"
           >
             {items.map((_, i) => (
@@ -153,8 +173,10 @@ export default function MediaCarousel({ items }: Props) {
                   setCurrent(i)
                 }}
                 aria-label={`Go to slide ${i + 1}`}
-                className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
-                  i === current ? 'bg-white scale-125' : 'bg-white/30'
+                className={`rounded-full transition-all duration-300 ${
+                  i === current
+                    ? 'w-4 h-1.5 bg-white'
+                    : 'w-1.5 h-1.5 bg-white/30 hover:bg-white/60'
                 }`}
               />
             ))}
