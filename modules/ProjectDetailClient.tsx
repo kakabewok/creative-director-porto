@@ -1,12 +1,12 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useRef } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { X, Info } from 'lucide-react'
 import type { Project } from '@/types'
 import { getProjectCoverSrc } from '@/lib/projectImage'
-import MediaCarousel from '@/components/MediaCarousel'
+import MediaCarousel, { type MediaCarouselHandle } from '@/components/MediaCarousel'
 import DetailsDrawer from '@/components/DetailsDrawer'
 import type { GalleryItem } from '@/types'
 
@@ -19,22 +19,50 @@ export default function ProjectDetailClient({ project, allProjects }: Props) {
   const [drawerOpen, setDrawerOpen] = useState(false)
   const closeDrawer = useCallback(() => setDrawerOpen(false), [])
 
+  const carouselRef = useRef<MediaCarouselHandle>(null)
+  const [currentMediaIndex, setCurrentMediaIndex] = useState(0)
+
   // Fix 5: Build ONE unified media list for the single carousel
   // Starts with the cover (image or video), then appends gallery items
   const allMediaItems = buildMediaItems(project)
-
-  // Index among all projects
-  const idx = allProjects.findIndex((p) => p._id === project._id)
-  const total = allProjects.length
-  const prev = idx > 0 ? allProjects[idx - 1] : null
-  const next = idx < total - 1 ? allProjects[idx + 1] : null
+  const totalMedia = allMediaItems.length
 
   return (
     <>
-      <div className="relative min-h-screen bg-black">
-        {/* ── Unified media carousel (no separate hero image) ── */}
-        <div className="relative">
-          <MediaCarousel items={allMediaItems} />
+      <div className="relative min-h-screen bg-black flex items-center justify-center">
+        {/* ── Left Navigation Zone (Prev Media) ── */}
+        {totalMedia > 1 && (
+          <button
+            onClick={() => carouselRef.current?.paginate(-1)}
+            className="hidden md:flex absolute left-0 top-0 bottom-0 w-[12%] lg:w-[15%] z-30 items-center justify-center group cursor-w-resize"
+            aria-label="Previous image"
+          >
+            <span className="text-white/60 text-xs tracking-[0.25em] uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              Prev
+            </span>
+          </button>
+        )}
+
+        {/* ── Right Navigation Zone (Next Media) ── */}
+        {totalMedia > 1 && (
+          <button
+            onClick={() => carouselRef.current?.paginate(1)}
+            className="hidden md:flex absolute right-0 top-0 bottom-0 w-[12%] lg:w-[15%] z-30 items-center justify-center group cursor-e-resize"
+            aria-label="Next image"
+          >
+            <span className="text-white/60 text-xs tracking-[0.25em] uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              Next
+            </span>
+          </button>
+        )}
+
+        {/* ── Unified media carousel (centered, max-width) ── */}
+        <div className="relative w-full md:w-[76%] lg:w-[70%] max-w-7xl mx-auto">
+          <MediaCarousel
+            ref={carouselRef}
+            items={allMediaItems}
+            onIndexChange={setCurrentMediaIndex}
+          />
 
           {/* Overlay UI on top of carousel */}
 
@@ -43,7 +71,7 @@ export default function ProjectDetailClient({ project, allProjects }: Props) {
             href="/work"
             id="project-close"
             aria-label="Back to work"
-            className="absolute top-5 right-5 z-20 w-9 h-9 flex items-center justify-center text-white/60 hover:text-white transition-colors rounded-full bg-black/40 backdrop-blur-sm"
+            className="absolute -top-12 right-0 md:top-5 md:right-5 z-40 w-9 h-9 flex items-center justify-center text-white/60 hover:text-white transition-colors rounded-full bg-black/40 backdrop-blur-sm"
           >
             <X size={16} />
           </Link>
@@ -53,28 +81,28 @@ export default function ProjectDetailClient({ project, allProjects }: Props) {
             id="project-details-open-mobile"
             onClick={() => setDrawerOpen(true)}
             aria-label="Open project details"
-            className="absolute top-5 left-5 z-20 md:hidden flex items-center gap-2 px-3 py-1.5 text-xs tracking-wider text-white/60 hover:text-white border border-white/20 rounded-full backdrop-blur-sm bg-black/30 transition-all"
+            className="absolute -top-12 left-0 md:hidden z-40 flex items-center gap-2 px-3 py-1.5 text-xs tracking-wider text-white/60 hover:text-white border border-white/20 rounded-full backdrop-blur-sm bg-black/30 transition-all"
           >
             <Info size={12} />
             Details
           </button>
 
           {/* Bottom-left: title */}
-          <div className="absolute bottom-6 left-6 md:left-10 z-20 pointer-events-none">
+          <div className="absolute -bottom-16 left-0 md:bottom-6 md:left-10 z-40 pointer-events-none">
             <motion.h1
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              className="text-white text-3xl md:text-5xl font-extralight tracking-tight drop-shadow-2xl"
+              className="text-white text-2xl md:text-5xl font-extralight tracking-tight drop-shadow-2xl"
             >
               {project.title}
             </motion.h1>
           </div>
 
           {/* Bottom-right: index + details */}
-          <div className="absolute bottom-6 right-6 md:right-10 z-20 flex items-center gap-4">
+          <div className="absolute -bottom-16 right-0 md:bottom-6 md:right-10 z-40 flex items-center gap-4">
             <span className="text-white/30 text-xs tracking-widest hidden md:block drop-shadow">
-              {String(idx + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}
+              {String(currentMediaIndex + 1).padStart(2, '0')} / {String(totalMedia).padStart(2, '0')}
             </span>
             <button
               id="project-details-open"
@@ -87,40 +115,6 @@ export default function ProjectDetailClient({ project, allProjects }: Props) {
             </button>
           </div>
         </div>
-
-        {/* Prev / Next navigation */}
-        {(prev || next) && (
-          <nav
-            aria-label="Project navigation"
-            className="flex justify-between items-center px-6 md:px-10 py-12 border-t border-white/8"
-          >
-            {prev ? (
-              <Link
-                href={`/work/${prev.slug.current}`}
-                className="group flex flex-col gap-1"
-                aria-label={`Previous: ${prev.title}`}
-              >
-                <span className="text-white/20 text-xs tracking-widest uppercase">Previous</span>
-                <span className="text-white/60 text-sm font-light group-hover:text-white transition-colors">
-                  {prev.title}
-                </span>
-              </Link>
-            ) : <div />}
-
-            {next ? (
-              <Link
-                href={`/work/${next.slug.current}`}
-                className="group flex flex-col gap-1 text-right"
-                aria-label={`Next: ${next.title}`}
-              >
-                <span className="text-white/20 text-xs tracking-widest uppercase">Next</span>
-                <span className="text-white/60 text-sm font-light group-hover:text-white transition-colors">
-                  {next.title}
-                </span>
-              </Link>
-            ) : <div />}
-          </nav>
-        )}
       </div>
 
       {/* Details drawer */}

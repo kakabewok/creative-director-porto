@@ -10,42 +10,47 @@ interface Props {
  * ScrollTrigger
  *
  * Renders a zero-height sentinel div.
- * Uses IntersectionObserver to detect when the sentinel crosses the
- * viewport top edge — then calls onActiveChange(true/false) to notify parent state.
+ * Uses a scroll listener to detect when the sentinel crosses the 70% viewport threshold
+ * (i.e., when the Work section covers at least 30% of the screen from the bottom).
  */
 export default function ScrollTrigger({ onActiveChange }: Props) {
-  const debounceRef = useRef<ReturnType<typeof setTimeout>>()
   const isActiveRef = useRef<boolean>(false)
 
   useEffect(() => {
     const sentinel = document.getElementById('scroll-route-sentinel')
     if (!sentinel) return
 
-    const handleIntersection = ([entry]: IntersectionObserverEntry[]) => {
-      clearTimeout(debounceRef.current)
+    let ticking = false
 
-      debounceRef.current = setTimeout(() => {
-        // Sentinel above viewport = work section is covering the hero
-        const isAboveViewport =
-          !entry.isIntersecting && entry.boundingClientRect.top < 0
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          if (!sentinel) return
+          const rect = sentinel.getBoundingClientRect()
+          
+          // Trigger when the top of the work section is at or above 70% of the viewport height
+          // (meaning it has scrolled up by at least 30% of the viewport)
+          const isAboveThreshold = rect.top <= window.innerHeight * 0.7
 
-        if (isActiveRef.current !== isAboveViewport) {
-          isActiveRef.current = isAboveViewport
-          onActiveChange?.(isAboveViewport)
-        }
-      }, 80)
+          if (isActiveRef.current !== isAboveThreshold) {
+            isActiveRef.current = isAboveThreshold
+            onActiveChange?.(isAboveThreshold)
+          }
+          ticking = false
+        })
+        ticking = true
+      }
     }
 
-    const observer = new IntersectionObserver(handleIntersection, {
-      threshold: 0,
-      rootMargin: "0px",
-    })
+    // Initial check
+    handleScroll()
 
-    observer.observe(sentinel)
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    window.addEventListener('resize', handleScroll, { passive: true })
 
     return () => {
-      observer.disconnect()
-      clearTimeout(debounceRef.current)
+      window.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('resize', handleScroll)
     }
   }, [onActiveChange])
 
@@ -57,3 +62,4 @@ export default function ScrollTrigger({ onActiveChange }: Props) {
     />
   )
 }
+

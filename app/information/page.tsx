@@ -166,7 +166,7 @@ export default async function InformationPage() {
             Downloads
           </h2>
 
-          <div className="flex flex-col sm:flex-row gap-4">
+          <div className="flex flex-col sm:flex-row gap-4 mb-80">
             <a
               href="#"
               aria-label="Download High Resolution Images"

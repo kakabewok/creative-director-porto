@@ -1,15 +1,20 @@
-'use client'
-
-import { useRef, useState, useCallback } from 'react'
+import { forwardRef, useImperativeHandle, useRef, useState, useCallback, useEffect } from 'react'
 import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
 import type { GalleryItem } from '@/types'
 import { urlForImage } from '@/sanity/image'
 import { toEmbedUrl } from '@/lib/mediaUtils'
 
 interface Props {
   items: GalleryItem[]
+  onIndexChange?: (index: number) => void
+}
+
+export interface MediaCarouselHandle {
+  paginate: (dir: number) => void
+  canPaginate: boolean
+  currentIndex: number
+  total: number
 }
 
 function resolveImageSrc(item: GalleryItem): string {
@@ -20,22 +25,42 @@ function resolveImageSrc(item: GalleryItem): string {
   return ''
 }
 
-export default function MediaCarousel({ items }: Props) {
+const MediaCarousel = forwardRef<MediaCarouselHandle, Props>(({ items, onIndexChange }, ref) => {
   const [current, setCurrent] = useState(0)
   const [direction, setDirection] = useState(0)
-  const [hovered, setHovered] = useState(false)
   const touchStartX = useRef<number | null>(null)
 
   const total = items.length
-  if (total === 0) return null
 
   const paginate = useCallback(
     (dir: number) => {
+      if (total <= 1) return
       setDirection(dir)
-      setCurrent((prev) => (prev + dir + total) % total)
+      // Stop at first/last item as requested, or loop
+      // User suggested: "stop at last item (recommended for clarity)"
+      setCurrent((prev) => {
+        const next = prev + dir
+        if (next < 0) return 0
+        if (next >= total) return total - 1
+        return next
+      })
     },
     [total]
   )
+
+  // Notify parent of index change
+  useEffect(() => {
+    onIndexChange?.(current)
+  }, [current, onIndexChange])
+
+  useImperativeHandle(ref, () => ({
+    paginate,
+    canPaginate: total > 1,
+    currentIndex: current,
+    total
+  }), [paginate, total, current])
+
+  if (total === 0) return null
 
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX
@@ -63,8 +88,6 @@ export default function MediaCarousel({ items }: Props) {
       className="relative w-full aspect-[16/9] bg-zinc-950 overflow-hidden select-none"
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
       role="region"
       aria-label="Project media carousel"
     >
@@ -124,65 +147,32 @@ export default function MediaCarousel({ items }: Props) {
         </div>
       )}
 
-      {/* Fix 6: Prev/Next — desktop only, visible on hover only */}
+      {/* Dot indicators — always visible, small */}
       {total > 1 && (
-        <>
-          <AnimatePresence>
-            {hovered && (
-              <>
-                <motion.button
-                  key="prev"
-                  id="carousel-prev"
-                  initial={{ opacity: 0, x: -6 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -6 }}
-                  transition={{ duration: 0.2 }}
-                  onClick={() => paginate(-1)}
-                  aria-label="Previous slide"
-                  className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 items-center justify-center text-white/70 hover:text-white transition-colors rounded-full bg-black/40 backdrop-blur-sm hidden md:flex z-10"
-                >
-                  <ChevronLeft size={18} />
-                </motion.button>
-                <motion.button
-                  key="next"
-                  id="carousel-next"
-                  initial={{ opacity: 0, x: 6 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 6 }}
-                  transition={{ duration: 0.2 }}
-                  onClick={() => paginate(1)}
-                  aria-label="Next slide"
-                  className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 items-center justify-center text-white/70 hover:text-white transition-colors rounded-full bg-black/40 backdrop-blur-sm hidden md:flex z-10"
-                >
-                  <ChevronRight size={18} />
-                </motion.button>
-              </>
-            )}
-          </AnimatePresence>
-
-          {/* Dot indicators — always visible, small */}
-          <div
-            className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5 z-10"
-            aria-label="Slide indicators"
-          >
-            {items.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => {
-                  setDirection(i > current ? 1 : -1)
-                  setCurrent(i)
-                }}
-                aria-label={`Go to slide ${i + 1}`}
-                className={`rounded-full transition-all duration-300 ${
-                  i === current
-                    ? 'w-4 h-1.5 bg-white'
-                    : 'w-1.5 h-1.5 bg-white/30 hover:bg-white/60'
-                }`}
-              />
-            ))}
-          </div>
-        </>
+        <div
+          className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5 z-10"
+          aria-label="Slide indicators"
+        >
+          {items.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => {
+                setDirection(i > current ? 1 : -1)
+                setCurrent(i)
+              }}
+              aria-label={`Go to slide ${i + 1}`}
+              className={`rounded-full transition-all duration-300 ${
+                i === current
+                  ? 'w-4 h-1.5 bg-white'
+                  : 'w-1.5 h-1.5 bg-white/30 hover:bg-white/60'
+              }`}
+            />
+          ))}
+        </div>
       )}
     </div>
   )
-}
+})
+
+MediaCarousel.displayName = 'MediaCarousel'
+export default MediaCarousel

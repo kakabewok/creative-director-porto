@@ -37,7 +37,7 @@ export default function WorkSection({ projects, mode }: Props) {
       {isOverlay && <HomeNavbar />}
 
       {/* ── Work content — switches between list / spectrum / timeline ── */}
-      <section id="work" aria-label="Selected work" className="pt-10 pb-32">
+      <section id="work" aria-label="Selected work" className="pt-10 pb-32 min-h-screen">
 
         {/* Header: Only show "View All" link on home page overlay */}
         {/* <div className="px-6 md:px-10 mb-14 flex items-center justify-between max-w-3xl mx-auto">
@@ -85,15 +85,15 @@ export default function WorkSection({ projects, mode }: Props) {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="px-6"
+              className="px-6 pt-10"
             >
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-1">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 md:gap-8 lg:gap-10">
                 {sorted.map((project, i) => (
                   <ProjectCard
                     key={project._id}
                     project={project}
                     index={i}
-                    coverSrc={getProjectCoverSrc(project, 600)}
+                    coverSrc={getProjectCoverSrc(project, 800)}
                     mode="spectrum"
                   />
                 ))}
@@ -117,7 +117,7 @@ export default function WorkSection({ projects, mode }: Props) {
 
       {/* Floating Layout Switcher */}
       <AnimatePresence>
-        {isWorkActive && (
+        {(isWorkActive || mode === 'standalone') && (
           <motion.div
             key="work-layout-switcher"
             initial={{ opacity: 0, y: 10 }}
