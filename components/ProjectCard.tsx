@@ -36,7 +36,7 @@ export default function ProjectCard({ project, index, coverSrc, mode = 'list', p
               alt={project.coverImage?.alt ?? project.title}
               fill
               sizes={isSpectrum ? '(max-width:768px) 50vw, 17vw' : '(max-width:768px) 100vw, 768px'}
-              className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+              className="object-cover transition-transform duration-400 ease-out group-hover:scale-105"
               priority={priority}
               loading={priority ? undefined : 'lazy'}
             />

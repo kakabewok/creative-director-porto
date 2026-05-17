@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { fetchProjects } from '@/lib/fetchData'
-import WorkClient from '@/modules/WorkClient'
+import WorkSection from '@/modules/WorkSection'
 
 export const metadata: Metadata = {
   title: 'Work',
@@ -12,17 +12,9 @@ export default async function WorkPage() {
 
   return (
     <main className="min-h-screen bg-black pt-24" aria-label="Work page">
-      {/* Page heading */}
-      <header className="px-6 md:px-10 mb-14">
-        <h1 className="sr-only">Work</h1>
-        <div className="flex items-center justify-between">
-          <p className="text-white/20 text-xs tracking-[0.25em] uppercase">
-            {projects.length} Projects
-          </p>
-        </div>
-      </header>
-
-      <WorkClient projects={projects} />
+      <h1 className="sr-only">Work</h1>
+      <WorkSection projects={projects} mode="standalone" />
     </main>
   )
 }
+

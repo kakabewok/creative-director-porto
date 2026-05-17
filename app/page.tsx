@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { fetchUser, fetchProjects } from '@/lib/fetchData'
 import HeroClient from '@/modules/HeroClient'
-import HomeWorkSection from '@/modules/HomeWorkSection'
+import WorkSection from '@/modules/WorkSection'
 
 export const metadata: Metadata = {
   title: 'Rangga Djoned — Creative Director & Visual Storyteller',
@@ -15,7 +15,7 @@ export default async function HomePage() {
   return (
     <main>
       <HeroClient name={user.name} tagline={user.tagline ?? ''} />
-      <HomeWorkSection projects={projects} />
+      <WorkSection projects={projects} mode="overlay" />
     </main>
   )
 }

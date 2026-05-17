@@ -3,11 +3,11 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
-const NAV_LINKS = [
-  { label: 'Work', href: '/work' },
-  { label: 'Information', href: '/information' },
-  { label: 'Search', href: '/search' },
-]
+// const NAV_LINKS = [
+//   { label: 'Work', href: '/work' },
+//   { label: 'Information', href: '/information' },
+//   { label: 'Search', href: '/search' },
+// ]
 
 /**
  * Navbar embedded inside HomeWorkSection.
@@ -30,14 +30,38 @@ export default function HomeNavbar() {
         {/* Left — Brand */}
         <Link
           href="/"
-          className="text-white/90 text-sm font-light tracking-[0.18em] uppercase hover:text-white transition-colors"
+          className="text-white/90 text-sm md:text-md font-semibold tracking-[0.18em] uppercase hover:text-white transition-colors"
           aria-label="Home"
         >
           Rangga Djoned
         </Link>
 
+        <Link
+          href="/work"
+          className="text-white/90 text-sm md:text-md font-semibold tracking-[0.18em] uppercase hover:text-white transition-colors"
+          aria-label="Home"
+        >
+          Work
+        </Link>
+
+        <Link
+          href="/information"
+          className="text-white/90 text-sm md:text-md font-semibold tracking-[0.18em] uppercase hover:text-white transition-colors"
+          aria-label="Information"
+        >
+          Information
+        </Link>
+
+        <Link
+          href="/search"
+          className="text-white/90 text-sm md:text-md font-semibold tracking-[0.18em] uppercase hover:text-white transition-colors"
+          aria-label="Search"
+        >
+          Search
+        </Link>
+
         {/* Right — Nav links */}
-        <ul className="flex items-center gap-8" role="list">
+        {/* <ul className="flex items-center gap-8" role="list">
           {NAV_LINKS.map(({ label, href }) => {
             const active = pathname.startsWith(href)
             return (
@@ -54,7 +78,7 @@ export default function HomeNavbar() {
               </li>
             )
           })}
-        </ul>
+        </ul> */}
       </nav>
     </header>
   )

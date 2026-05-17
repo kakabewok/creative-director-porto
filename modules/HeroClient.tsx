@@ -62,7 +62,7 @@ export default function HeroClient({ name, tagline }: Props) {
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
-            className="text-white text-4xl sm:text-6xl md:text-7xl font-extralight tracking-[0.08em] mb-6 leading-none"
+            className="text-white text-3xl sm:text-5xl md:text-6xl font-bold tracking-normal mb-6 leading-none uppercase"
           >
             {name}
           </motion.h1>
@@ -79,7 +79,7 @@ export default function HeroClient({ name, tagline }: Props) {
           )}
 
           {/* Scroll cue */}
-          <motion.div
+          {/* <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.6, duration: 0.8 }}
@@ -94,7 +94,7 @@ export default function HeroClient({ name, tagline }: Props) {
               transition={{ repeat: Infinity, duration: 2.2, ease: 'easeInOut' }}
               className="w-px h-10 bg-gradient-to-b from-white/25 to-transparent"
             />
-          </motion.div>
+          </motion.div> */}
         </div>
       </section>
 
