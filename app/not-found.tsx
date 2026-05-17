@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 
 export default function NotFound() {
   return (
-    <main className="min-h-screen bg-black flex flex-col items-center justify-center text-center px-6">
+    <main className="min-h-screen bg-white dark:bg-black flex flex-col items-center justify-center text-center px-6">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

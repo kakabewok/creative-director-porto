@@ -29,7 +29,7 @@ export default function ProjectDetailClient({ project, allProjects }: Props) {
 
   return (
     <>
-      <div className="relative min-h-screen bg-black flex items-center justify-center">
+      <div className="relative min-h-screen bg-white dark:bg-black flex items-center justify-center">
         {/* ── Left Navigation Zone (Prev Media) ── */}
         {totalMedia > 1 && (
           <button

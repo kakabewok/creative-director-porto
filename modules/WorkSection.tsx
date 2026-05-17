@@ -27,7 +27,7 @@ export default function WorkSection({ projects, mode }: Props) {
   )
 
   return (
-    <div className={isOverlay ? "relative z-10 bg-black" : "bg-black"}>
+    <div className={isOverlay ? "relative z-10 bg-white dark:bg-black" : "bg-white dark:bg-black"}>
       {/* ScrollTrigger only tracks scroll state on the home page overlay, no URL routing */}
       {isOverlay && (
         <ScrollTrigger onActiveChange={setIsWorkActive} />

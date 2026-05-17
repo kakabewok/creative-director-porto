@@ -45,7 +45,7 @@ export default function SearchClient({ projects }: Props) {
 
   return (
     // Fix 8: full height centering — input sits in upper-middle via flex + pt
-    <div className="min-h-screen bg-black flex flex-col">
+    <div className="min-h-screen bg-white dark:bg-black flex flex-col">
 
       {/* ── Upper section: search + categories (centered, upper-middle) ── */}
       <div className="flex flex-col items-center justify-center pt-[22vh] pb-12 px-6">
@@ -65,7 +65,7 @@ export default function SearchClient({ projects }: Props) {
               placeholder="search for a title or term"
               aria-label="Search projects"
               autoComplete="off"
-              className="w-full bg-transparent border-b border-white/15 pl-7 pr-4 py-3 text-white/70 text-sm font-light tracking-wide placeholder:text-white/20 focus:outline-none focus:border-white/40 transition-colors text-center placeholder:text-center"
+              className="w-full bg-transparent border-b border-white/15 pl-7 pr-4 py-3 text-white/70 text-sm font-light tracking-wide placeholder:text-white/20 outline-none focus:outline-none focus:ring-0 focus:ring-transparent focus:shadow-none transition-colors text-center placeholder:text-center"
             />
           </div>
         </div>
@@ -106,9 +106,9 @@ export default function SearchClient({ projects }: Props) {
               No results found.
             </p>
           ) : (
-            <div className="max-w-5xl mx-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+            <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8 lg:gap-10">
               {results.map((project, i) => {
-                const src = getProjectCoverSrc(project, 600)
+                const src = getProjectCoverSrc(project, 800)
                 return (
                   <motion.article
                     key={project._id}
@@ -121,26 +121,26 @@ export default function SearchClient({ projects }: Props) {
                       className="group block"
                       aria-label={project.title}
                     >
-                      <div className="relative aspect-[3/4] overflow-hidden bg-zinc-900">
+                      <div className="relative aspect-[16/9] overflow-hidden bg-zinc-900">
                         {src ? (
                           <Image
                             src={src}
                             alt={project.coverImage?.alt ?? project.title}
                             fill
-                            sizes="(max-width:768px) 50vw, 25vw"
+                            sizes="(max-width:768px) 100vw, 33vw"
                             className="object-cover transition-transform duration-500 group-hover:scale-105"
                             loading="lazy"
                           />
                         ) : (
                           <div className="absolute inset-0 bg-zinc-800" />
                         )}
-                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-3">
-                          <span className="text-white text-xs tracking-widest uppercase">
+                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                          <span className="text-white text-xs tracking-widest uppercase drop-shadow-sm">
                             {project.title}
                           </span>
                         </div>
                       </div>
-                      <p className="mt-2 text-white/40 text-xs tracking-widest uppercase truncate group-hover:text-white/70 transition-colors">
+                      <p className="mt-4 text-white/40 text-xs tracking-widest uppercase truncate group-hover:text-white/70 transition-colors">
                         {project.title}
                       </p>
                     </Link>

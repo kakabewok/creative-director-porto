@@ -25,7 +25,7 @@ export default async function InformationPage() {
   const profileSrc = urlForImage(user.profileImage, 800)
 
   return (
-    <main className="min-h-screen bg-black pt-20 pb-28" aria-label="Information page">
+    <main className="min-h-screen bg-white dark:bg-black pt-20 pb-28" aria-label="Information page">
       {/* Floating section nav — rendered here, positioned fixed via CSS */}
       <InformationNav />
       <div className="max-w-6xl mx-auto px-6 md:px-10">
