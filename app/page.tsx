@@ -4,9 +4,9 @@ import HeroClient from '@/modules/HeroClient'
 import WorkSection from '@/modules/WorkSection'
 
 export const metadata: Metadata = {
-  title: 'Rangga Djoned — Creative Director & Visual Storyteller',
+  title: 'Rangga Djoned — Creative Director',
   description:
-    'Portfolio of Rangga Djoned — Creative Director & Visual Storyteller based in Jakarta, Indonesia.',
+    'Portfolio of Rangga Djoned — Creative Director based in Jakarta, Indonesia.',
 }
 
 export default async function HomePage() {

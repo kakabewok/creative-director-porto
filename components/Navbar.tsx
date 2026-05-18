@@ -18,14 +18,14 @@ export default function Navbar() {
   if (isHome) return null
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-[#0a0a0a]/95 backdrop-blur-sm">
+    <header className="sticky top-0 left-0 right-0 z-50 bg-[#0a0a0a]/95 backdrop-blur-sm">
       <nav
-        className="flex items-center justify-evenly px-6 md:px-10 py-5"
+        className="flex items-center justify-between px-6 md:px-10 py-5 border border-blue-500"
         aria-label="Main navigation"
       >
         <Link
           href="/"
-          className="text-white/90 text-sm font-bold tracking-[0.18em] uppercase hover:text-white transition-colors"
+          className="text-white/90 text-xs md:text-lg font-semibold tracking-normal duration-400 uppercase hover:text-white transition-colors"
           aria-label="Home"
         >
           Rangga Djoned
@@ -33,7 +33,7 @@ export default function Navbar() {
 
         <Link
           href="/work"
-          className="text-white/90 text-sm font-bold tracking-[0.18em] uppercase hover:text-white transition-colors"
+          className="text-white/90 text-xs md:text-lg font-semibold tracking-normal duration-400 uppercase hover:text-white transition-colors"
           aria-label="Home"
         >
           Work
@@ -41,7 +41,7 @@ export default function Navbar() {
 
         <Link
           href="/information"
-          className="text-white/90 text-sm font-bold tracking-[0.18em] uppercase hover:text-white transition-colors"
+          className="text-white/90 text-xs md:text-lg font-semibold tracking-normal duration-400 uppercase hover:text-white transition-colors"
           aria-label="Information"
         >
           Information
@@ -49,30 +49,11 @@ export default function Navbar() {
 
         <Link
           href="/search"
-          className="text-white/90 text-sm font-bold tracking-[0.18em] uppercase hover:text-white transition-colors"
+          className="text-white/90 text-xs md:text-lg font-semibold tracking-normal duration-400 uppercase hover:text-white transition-colors"
           aria-label="Search"
         >
           Search
         </Link>
-
-        {/* <ul className="flex items-center gap-8" role="list">
-          {NAV_LINKS.map(({ label, href }) => {
-            const active = pathname.startsWith(href)
-            return (
-              <li key={href}>
-                <Link
-                  href={href}
-                  className={`text-sm font-light tracking-[0.14em] uppercase transition-colors duration-200 ${
-                    active ? 'text-white' : 'text-white/50 hover:text-white/90'
-                  }`}
-                  aria-current={active ? 'page' : undefined}
-                >
-                  {label}
-                </Link>
-              </li>
-            )
-          })}
-        </ul> */}
       </nav>
     </header>
   )

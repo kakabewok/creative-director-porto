@@ -11,7 +11,7 @@ export default async function WorkPage() {
   const projects = await fetchProjects()
 
   return (
-    <main className="min-h-screen bg-white dark:bg-black pt-24" aria-label="Work page">
+    <main className="min-h-screen bg-white dark:bg-black" aria-label="Work page">
       <h1 className="sr-only">Work</h1>
       <WorkSection projects={projects} mode="standalone" />
     </main>

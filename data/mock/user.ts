@@ -3,7 +3,7 @@ import type { UserProfile } from '@/types'
 export const mockUser: UserProfile = {
   _id: 'mock-user-1',
   name: 'Rangga Djoned',
-  tagline: 'Creative Director & Visual Storyteller',
+  tagline: 'Creative Director',
   aboutText: `I am a creative director and visual storyteller based in Jakarta, Indonesia. My work spans across videography, branding, photography, and digital campaigns — always with a focus on atmosphere, narrative, and aesthetic precision.
 
 With over a decade of experience collaborating with brands, agencies, and artists, I bring a cinematic sensibility to every project. I believe great visual work is not just seen — it is felt.

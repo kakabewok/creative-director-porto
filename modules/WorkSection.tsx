@@ -4,12 +4,14 @@ import { useMemo, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import type { Project } from '@/types'
 import { getProjectCoverSrc } from '@/lib/projectImage'
-import HomeNavbar from '@/components/HomeNavbar'
+// import HomeNavbar from '@/components/HomeNavbar'
 import ScrollTrigger from '@/components/ScrollTrigger'
 import ProjectCard from '@/components/ProjectCard'
 import TimelineView from '@/components/TimelineView'
 import LayoutSwitcher, { type ViewMode } from '@/components/LayoutSwitcher'
 import Link from 'next/link'
+import Navbar from '@/components/Navbar'
+import HomeNavbar from '@/components/HomeNavbar'
 
 interface Props {
   projects: Project[]
@@ -37,7 +39,7 @@ export default function WorkSection({ projects, mode }: Props) {
       {isOverlay && <HomeNavbar />}
 
       {/* ── Work content — switches between list / spectrum / timeline ── */}
-      <section id="work" aria-label="Selected work" className="pt-10 pb-32 min-h-screen">
+      <section id="work" aria-label="Selected work" className="pb-32 min-h-screen">
 
         {/* Header: Only show "View All" link on home page overlay */}
         {/* <div className="px-6 md:px-10 mb-14 flex items-center justify-between max-w-3xl mx-auto">
@@ -85,9 +87,9 @@ export default function WorkSection({ projects, mode }: Props) {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="px-6 pt-10"
+              className="px-6 pt-3"
             >
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 md:gap-8 lg:gap-10">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-5 lg:gap-6">
                 {sorted.map((project, i) => (
                   <ProjectCard
                     key={project._id}
@@ -124,7 +126,7 @@ export default function WorkSection({ projects, mode }: Props) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 10 }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed bottom-8 left-1/2 -translate-x-1/2 z-40"
+            className="fixed bottom-2.5 left-1/2 -translate-x-1/2 z-40"
           >
             <LayoutSwitcher mode={viewMode} onChange={setViewMode} />
           </motion.div>
