@@ -23,7 +23,7 @@ export default function HeroClient({ name, tagline }: Props) {
         scrolls over it. z-index: 0 so Work (z-10) covers it.
       */}
       <section
-        className="fixed inset-0 z-0  overflow-hidden"
+        className="fixed inset-0 z-0 overflow-hidden bg-black"
         aria-label="Hero section"
       >
         {/* Background video */}

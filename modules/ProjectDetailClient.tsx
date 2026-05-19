@@ -127,19 +127,21 @@ export default function ProjectDetailClient({ project, allProjects }: Props) {
 // ─────────────────────────────────────────
 // Helper: merge cover + gallery into one list
 // ─────────────────────────────────────────
-function buildMediaItems(project: Project): GalleryItem[] {
-  const items: GalleryItem[] = []
+export type CarouselMediaItem = GalleryItem & { resolvedUrl?: string }
 
-  // 1. Cover image (if exists)
-  if (project.coverImage) {
-    items.push({
-      _key: '__cover-img',
-      type: 'image',
-      image: project.coverImage,
-    })
-  }
+function buildMediaItems(project: Project): CarouselMediaItem[] {
+  const items: CarouselMediaItem[] = []
 
-  // 2. Cover video (if exists and no cover image, or always include after image)
+  // 1. Cover image (or mock fallback if missing)
+  const coverUrl = getProjectCoverSrc(project, 1600)
+  items.push({
+    _key: '__cover-img',
+    type: 'image',
+    image: project.coverImage,
+    resolvedUrl: coverUrl,
+  })
+
+  // 2. Cover video (optional)
   if (project.coverVideoUrl) {
     items.push({
       _key: '__cover-vid',

@@ -37,7 +37,7 @@ export default function DetailsDrawer({ project, onClose }: Props) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm"
+            className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm cursor-pointer"
             onClick={onClose}
             aria-hidden="true"
           />
@@ -80,12 +80,12 @@ export default function DetailsDrawer({ project, onClose }: Props) {
                     <dd className="text-white/70 text-sm font-light">{project.year}</dd>
                   </>
                 )}
-                {project.role && (
+                {/* {project.role && (
                   <>
                     <dt className="text-white/30 text-xs tracking-widest uppercase">Role</dt>
                     <dd className="text-white/70 text-sm font-light">{project.role}</dd>
                   </>
-                )}
+                )} */}
                 {project.category && (
                   <>
                     <dt className="text-white/30 text-xs tracking-widest uppercase">Category</dt>

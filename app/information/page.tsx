@@ -21,7 +21,7 @@ const SOCIAL_ICONS: Record<string, React.ReactNode> = {
   instagram: <SiInstagram className="text-[#E4405F]" />, 
   pinterest: <SiPinterest className="text-[#BD081C]" />, 
   linkedin: <FaLinkedin className="text-[#0A66C2]" />, 
-  x: <FaXTwitter className="text-white" />, 
+  x: <FaXTwitter className="text-slate-900 dark:text-white" />, 
 };
 
 export default async function InformationPage() {
@@ -39,8 +39,8 @@ export default async function InformationPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 pt-12 mb-20">
             {/* Left — profile image */}
             <div className="relative">
-              <h1 className='text-white font-semibold text-lg md:text-3xl mb-5 tracking-tight'>BIOGRAPHY</h1>
-              <div className="relative aspect-[3/4] bg-zinc-900 overflow-hidden">
+              <h1 className='text-slate-900 dark:text-white font-semibold text-lg md:text-3xl mb-5 tracking-tight'>BIOGRAPHY</h1>
+              <div className="relative aspect-[3/4] bg-zinc-900 overflow-hidden rounded-sm">
                 {profileSrc ? (
                   <Image
                     src={profileSrc}
@@ -67,14 +67,14 @@ export default async function InformationPage() {
 
             {/* Right — about text */}
             <div className="flex flex-col gap-8">
-              <h1 className="text-white text-xl md:text-2xl font-extralight tracking-tight leading-snug mt-5">
+              <h1 className="text-slate-950 dark:text-white text-xl md:text-2xl font-normal tracking-tight leading-snug mt-5">
                 {user.tagline ?? 'Creative Director'}
               </h1>
 
               {user.aboutText && (
                 <div className="space-y-5">
                   {user.aboutText.split('\n\n').map((para, i) => (
-                    <p key={i} className="text-white/50 font-light leading-relaxed text-sm">
+                    <p key={i} className="text-slate-700 dark:text-white/50 font-light leading-relaxed text-sm">
                       {para}
                     </p>
                   ))}
@@ -128,15 +128,15 @@ export default async function InformationPage() {
           {/* <h2 id="contact-heading" className="text-white/20 text-xs tracking-widest uppercase mb-8">
             Contact
           </h2> */}
-          <h1 className='text-white font-semibold text-lg md:text-xl mb-5 tracking-tight'>CONTACT</h1>
+          <h1 className='text-slate-950 dark:text-white font-semibold text-lg md:text-xl mb-5 tracking-tight'>CONTACT</h1>
 
           <div className="space-y-6">
             {user.email && (
               <div>
-                <p className="text-white/90 text-xs tracking-widest uppercase mb-2">Email</p>
+                <p className="text-slate-950 dark:text-white/90 text-xs tracking-widest uppercase mb-2">Email</p>
                 <a
                   href={`mailto:${user.email}`}
-                  className="text-white/40 text-sm font-light hover:text-white transition-all duration-400"
+                  className="text-slate-400 hover:text-slate-950 dark:text-white/40 dark:hover:text-white text-sm transition-all duration-400"
                 >
                   {user.email}
                 </a>
@@ -145,7 +145,7 @@ export default async function InformationPage() {
 
             {user.socialLinks && user.socialLinks.length > 0 && (
               <div>
-                <p className="text-white/90 text-xs tracking-widest uppercase mb-4">Social</p>
+                <p className="text-slate-950 dark:text-white/90 text-xs tracking-widest uppercase mb-2">Social</p>
                 <div className="flex flex-wrap gap-4">
                   {user.socialLinks.map((link) => (
                     <a
@@ -154,7 +154,7 @@ export default async function InformationPage() {
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={link.platform}
-                      className="flex items-center gap-2 px-1 py-2 rounded-xs text-xs tracking-widest uppercase text-white/40 hover:text-white hover:border-white/30 transition-all duration-400"
+                      className="flex items-center gap-1 px-1 py-2 rounded-xs text-sm text-slate-400 hover:text-slate-950 dark:text-white/40 dark:hover:text-white hover:border-white/30 transition-all duration-400"
                     >
                       <span aria-hidden="true">
                         {/* {SOCIAL_ICONS[link.icon?.toLowerCase() ?? ''] ?? '↗'} */}
@@ -177,28 +177,28 @@ export default async function InformationPage() {
           {/* <h2 id="downloads-heading" className="text-white/20 text-xs tracking-widest uppercase mb-8">
             Downloads
           </h2> */}
-          <h1 className='text-white font-semibold text-lg md:text-xl mb-5 tracking-tight'>DOWNLOADS</h1>
+          <h1 className='text-slate-950 dark:text-white/90 font-semibold text-lg md:text-xl mb-5 tracking-tight'>DOWNLOADS</h1>
 
           <div className="flex flex-col sm:flex-row gap-4 mb-96">
             <a
               href="#"
               aria-label="Download High Resolution Images"
-              className="duration-400 group flex items-center justify-between px-6 py-4 border border-white/10 hover:border-white/30 transition-all"
+              className="duration-400 group flex items-center justify-between px-6 py-4 border border-slate-200 hover:border-slate-500 dark:border-white/20 dark:hover:border-white/30 transition-all"
             >
-              <span className="text-white/60 text-sm font-light group-hover:text-white transition-colors">
+              <span className="text-slate-700 hover:text-slate-950 dark:text-white/60 text-sm font-light dark:group-hover:text-white transition-colors">
                 High Resolution Images
               </span>
-              <span className="text-white/20 text-xs group-hover:text-white/50 transition-colors ml-8">↗</span>
+              <span className="text-slate-700 hover:text-slate-950 dark:text-white/20 text-xs dark:group-hover:text-white/50 transition-colors ml-8">↗</span>
             </a>
             <a
               href="#"
               aria-label="Download CV PDF"
-              className="duration-400 group flex items-center justify-between px-6 py-4 border border-white/10 hover:border-white/30 transition-all"
+              className="duration-400 group flex items-center justify-between px-6 py-4 border border-slate-200 hover:border-slate-500 dark:border-white/20 dark:hover:border-white/30 transition-all"
             >
-              <span className="text-white/60 text-sm font-light group-hover:text-white transition-colors">
+              <span className="text-slate-700 hover:text-slate-950 dark:text-white/60 text-sm font-light dark:group-hover:text-white transition-colors">
                 Curriculum Vitae (PDF)
               </span>
-              <span className="text-white/20 text-xs group-hover:text-white/50 transition-colors ml-8">↓</span>
+              <span className="text-slate-700 hover:text-slate-950 dark:text-white/20 text-xs dark:group-hover:text-white/50 transition-colors ml-8">↓</span>
             </a>
           </div>
         </section>

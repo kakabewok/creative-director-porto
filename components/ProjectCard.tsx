@@ -50,7 +50,7 @@ export default function ProjectCard({ project, index, coverSrc, mode = 'list', p
           {/* Spectrum hover overlay */}
           {isSpectrum && (
             <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-              <span className="text-white text-xs tracking-widest uppercase font-light">
+              <span className="group-hover:text-white text-xs md:text-sm tracking-widest uppercase font-light transition-colors duration-300">
                 {project.title}
               </span>
             </div>
@@ -60,10 +60,10 @@ export default function ProjectCard({ project, index, coverSrc, mode = 'list', p
         {/* List mode title */}
         {!isSpectrum && (
           <div className="flex items-end justify-between mt-3 max-w-3xl mx-auto px-1">
-            <h2 className="text-white/80 text-sm font-light tracking-widest uppercase group-hover:text-white transition-colors duration-200">
+            <h2 className="text-slate-900 dark:text-white/80 text-sm font-semibold tracking-widest uppercase group-hover:text-slate-800 dark:group-hover:text-slate-50 transition-colors duration-300">
               {project.title}
             </h2>
-            <span className="text-white/30 text-xs tracking-wider">
+            <span className="text-slate-900 dark:text-white/80 text-xs tracking-wider">
               {project.year}
             </span>
           </div>

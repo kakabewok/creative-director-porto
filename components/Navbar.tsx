@@ -25,7 +25,7 @@ export default function Navbar() {
       >
         <Link
           href="/"
-          className="text-white/90 text-xs md:text-lg font-semibold tracking-normal duration-400 uppercase hover:text-white transition-colors"
+          className={`${pathname === '/' ? 'text-slate-400 dark:text-slate-500' : 'text-slate-900 dark:text-white'} text-xs md:text-lg font-semibold tracking-normal duration-400 uppercase hover:text-slate-800 dark:hover:text-white transition-colors`}
           aria-label="Home"
         >
           Rangga Djoned
@@ -33,7 +33,7 @@ export default function Navbar() {
 
         <Link
           href="/work"
-          className="text-white/90 text-xs md:text-lg font-semibold tracking-normal duration-400 uppercase hover:text-white transition-colors"
+          className={`${pathname === '/work' ? 'text-slate-400 dark:text-slate-500' : 'text-slate-900 dark:text-white'} text-xs md:text-lg font-semibold tracking-normal duration-400 uppercase hover:text-slate-800 dark:hover:text-white transition-colors`}
           aria-label="Home"
         >
           Work
@@ -41,7 +41,7 @@ export default function Navbar() {
 
         <Link
           href="/information"
-          className="text-white/90 text-xs md:text-lg font-semibold tracking-normal duration-400 uppercase hover:text-white transition-colors"
+          className={`${pathname === '/information' ? 'text-slate-400 dark:text-slate-500' : 'text-slate-900 dark:text-white'} text-xs md:text-lg font-semibold tracking-normal duration-400 uppercase hover:text-slate-800 dark:hover:text-white transition-colors`}
           aria-label="Information"
         >
           Information
@@ -49,7 +49,7 @@ export default function Navbar() {
 
         <Link
           href="/search"
-          className="text-white/90 text-xs md:text-lg font-semibold tracking-normal duration-400 uppercase hover:text-white transition-colors"
+          className={`${pathname === '/search' ? 'text-slate-400 dark:text-slate-500' : 'text-slate-900 dark:text-white'} text-xs md:text-lg font-semibold tracking-normal duration-400 uppercase hover:text-slate-800 dark:hover:text-white transition-colors`}
           aria-label="Search"
         >
           Search

@@ -7,7 +7,7 @@ export function toEmbedUrl(url: string): string {
     /(?:youtube\.com\/watch\?v=|youtu\.be\/)([A-Za-z0-9_-]{11})/
   )
   if (ytMatch) {
-    return `https://www.youtube.com/embed/${ytMatch[1]}?rel=0&modestbranding=1`
+    return `https://www.youtube.com/embed/${ytMatch[1]}?controls=1&modestbranding=1&rel=0&playsinline=1&iv_load_policy=3&disablekb=1`
   }
 
   // Vimeo

@@ -77,7 +77,7 @@ export default function InformationNav() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: 0.3 }}
       aria-label="Information page sections"
-      className="fixed bottom-8 left-1/2 -translate-x-1/2 z-40 flex items-center gap-1 bg-zinc-900/90 backdrop-blur-md border border-white/8 rounded-xs px-2 py-2"
+      className="fixed bottom-2.5 left-1/2 -translate-x-1/2 z-40 flex items-center gap-1 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200 dark:border-slate-800 rounded-xs px-2 py-2"
     >
       {SECTIONS.map(({ id, label }) => (
         <button
@@ -85,10 +85,10 @@ export default function InformationNav() {
           id={`info-nav-${id}`}
           onClick={() => scrollTo(id)}
           aria-current={active === id ? 'location' : undefined}
-          className={`px-5 py-2 rounded-xs text-xs font-light tracking-widest uppercase transition-all duration-400 cursor-pointer ${
+          className={`px-5 py-2 rounded-xs text-xs font-normal uppercase transition-all duration-400 cursor-pointer ${
             active === id
-              ? 'bg-white text-black'
-              : 'text-white/40 hover:text-white/80'
+              ? 'dark:bg-white dark:text-slate-900 bg-slate-900 text-white'
+              : 'dark:text-white/40 dark:hover:text-white/80 text-black/40 hover:text-black/80'
           }`}
         >
           {label}
