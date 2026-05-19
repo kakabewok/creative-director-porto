@@ -3,6 +3,8 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import Navbar from '@/components/Navbar'
 import PageTransition from '@/components/PageTransition'
+import ThemeToggle from '@/components/ThemeToggle'
+import ResponsiveNavbar from '@/components/ResponsiveNavbar'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -12,12 +14,12 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: 'Rangga Djoned — Creative Director & Visual Storyteller',
+    default: 'Rangga Djoned — Creative Director',
     template: '%s | Rangga Djoned',
   },
   description:
-    'Portfolio of Rangga Djoned — Creative Director & Visual Storyteller based in Jakarta, Indonesia. Videography, Branding, Photography, Digital Campaigns.',
-  keywords: ['Creative Director', 'Visual Storyteller', 'Videography', 'Branding', 'Photography', 'Jakarta'],
+    'Portfolio of Rangga Djoned — Creative Director based in Jakarta, Indonesia. Videography, Branding, Photography, Digital Campaigns.',
+  keywords: ['Creative Director', 'Videography', 'Branding', 'Photography', 'Jakarta'],
   authors: [{ name: 'Rangga Djoned' }],
   openGraph: {
     type: 'website',
@@ -26,9 +28,8 @@ export const metadata: Metadata = {
   },
 }
 
-import ThemeToggle from '@/components/ThemeToggle'
-
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+
   return (
     <html lang="en" data-scroll-behavior="smooth" className={`${inter.variable} h-full`} suppressHydrationWarning>
       <head>
@@ -47,7 +48,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body className="antialiased min-h-full">
-        <Navbar />
+        <ResponsiveNavbar />
         <ThemeToggle />
         <PageTransition>
           {children}

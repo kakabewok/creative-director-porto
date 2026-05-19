@@ -18,9 +18,9 @@ export default function Navbar() {
   if (isHome) return null
 
   return (
-    <header className="sticky top-0 left-0 right-0 z-50 bg-[#0a0a0a]/95 backdrop-blur-sm">
+    <header className="sticky top-0 left-0 right-0 z-50 bg-transparent backdrop-blur-xs">
       <nav
-        className="flex items-center justify-between px-6 md:px-10 py-5 border border-blue-500"
+        className="flex items-center justify-between px-6 md:px-10 py-5"
         aria-label="Main navigation"
       >
         <Link

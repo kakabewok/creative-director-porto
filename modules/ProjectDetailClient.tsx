@@ -27,9 +27,11 @@ export default function ProjectDetailClient({ project, allProjects }: Props) {
   const allMediaItems = buildMediaItems(project)
   const totalMedia = allMediaItems.length
 
+  // relative min-h-screen
+
   return (
     <>
-      <div className="relative min-h-screen bg-white dark:bg-black flex items-center justify-center">
+      <div className="min-h-screen bg-white dark:bg-black flex items-center justify-center border border-red-500">
         {/* ── Left Navigation Zone (Prev Media) ── */}
         {totalMedia > 1 && (
           <button
@@ -57,7 +59,7 @@ export default function ProjectDetailClient({ project, allProjects }: Props) {
         )}
 
         {/* ── Unified media carousel (centered, max-width) ── */}
-        <div className="relative w-full md:w-[76%] lg:w-[70%] max-w-7xl mx-auto">
+        <div className="relative w-full md:w-[56%] lg:w-[60%] max-w-7xl mx-auto border border-red-500">
           <MediaCarousel
             ref={carouselRef}
             items={allMediaItems}
@@ -67,14 +69,14 @@ export default function ProjectDetailClient({ project, allProjects }: Props) {
           {/* Overlay UI on top of carousel */}
 
           {/* Top-right: Close */}
-          <Link
+          {/* <Link
             href="/work"
             id="project-close"
             aria-label="Back to work"
             className="absolute -top-12 right-0 md:top-5 md:right-5 z-40 w-9 h-9 flex items-center justify-center text-white/60 hover:text-white transition-colors rounded-full bg-black/40 backdrop-blur-sm"
           >
             <X size={16} />
-          </Link>
+          </Link> */}
 
           {/* Mobile: details — top-left */}
           <button
@@ -88,7 +90,7 @@ export default function ProjectDetailClient({ project, allProjects }: Props) {
           </button>
 
           {/* Bottom-left: title */}
-          <div className="absolute -bottom-16 left-0 md:bottom-6 md:left-10 z-40 pointer-events-none">
+          {/* <div className="absolute -bottom-16 left-0 md:bottom-6 md:left-10 z-40 pointer-events-none border border-red-500">
             <motion.h1
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
@@ -97,10 +99,10 @@ export default function ProjectDetailClient({ project, allProjects }: Props) {
             >
               {project.title}
             </motion.h1>
-          </div>
+          </div> */}
 
           {/* Bottom-right: index + details */}
-          <div className="absolute -bottom-16 right-0 md:bottom-6 md:right-10 z-40 flex items-center gap-4">
+          {/* <div className="absolute -bottom-16 right-0 md:bottom-6 md:right-10 z-40 flex items-center gap-4">
             <span className="text-white/30 text-xs tracking-widest hidden md:block drop-shadow">
               {String(currentMediaIndex + 1).padStart(2, '0')} / {String(totalMedia).padStart(2, '0')}
             </span>
@@ -113,9 +115,45 @@ export default function ProjectDetailClient({ project, allProjects }: Props) {
               <Info size={12} />
               Details
             </button>
+          </div> */}
+        </div>
+
+        <Link
+            href="/work"
+            id="project-close"
+            aria-label="Back to work"
+            className="absolute top-6 right-0 md:top-6 md:right-15 z-40 w-9 h-9 flex items-center justify-center text-white hover:text-white/60 transition-colors rounded-full bg-black/40 backdrop-blur-sm cursor-pointer duration-400 font-semibold"
+          >
+            {/* <X size={16} /> */}
+            CLOSE
+          </Link>
+
+        <div className="absolute bottom-2 left-15 md:bottom-6 md:left-15 z-40 pointer-events-none">
+            <motion.h1
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              className="text-white text-md md:text-lg font-extralight tracking-tight drop-shadow-2xl font-semibold"
+            >
+              {project.title}
+            </motion.h1>
           </div>
         </div>
-      </div>
+
+        <div className="absolute bottom-16 right-0 md:bottom-6 md:right-15 z-40 flex items-center gap-4">
+            <span className="text-white text-xs tracking-widest hidden md:block drop-shadow font-semibold">
+              {String(currentMediaIndex + 1).padStart(2, '0')} / {String(totalMedia).padStart(2, '0')}
+            </span>
+            <button
+              id="project-details-open"
+              onClick={() => setDrawerOpen(true)}
+              aria-label="Open project details"
+              className="font-semibold hidden md:flex items-center gap-2 px-4 py-2 text-xs tracking-widest uppercase font-light text-white hover:text-white/60 rounded-xs transition-all backdrop-blur-sm bg-black/30 cursor-pointer duration-400"
+            >
+              <Info size={12} />
+              Details
+            </button>
+        </div>
 
       {/* Details drawer */}
       <DetailsDrawer

@@ -5,14 +5,14 @@ import { usePathname } from 'next/navigation'
 
 export default function HomeNavbar() {
   const pathname = usePathname()
-
+// bg-[#0a0a0a]/95
   return (
     <header
-      className="sticky top-0 z-20 bg-[#0a0a0a]/95 backdrop-blur-sm"
+      className="sticky top-0 z-20 bg-transparent backdrop-blur-xs"
       aria-label="Site header"
     >
       <nav
-        className="flex items-center justify-between px-6 md:px-10 py-5 border border-red-500"
+        className="flex items-center justify-between px-6 md:px-10 py-5"
         aria-label="Main navigation"
       >
         {/* Left — Brand */}

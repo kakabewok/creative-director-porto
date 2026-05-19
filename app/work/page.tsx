@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { fetchProjects } from '@/lib/fetchData'
 import WorkSection from '@/modules/WorkSection'
+import Navbar from '@/components/Navbar'
 
 export const metadata: Metadata = {
   title: 'Work',
@@ -11,10 +12,12 @@ export default async function WorkPage() {
   const projects = await fetchProjects()
 
   return (
+    <>
     <main className="min-h-screen bg-white dark:bg-black" aria-label="Work page">
       <h1 className="sr-only">Work</h1>
       <WorkSection projects={projects} mode="standalone" />
     </main>
+    </>
   )
 }
 

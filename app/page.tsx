@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { fetchUser, fetchProjects } from '@/lib/fetchData'
 import HeroClient from '@/modules/HeroClient'
 import WorkSection from '@/modules/WorkSection'
+import Navbar from '@/components/Navbar'
 
 export const metadata: Metadata = {
   title: 'Rangga Djoned — Creative Director',
@@ -13,9 +14,13 @@ export default async function HomePage() {
   const [user, projects] = await Promise.all([fetchUser(), fetchProjects()])
 
   return (
+    <>
+    <Navbar />
     <main>
       <HeroClient name={user.name} tagline={user.tagline ?? ''} />
       <WorkSection projects={projects} mode="overlay" />
     </main>
+    </>
+    
   )
 }

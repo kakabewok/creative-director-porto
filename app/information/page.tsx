@@ -11,6 +11,7 @@ import {
   // SiLinkedin, 
   SiYoutube 
 } from 'react-icons/si';
+import Navbar from '@/components/Navbar'
 
 export const metadata: Metadata = {
   title: 'Information',
@@ -30,6 +31,7 @@ export default async function InformationPage() {
   const profileSrc = urlForImage(user.profileImage, 800)
 
   return (
+    <>
     <main className="min-h-screen bg-white dark:bg-black pt-8 pb-28" aria-label="Information page">
       {/* Floating section nav — rendered here, positioned fixed via CSS */}
       <InformationNav />
@@ -202,5 +204,6 @@ export default async function InformationPage() {
         </section>
       </div>
     </main>
+    </>
   )
 }
