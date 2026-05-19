@@ -1,4 +1,4 @@
-import type { Metadata, PageProps } from 'next'
+import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { fetchProjectBySlug, fetchProjects } from '@/lib/fetchData'
 import ProjectDetailClient from '@/modules/ProjectDetailClient'
