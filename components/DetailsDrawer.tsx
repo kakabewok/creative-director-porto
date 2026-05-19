@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { X } from 'lucide-react'
 import type { Project } from '@/types'
 import PortableTextRenderer from '@/components/PortableTextRenderer'
+import React from 'react'
 
 interface Props {
   project: Project | null
@@ -72,37 +73,30 @@ export default function DetailsDrawer({ project, onClose }: Props) {
                 {project.title}
               </h2>
 
-              {/* Meta grid */}
-              <dl className="grid grid-cols-2 gap-y-5 gap-x-4">
-                {project.year && (
-                  <>
-                    <dt className="text-white/30 text-xs tracking-widest uppercase">Year</dt>
-                    <dd className="text-white/70 text-sm font-light">{project.year}</dd>
-                  </>
-                )}
-                {/* {project.role && (
-                  <>
-                    <dt className="text-white/30 text-xs tracking-widest uppercase">Role</dt>
-                    <dd className="text-white/70 text-sm font-light">{project.role}</dd>
-                  </>
-                )} */}
-                {project.category && (
-                  <>
-                    <dt className="text-white/30 text-xs tracking-widest uppercase">Category</dt>
-                    <dd className="text-white/70 text-sm font-light">{project.category}</dd>
-                  </>
-                )}
-              </dl>
+            <dl className="grid grid-cols-2 gap-y-5 gap-x-4">
+              {project.year ? (
+                <React.Fragment key="year">
+                  <dt className="text-white/30 text-xs tracking-widest uppercase">Year</dt>
+                  <dd className="text-white/70 text-sm font-light">{project.year}</dd>
+                </React.Fragment>
+              ) : null}
 
-              {/* Divider */}
-              <div className="w-full h-px bg-white/8" />
+              {project.category ? (
+                <React.Fragment key="category">
+                  <dt className="text-white/30 text-xs tracking-widest uppercase">Category</dt>
+                  <dd className="text-white/70 text-sm font-light">{project.category}</dd>
+                </React.Fragment>
+              ) : null}
+            </dl>
+
+            <div className="w-full h-px bg-white/8" />
 
               {/* Description */}
-              {project.description && (
+              {project.description ? (
                 <div className="prose prose-invert prose-sm max-w-none">
                   <PortableTextRenderer value={project.description} />
                 </div>
-              )}
+              ) : null}
             </div>
           </motion.aside>
         </>
