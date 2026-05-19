@@ -31,15 +31,15 @@ export default function ProjectDetailClient({ project, allProjects }: Props) {
 
   return (
     <>
-      <div className="min-h-screen bg-white dark:bg-black flex items-center justify-center border border-red-500">
+      <div className="min-h-screen bg-white dark:bg-black flex items-center justify-center">
         {/* ── Left Navigation Zone (Prev Media) ── */}
         {totalMedia > 1 && (
           <button
             onClick={() => carouselRef.current?.paginate(-1)}
-            className="hidden md:flex absolute left-0 top-0 bottom-0 w-[12%] lg:w-[15%] z-30 items-center justify-center group cursor-w-resize"
+            className="hidden md:flex absolute left-0 top-0 bottom-0 w-[12%] lg:w-[15%] z-30 items-center justify-center group cursor-pointer"
             aria-label="Previous image"
           >
-            <span className="text-white/60 text-xs tracking-[0.25em] uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <span className="text-white/60 text-md tracking-[0.25em] uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-300">
               Prev
             </span>
           </button>
@@ -49,34 +49,22 @@ export default function ProjectDetailClient({ project, allProjects }: Props) {
         {totalMedia > 1 && (
           <button
             onClick={() => carouselRef.current?.paginate(1)}
-            className="hidden md:flex absolute right-0 top-0 bottom-0 w-[12%] lg:w-[15%] z-30 items-center justify-center group cursor-e-resize"
+            className="hidden md:flex absolute right-0 top-0 bottom-0 w-[12%] lg:w-[15%] z-30 items-center justify-center group cursor-pointer"
             aria-label="Next image"
           >
-            <span className="text-white/60 text-xs tracking-[0.25em] uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <span className="text-white/60 text-md tracking-[0.25em] uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-300">
               Next
             </span>
           </button>
         )}
 
         {/* ── Unified media carousel (centered, max-width) ── */}
-        <div className="relative w-full md:w-[56%] lg:w-[60%] max-w-7xl mx-auto border border-red-500">
+        <div className="relative w-full md:w-[56%] lg:w-[60%] max-w-7xl mx-auto">
           <MediaCarousel
             ref={carouselRef}
             items={allMediaItems}
             onIndexChange={setCurrentMediaIndex}
           />
-
-          {/* Overlay UI on top of carousel */}
-
-          {/* Top-right: Close */}
-          {/* <Link
-            href="/work"
-            id="project-close"
-            aria-label="Back to work"
-            className="absolute -top-12 right-0 md:top-5 md:right-5 z-40 w-9 h-9 flex items-center justify-center text-white/60 hover:text-white transition-colors rounded-full bg-black/40 backdrop-blur-sm"
-          >
-            <X size={16} />
-          </Link> */}
 
           {/* Mobile: details — top-left */}
           <button
@@ -88,69 +76,41 @@ export default function ProjectDetailClient({ project, allProjects }: Props) {
             <Info size={12} />
             Details
           </button>
-
-          {/* Bottom-left: title */}
-          {/* <div className="absolute -bottom-16 left-0 md:bottom-6 md:left-10 z-40 pointer-events-none border border-red-500">
-            <motion.h1
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              className="text-white text-2xl md:text-5xl font-extralight tracking-tight drop-shadow-2xl"
-            >
-              {project.title}
-            </motion.h1>
-          </div> */}
-
-          {/* Bottom-right: index + details */}
-          {/* <div className="absolute -bottom-16 right-0 md:bottom-6 md:right-10 z-40 flex items-center gap-4">
-            <span className="text-white/30 text-xs tracking-widest hidden md:block drop-shadow">
-              {String(currentMediaIndex + 1).padStart(2, '0')} / {String(totalMedia).padStart(2, '0')}
-            </span>
-            <button
-              id="project-details-open"
-              onClick={() => setDrawerOpen(true)}
-              aria-label="Open project details"
-              className="hidden md:flex items-center gap-2 px-4 py-2 text-xs tracking-widest uppercase font-light text-white/60 hover:text-white border border-white/20 hover:border-white/40 rounded-full transition-all backdrop-blur-sm bg-black/30"
-            >
-              <Info size={12} />
-              Details
-            </button>
-          </div> */}
         </div>
 
         <Link
             href="/work"
             id="project-close"
             aria-label="Back to work"
-            className="absolute top-6 right-0 md:top-6 md:right-15 z-40 w-9 h-9 flex items-center justify-center text-white hover:text-white/60 transition-colors rounded-full bg-black/40 backdrop-blur-sm cursor-pointer duration-400 font-semibold"
+            className="text-md absolute top-6 right-0 md:top-3 md:right-10 z-40 w-9 h-9 flex items-center justify-center text-white hover:text-white/70 transition-colors rounded-full bg-black/40 backdrop-blur-sm cursor-pointer duration-400 font-semibold"
           >
             {/* <X size={16} /> */}
             CLOSE
           </Link>
 
-        <div className="absolute bottom-2 left-15 md:bottom-6 md:left-15 z-40 pointer-events-none">
+        <div className="absolute bottom-2 left-15 md:bottom-5 md:left-10 z-40 pointer-events-none">
             <motion.h1
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              className="text-white text-md md:text-lg font-extralight tracking-tight drop-shadow-2xl font-semibold"
+              className="text-white text-md md:text-md tracking-tight drop-shadow-2xl font-semibold uppercase"
             >
               {project.title}
             </motion.h1>
           </div>
         </div>
 
-        <div className="absolute bottom-16 right-0 md:bottom-6 md:right-15 z-40 flex items-center gap-4">
-            <span className="text-white text-xs tracking-widest hidden md:block drop-shadow font-semibold">
+        <div className="absolute bottom-16 right-0 md:bottom-3 md:right-10 z-40 flex items-center gap-4">
+            <span className="text-white text-md tracking-wide hidden md:block drop-shadow font-semibold">
               {String(currentMediaIndex + 1).padStart(2, '0')} / {String(totalMedia).padStart(2, '0')}
             </span>
             <button
               id="project-details-open"
               onClick={() => setDrawerOpen(true)}
               aria-label="Open project details"
-              className="font-semibold hidden md:flex items-center gap-2 px-4 py-2 text-xs tracking-widest uppercase font-light text-white hover:text-white/60 rounded-xs transition-all backdrop-blur-sm bg-black/30 cursor-pointer duration-400"
+              className="text-md font-semibold hidden md:flex items-center gap-2 px-4 py-2 tracking-widest uppercase text-white hover:text-white/70 rounded-xs transition-all backdrop-blur-sm bg-black/30 cursor-pointer duration-400"
             >
-              <Info size={12} />
+              {/* <Info size={12} /> */}
               Details
             </button>
         </div>

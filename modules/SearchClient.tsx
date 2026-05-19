@@ -45,7 +45,7 @@ export default function SearchClient({ projects }: Props) {
 
   return (
     // Fix 8: full height centering — input sits in upper-middle via flex + pt
-    <div className="min-h-screen bg-white dark:bg-black flex flex-col">
+    <div className="h-[calc(100dvh-68px)] bg-white dark:bg-black flex flex-col">
 
       {/* ── Upper section: search + categories (centered, upper-middle) ── */}
       <div className="flex flex-col items-center justify-center pt-[22vh] pb-12 px-6">
@@ -54,8 +54,8 @@ export default function SearchClient({ projects }: Props) {
         <div className="w-full max-w-xl mb-10">
           <div className="relative">
             <Search
-              size={15}
-              className="absolute left-0 top-1/2 -translate-y-1/2 text-white/25 pointer-events-none"
+              size={17}
+              className="absolute left-0 top-1/2 -translate-y-1/2 text-white/90 pointer-events-none"
             />
             <input
               id="search-input"
@@ -65,25 +65,25 @@ export default function SearchClient({ projects }: Props) {
               placeholder="search for a title or term"
               aria-label="Search projects"
               autoComplete="off"
-              className="w-full bg-transparent border-b border-white/15 pl-7 pr-4 py-3 text-white/70 text-sm font-light tracking-wide placeholder:text-white/20 outline-none focus:outline-none focus:ring-0 focus:ring-transparent focus:shadow-none transition-colors text-center placeholder:text-center"
+              className="w-full bg-transparent appearance-none rounded-none border-t-0 border-x-0 border-b border-white/90 pl-7 pr-4 py-3 text-white/90 text-sm md:text-lg font-light tracking-wide placeholder:text-white/90 text-center placeholder:text-center transition-colors focus:border-white/90! focus:ring-0! focus:shadow-none! focus:outline-none! focus-visible:ring-0! focus-visible:outline-none!"
             />
           </div>
         </div>
 
         {/* Categories — centered under input */}
         <div className="flex flex-col items-center gap-5">
-          <p className="text-white/20 text-[10px] tracking-[0.25em] uppercase">or explore by</p>
-          <div className="flex flex-wrap justify-center gap-2">
+          <p className="text-white/90 text-[11px] tracking-[0.25em] uppercase">or explore by</p>
+          <div className="flex flex-wrap justify-center gap-4">
             {CATEGORIES.map((cat) => (
               <button
                 key={cat}
                 id={`category-${cat.toLowerCase().replace(/\s+/g, '-')}`}
                 onClick={() => setActiveCategory(activeCategory === cat ? null : cat)}
                 aria-pressed={activeCategory === cat}
-                className={`px-5 py-2 rounded-full text-xs tracking-widest uppercase font-light border transition-all duration-200 ${
+                className={`cursor-pointer px-5 py-2 rounded-xs text-xs tracking-widest uppercase font-light border transition-all duration-400 ${
                   activeCategory === cat
                     ? 'bg-white text-black border-white'
-                    : 'border-white/15 text-white/40 hover:border-white/40 hover:text-white/70'
+                    : 'border-white/90 text-white/90 hover:border-white/50 hover:text-white/50'
                 }`}
               >
                 {cat} ({categoryCounts[cat] ?? 0})
@@ -106,7 +106,7 @@ export default function SearchClient({ projects }: Props) {
               No results found.
             </p>
           ) : (
-            <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8 lg:gap-10">
+            <div className="max-w-6xl mx-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 md:gap-6 lg:gap-7">
               {results.map((project, i) => {
                 const src = getProjectCoverSrc(project, 800)
                 return (
@@ -128,19 +128,19 @@ export default function SearchClient({ projects }: Props) {
                             alt={project.coverImage?.alt ?? project.title}
                             fill
                             sizes="(max-width:768px) 100vw, 33vw"
-                            className="object-cover transition-transform duration-500 group-hover:scale-105"
+                            className="object-cover transition-transform duration-400 group-hover:scale-105"
                             loading="lazy"
                           />
                         ) : (
                           <div className="absolute inset-0 bg-zinc-800" />
                         )}
-                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                        {/* <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
                           <span className="text-white text-xs tracking-widest uppercase drop-shadow-sm">
                             {project.title}
                           </span>
-                        </div>
+                        </div> */}
                       </div>
-                      <p className="mt-4 text-white/40 text-xs tracking-widest uppercase truncate group-hover:text-white/70 transition-colors">
+                      <p className="duration-400 mt-4 text-white/40 text-xs tracking-widest uppercase truncate group-hover:text-white/70 transition-colors">
                         {project.title}
                       </p>
                     </Link>

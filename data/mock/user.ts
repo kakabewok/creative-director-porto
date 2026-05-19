@@ -4,24 +4,33 @@ export const mockUser: UserProfile = {
   _id: 'mock-user-1',
   name: 'Rangga Djoned',
   tagline: 'Creative Director',
+  profileImage: {
+    _type: 'image',
+    asset: {
+      _ref: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80',
+      _type: 'reference',
+    },
+    alt: 'Rangga Djoned Portrait',
+  },
   aboutText: `I am a creative director and visual storyteller based in Jakarta, Indonesia. My work spans across videography, branding, photography, and digital campaigns — always with a focus on atmosphere, narrative, and aesthetic precision.
 
 With over a decade of experience collaborating with brands, agencies, and artists, I bring a cinematic sensibility to every project. I believe great visual work is not just seen — it is felt.
 
-My process begins with listening: to the client, to the brief, to the silence between words. From there, I build worlds that resonate.`,
-  email: 'hello@ranggadjoned.com',
+My process begins with listening: to the client, to the brief, to the silence between words. From there, I build worlds that resonate.
+
+I am a creative director and visual storyteller based in Jakarta, Indonesia. My work spans across videography, branding, photography, and digital campaigns — always with a focus on atmosphere, narrative, and aesthetic precision.
+
+With over a decade of experience collaborating with brands, agencies, and artists, I bring a cinematic sensibility to every project. I believe great visual work is not just seen — it is felt.
+
+My process begins with listening: to the client, to the brief, to the silence between words. From there, I build worlds that resonate.
+`,
+  email: 'rangga.djoned@gmail.com',
   socialLinks: [
     {
       _key: 'sl-1',
       platform: 'Instagram',
       url: 'https://instagram.com/ranggadjoned',
       icon: 'instagram',
-    },
-    {
-      _key: 'sl-2',
-      platform: 'Behance',
-      url: 'https://behance.net/ranggadjoned',
-      icon: 'behance',
     },
     {
       _key: 'sl-3',
@@ -37,9 +46,9 @@ My process begins with listening: to the client, to the brief, to the silence be
     },
     {
       _key: 'sl-5',
-      platform: 'YouTube',
-      url: 'https://youtube.com/@ranggadjoned',
-      icon: 'youtube',
+      platform: 'Twitter',
+      url: 'https://x.com/ranggadjoned',
+      icon: 'x',
     },
   ],
   experienceHighlights: [

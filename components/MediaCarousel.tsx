@@ -148,7 +148,7 @@ const MediaCarousel = forwardRef<MediaCarouselHandle, Props>(({ items, onIndexCh
       )}
 
       {/* Dot indicators — always visible, small */}
-      {total > 1 && (
+      {/* {total > 1 && (
         <div
           className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5 z-10"
           aria-label="Slide indicators"
@@ -169,7 +169,7 @@ const MediaCarousel = forwardRef<MediaCarouselHandle, Props>(({ items, onIndexCh
             />
           ))}
         </div>
-      )}
+      )} */}
     </div>
   )
 })

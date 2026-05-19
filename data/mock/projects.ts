@@ -18,6 +18,12 @@ export const PLACEHOLDER_IMAGES: Record<string, string> = {
   'proj-8': 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=1200&q=80&auto=format&fit=crop',
   'proj-9': 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1200&q=80&auto=format&fit=crop',
   'proj-10': 'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=1200&q=80&auto=format&fit=crop',
+  'proj-11': 'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=1200&q=80&auto=format&fit=crop',
+  'proj-12': 'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=1200&q=80&auto=format&fit=crop',
+  'proj-13': 'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=1200&q=80&auto=format&fit=crop',
+  'proj-14': 'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=1200&q=80&auto=format&fit=crop',
+  'proj-15': 'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=1200&q=80&auto=format&fit=crop',
+  'proj-16': 'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=1200&q=80&auto=format&fit=crop',
 }
 
 export const mockProjects: Project[] = [
@@ -320,6 +326,186 @@ export const mockProjects: Project[] = [
   },
   {
     _id: 'proj-10',
+    title: 'After the Rain',
+    slug: { current: 'after-the-rain' },
+    description: [
+      {
+        _type: 'block',
+        _key: 'b10',
+        style: 'normal',
+        children: [
+          {
+            _type: 'span',
+            _key: 's10',
+            text: 'Editorial fashion photography shot in the aftermath of a Javanese monsoon — wet streets, grey skies, and the strange beauty of what storms leave behind.',
+          },
+        ],
+      },
+    ],
+    role: 'Photographer & Creative Director',
+    category: 'Photography',
+    year: '2019',
+    coverImage: {
+      _type: 'image',
+      asset: { _ref: 'image-ref-10', _type: 'reference' },
+      alt: 'Fashion editorial on reflective wet pavement',
+    },
+    gallery: [],
+    featured: false,
+    order: 10,
+  },
+  {
+    _id: 'proj-11',
+    title: 'After the Rain',
+    slug: { current: 'after-the-rain' },
+    description: [
+      {
+        _type: 'block',
+        _key: 'b10',
+        style: 'normal',
+        children: [
+          {
+            _type: 'span',
+            _key: 's10',
+            text: 'Editorial fashion photography shot in the aftermath of a Javanese monsoon — wet streets, grey skies, and the strange beauty of what storms leave behind.',
+          },
+        ],
+      },
+    ],
+    role: 'Photographer & Creative Director',
+    category: 'Photography',
+    year: '2019',
+    coverImage: {
+      _type: 'image',
+      asset: { _ref: 'image-ref-10', _type: 'reference' },
+      alt: 'Fashion editorial on reflective wet pavement',
+    },
+    gallery: [],
+    featured: false,
+    order: 10,
+  },
+  {
+    _id: 'proj-12',
+    title: 'After the Rain',
+    slug: { current: 'after-the-rain' },
+    description: [
+      {
+        _type: 'block',
+        _key: 'b10',
+        style: 'normal',
+        children: [
+          {
+            _type: 'span',
+            _key: 's10',
+            text: 'Editorial fashion photography shot in the aftermath of a Javanese monsoon — wet streets, grey skies, and the strange beauty of what storms leave behind.',
+          },
+        ],
+      },
+    ],
+    role: 'Photographer & Creative Director',
+    category: 'Photography',
+    year: '2019',
+    coverImage: {
+      _type: 'image',
+      asset: { _ref: 'image-ref-10', _type: 'reference' },
+      alt: 'Fashion editorial on reflective wet pavement',
+    },
+    gallery: [],
+    featured: false,
+    order: 10,
+  },
+  {
+    _id: 'proj-13',
+    title: 'After the Rain',
+    slug: { current: 'after-the-rain' },
+    description: [
+      {
+        _type: 'block',
+        _key: 'b10',
+        style: 'normal',
+        children: [
+          {
+            _type: 'span',
+            _key: 's10',
+            text: 'Editorial fashion photography shot in the aftermath of a Javanese monsoon — wet streets, grey skies, and the strange beauty of what storms leave behind.',
+          },
+        ],
+      },
+    ],
+    role: 'Photographer & Creative Director',
+    category: 'Photography',
+    year: '2019',
+    coverImage: {
+      _type: 'image',
+      asset: { _ref: 'image-ref-10', _type: 'reference' },
+      alt: 'Fashion editorial on reflective wet pavement',
+    },
+    gallery: [],
+    featured: false,
+    order: 10,
+  },
+  {
+    _id: 'proj-14',
+    title: 'After the Rain',
+    slug: { current: 'after-the-rain' },
+    description: [
+      {
+        _type: 'block',
+        _key: 'b10',
+        style: 'normal',
+        children: [
+          {
+            _type: 'span',
+            _key: 's10',
+            text: 'Editorial fashion photography shot in the aftermath of a Javanese monsoon — wet streets, grey skies, and the strange beauty of what storms leave behind.',
+          },
+        ],
+      },
+    ],
+    role: 'Photographer & Creative Director',
+    category: 'Photography',
+    year: '2019',
+    coverImage: {
+      _type: 'image',
+      asset: { _ref: 'image-ref-10', _type: 'reference' },
+      alt: 'Fashion editorial on reflective wet pavement',
+    },
+    gallery: [],
+    featured: false,
+    order: 10,
+  },
+  {
+    _id: 'proj-15',
+    title: 'After the Rain',
+    slug: { current: 'after-the-rain' },
+    description: [
+      {
+        _type: 'block',
+        _key: 'b10',
+        style: 'normal',
+        children: [
+          {
+            _type: 'span',
+            _key: 's10',
+            text: 'Editorial fashion photography shot in the aftermath of a Javanese monsoon — wet streets, grey skies, and the strange beauty of what storms leave behind.',
+          },
+        ],
+      },
+    ],
+    role: 'Photographer & Creative Director',
+    category: 'Photography',
+    year: '2019',
+    coverImage: {
+      _type: 'image',
+      asset: { _ref: 'image-ref-10', _type: 'reference' },
+      alt: 'Fashion editorial on reflective wet pavement',
+    },
+    gallery: [],
+    featured: false,
+    order: 10,
+  },
+  {
+    _id: 'proj-16',
     title: 'After the Rain',
     slug: { current: 'after-the-rain' },
     description: [

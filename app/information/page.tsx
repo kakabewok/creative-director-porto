@@ -6,12 +6,11 @@ import { urlForImage } from '@/sanity/image'
 import InformationNav from '@/modules/InformationNav'
 import { 
   SiInstagram, 
-  SiBehance, 
   SiPinterest, 
-  // SiLinkedin, 
-  SiYoutube 
 } from 'react-icons/si';
+import { FaLinkedin, FaTwitter } from 'react-icons/fa'
 import Navbar from '@/components/Navbar'
+import { FaXTwitter } from 'react-icons/fa6'
 
 export const metadata: Metadata = {
   title: 'Information',
@@ -20,10 +19,9 @@ export const metadata: Metadata = {
 
 const SOCIAL_ICONS: Record<string, React.ReactNode> = {
   instagram: <SiInstagram className="text-[#E4405F]" />, 
-  behance: <SiBehance className="text-[#1769ff]" />,     
   pinterest: <SiPinterest className="text-[#BD081C]" />, 
-  // linkedin: <SiLinkedin className="text-[#0A66C2]" />,   
-  youtube: <SiYoutube className="text-[#FF0000]" />,     
+  linkedin: <FaLinkedin className="text-[#0A66C2]" />, 
+  x: <FaXTwitter className="text-white" />, 
 };
 
 export default async function InformationPage() {
@@ -53,12 +51,14 @@ export default async function InformationPage() {
                     sizes="(max-width: 768px) 100vw, 50vw"
                   />
                 ) : (
-                  /* Placeholder silhouette */
-                  <div className="absolute inset-0 bg-gradient-to-b from-zinc-800 to-zinc-950 flex items-end p-8">
-                    <p className="text-white/10 text-6xl font-extralight">
-                      {user.name.split(' ').map(w => w[0]).join('')}
-                    </p>
-                  </div>
+                  <Image
+                    src={user.profileImage?.asset?._ref ?? ''}
+                    alt={user.profileImage?.alt ?? `${user.name} portrait`}
+                    fill
+                    priority
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                  />
                 )}
               </div>
               {/* Name below image */}
@@ -128,15 +128,15 @@ export default async function InformationPage() {
           {/* <h2 id="contact-heading" className="text-white/20 text-xs tracking-widest uppercase mb-8">
             Contact
           </h2> */}
-          <h1 className='text-white font-semibold text-lg md:text-3xl mb-5 tracking-tight'>CONTACT</h1>
+          <h1 className='text-white font-semibold text-lg md:text-xl mb-5 tracking-tight'>CONTACT</h1>
 
           <div className="space-y-6">
             {user.email && (
               <div>
-                <p className="text-white text-xs tracking-widest uppercase mb-2">Email</p>
+                <p className="text-white/90 text-xs tracking-widest uppercase mb-2">Email</p>
                 <a
                   href={`mailto:${user.email}`}
-                  className="text-white/50 text-sm font-light hover:text-white transition-all duration-400"
+                  className="text-white/40 text-sm font-light hover:text-white transition-all duration-400"
                 >
                   {user.email}
                 </a>
@@ -145,7 +145,7 @@ export default async function InformationPage() {
 
             {user.socialLinks && user.socialLinks.length > 0 && (
               <div>
-                <p className="text-white text-xs tracking-widest uppercase mb-4">Social</p>
+                <p className="text-white/90 text-xs tracking-widest uppercase mb-4">Social</p>
                 <div className="flex flex-wrap gap-4">
                   {user.socialLinks.map((link) => (
                     <a
@@ -154,7 +154,7 @@ export default async function InformationPage() {
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={link.platform}
-                      className="flex items-center gap-2 px-1 py-2 rounded-xs text-xs tracking-widest uppercase text-white/50 hover:text-white hover:border-white/30 transition-all duration-400"
+                      className="flex items-center gap-2 px-1 py-2 rounded-xs text-xs tracking-widest uppercase text-white/40 hover:text-white hover:border-white/30 transition-all duration-400"
                     >
                       <span aria-hidden="true">
                         {/* {SOCIAL_ICONS[link.icon?.toLowerCase() ?? ''] ?? '↗'} */}
@@ -177,13 +177,13 @@ export default async function InformationPage() {
           {/* <h2 id="downloads-heading" className="text-white/20 text-xs tracking-widest uppercase mb-8">
             Downloads
           </h2> */}
-          <h1 className='text-white font-semibold text-lg md:text-3xl mb-5 tracking-tight'>DOWNLOADS</h1>
+          <h1 className='text-white font-semibold text-lg md:text-xl mb-5 tracking-tight'>DOWNLOADS</h1>
 
           <div className="flex flex-col sm:flex-row gap-4 mb-96">
             <a
               href="#"
               aria-label="Download High Resolution Images"
-              className="group flex items-center justify-between px-6 py-4 border border-white/10 hover:border-white/30 transition-all"
+              className="duration-400 group flex items-center justify-between px-6 py-4 border border-white/10 hover:border-white/30 transition-all"
             >
               <span className="text-white/60 text-sm font-light group-hover:text-white transition-colors">
                 High Resolution Images
@@ -193,7 +193,7 @@ export default async function InformationPage() {
             <a
               href="#"
               aria-label="Download CV PDF"
-              className="group flex items-center justify-between px-6 py-4 border border-white/10 hover:border-white/30 transition-all"
+              className="duration-400 group flex items-center justify-between px-6 py-4 border border-white/10 hover:border-white/30 transition-all"
             >
               <span className="text-white/60 text-sm font-light group-hover:text-white transition-colors">
                 Curriculum Vitae (PDF)
