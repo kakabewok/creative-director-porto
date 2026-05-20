@@ -39,7 +39,7 @@ export default function ProjectDetailClient({ project, allProjects }: Props) {
             className="hidden md:flex absolute left-0 top-0 bottom-0 w-[12%] lg:w-[15%] z-30 items-center justify-center group cursor-pointer"
             aria-label="Previous image"
           >
-            <span className="text-white/60 text-md tracking-[0.25em] uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <span className="text-slate-900 dark:text-white/60 text-md tracking-[0.25em] uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-300">
               Prev
             </span>
           </button>
@@ -52,7 +52,7 @@ export default function ProjectDetailClient({ project, allProjects }: Props) {
             className="hidden md:flex absolute right-0 top-0 bottom-0 w-[12%] lg:w-[15%] z-30 items-center justify-center group cursor-pointer"
             aria-label="Next image"
           >
-            <span className="text-white/60 text-md tracking-[0.25em] uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <span className="text-slate-900 dark:text-white/60 text-md tracking-[0.25em] uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-300">
               Next
             </span>
           </button>
@@ -82,7 +82,7 @@ export default function ProjectDetailClient({ project, allProjects }: Props) {
             href="/work"
             id="project-close"
             aria-label="Back to work"
-            className="text-md absolute top-6 right-0 md:top-3 md:right-10 z-40 w-9 h-9 flex items-center justify-center text-white hover:text-white/70 transition-colors rounded-full bg-black/40 backdrop-blur-sm cursor-pointer duration-400 font-semibold"
+            className="text-md absolute top-6 right-0 md:top-3 md:right-10 z-40 w-9 h-9 flex items-center justify-center text-slate-900 dark:text-white hover:text-slate-600 dark:hover:text-white/70 transition-colors rounded-full cursor-pointer duration-400 font-semibold"
           >
             {/* <X size={16} /> */}
             CLOSE
@@ -93,7 +93,7 @@ export default function ProjectDetailClient({ project, allProjects }: Props) {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              className="text-white text-md md:text-md tracking-tight drop-shadow-2xl font-semibold uppercase"
+              className="text-slate-900 dark:text-white text-md md:text-md tracking-tight drop-shadow-2xl font-semibold uppercase"
             >
               {project.title}
             </motion.h1>
@@ -101,14 +101,14 @@ export default function ProjectDetailClient({ project, allProjects }: Props) {
         </div>
 
         <div className="absolute bottom-16 right-0 md:bottom-3 md:right-10 z-40 flex items-center gap-4">
-            <span className="text-white text-md tracking-wide hidden md:block drop-shadow font-semibold">
+            <span className="text-slate-900 dark:text-white text-md tracking-wide hidden md:block font-semibold">
               {String(currentMediaIndex + 1).padStart(2, '0')} / {String(totalMedia).padStart(2, '0')}
             </span>
             <button
               id="project-details-open"
               onClick={() => setDrawerOpen(true)}
               aria-label="Open project details"
-              className="text-md font-semibold hidden md:flex items-center gap-2 px-4 py-2 tracking-widest uppercase text-white hover:text-white/70 rounded-xs transition-all backdrop-blur-sm bg-black/30 cursor-pointer duration-400"
+              className="text-md font-semibold hidden md:flex items-center gap-2 px-4 py-2 tracking-widest uppercase text-slate-900 dark:text-white hover:text-slate-600 dark:hover:text-white/70 rounded-xs transition-all cursor-pointer duration-400"
             >
               {/* <Info size={12} /> */}
               Details

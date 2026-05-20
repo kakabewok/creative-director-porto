@@ -55,7 +55,7 @@ export default function SearchClient({ projects }: Props) {
           <div className="relative">
             <Search
               size={17}
-              className="absolute left-0 top-1/2 -translate-y-1/2 text-white/90 pointer-events-none"
+              className="absolute left-0 top-1/2 -translate-y-1/2 text-slate-900 dark:text-white/90 pointer-events-none"
             />
             <input
               id="search-input"
@@ -65,14 +65,14 @@ export default function SearchClient({ projects }: Props) {
               placeholder="search for a title or term"
               aria-label="Search projects"
               autoComplete="off"
-              className="w-full bg-transparent appearance-none rounded-none border-t-0 border-x-0 border-b border-white/90 pl-7 pr-4 py-3 text-white/90 text-sm md:text-lg font-light tracking-wide placeholder:text-white/90 text-center placeholder:text-center transition-colors focus:border-white/90! focus:ring-0! focus:shadow-none! focus:outline-none! focus-visible:ring-0! focus-visible:outline-none!"
+              className="w-full bg-transparent appearance-none rounded-none border-t-0 border-x-0 border-b border-slate-900 dark:border-white/90 pl-7 pr-4 py-3 text-slate-900 dark:text-white/90 text-sm md:text-lg font-light tracking-wide placeholder:text-slate-900 dark:placeholder:text-white/90 text-center placeholder:text-center transition-colors focus:border-slate-900! dark:focus:border-white/90! focus:ring-0! focus:shadow-none! focus:outline-none! focus-visible:ring-0! focus-visible:outline-none!"
             />
           </div>
         </div>
 
         {/* Categories — centered under input */}
         <div className="flex flex-col items-center gap-5">
-          <p className="text-white/90 text-[11px] tracking-[0.25em] uppercase">or explore by</p>
+          <p className="text-slate-900 dark:text-white/90 text-[11px] tracking-[0.25em] uppercase">or explore by</p>
           <div className="flex flex-wrap justify-center gap-4">
             {CATEGORIES.map((cat) => (
               <button
@@ -82,8 +82,8 @@ export default function SearchClient({ projects }: Props) {
                 aria-pressed={activeCategory === cat}
                 className={`cursor-pointer px-5 py-2 rounded-xs text-xs tracking-widest uppercase font-light border transition-all duration-400 ${
                   activeCategory === cat
-                    ? 'bg-white text-black border-white'
-                    : 'border-white/90 text-white/90 hover:border-white/50 hover:text-white/50'
+                    ? 'bg-slate-950 dark:bg-white text-slate-50 dark:text-black border-slate-950 dark:border-white'
+                    : 'border-slate-900 dark:border-white/90 text-slate-900 dark:text-white/90 hover:border-slate-700 dark:hover:border-slate-200 hover:text-slate-700 dark:hover:text-slate-200'
                 }`}
               >
                 {cat} ({categoryCounts[cat] ?? 0})
@@ -140,7 +140,7 @@ export default function SearchClient({ projects }: Props) {
                           </span>
                         </div> */}
                       </div>
-                      <p className="duration-400 mt-4 text-white/40 text-xs tracking-widest uppercase truncate group-hover:text-white/70 transition-colors">
+                      <p className="duration-400 mt-4 text-slate-900 dark:text-white/40 text-xs tracking-widest uppercase truncate group-hover:text-slate-400 dark:group-hover:text-white/70 transition-colors">
                         {project.title}
                       </p>
                     </Link>
