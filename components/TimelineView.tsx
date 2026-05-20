@@ -47,9 +47,11 @@ export default function TimelineView({ projects }: Props) {
   // Adjust arc radius based on screen size
   const radius = isMobile ? 120 : (isTablet ? 220 : 300)
 
+  // Compress point density along the arc (smaller = denser)
+  const spreadFactor = isMobile ? 0.9 : (isTablet ? 0.78 : 0.7)
   
   // Angle spacing determines how far apart the items are
-  const angleSpacing = isMobile ? Math.PI / 6 : Math.PI / 8
+  const angleSpacing = (isMobile ? Math.PI / 6 : Math.PI / 8) * spreadFactor
   
   const scrollHeight = `${Math.max(200, projects.length * 30)}vh`
 
@@ -176,7 +178,7 @@ export default function TimelineView({ projects }: Props) {
                   x: pt.x,
                   y: pt.y,
                   opacity: pt.isActive ? 1 : Math.max(0.1, 1 - Math.abs(pt.distance) * 0.4),
-                  scale: pt.isActive ? 1.1 : Math.max(0.7, 1 - Math.abs(pt.distance) * 0.08),
+                  scale: pt.isActive ? 1.05 : Math.max(0.65, 0.85 - Math.abs(pt.distance) * 0.06),
                 }}
                 transition={{ 
                   duration: 0.5, 
