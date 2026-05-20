@@ -31,7 +31,7 @@ export default function TimelineView({ projects }: Props) {
   // Responsive state
   const [windowWidth, setWindowWidth] = useState(1200)
   const [mounted, setMounted] = useState(false)
-  
+
   useEffect(() => {
     setMounted(true)
     const handleResize = () => setWindowWidth(window.innerWidth)
@@ -49,10 +49,10 @@ export default function TimelineView({ projects }: Props) {
 
   // Compress point density along the arc (smaller = denser)
   const spreadFactor = isMobile ? 0.9 : (isTablet ? 0.78 : 0.7)
-  
+
   // Angle spacing determines how far apart the items are
   const angleSpacing = (isMobile ? Math.PI / 6 : Math.PI / 8) * spreadFactor
-  
+
   const scrollHeight = `${Math.max(200, projects.length * 30)}vh`
 
   const xOffset = isMobile ? radius * 0.2 : radius * 0.5
@@ -61,13 +61,13 @@ export default function TimelineView({ projects }: Props) {
   const points = projects.map((project, i) => {
     const distance = i - activeIndex
     const currentAngle = distance * angleSpacing
-    
+
     // X logic: bulge left
     // x = (1 - cos) * radius - offset
     // This makes the center item furthest to the left.
     const x = (1 - Math.cos(currentAngle)) * radius - xOffset
     const y = Math.sin(currentAngle) * radius
-    
+
     return { x, y, distance, currentAngle, isActive: i === activeIndex, project, index: i }
   })
 
@@ -82,14 +82,13 @@ export default function TimelineView({ projects }: Props) {
 
   return (
     <div ref={containerRef} className="relative w-full" style={{ height: scrollHeight }}>
-      <div className="sticky top-0 h-screen w-full flex flex-col md:flex-row items-center justify-center md:justify-between overflow-hidden">
-        
+      <div className="border border-red-500 sticky top-0 h-screen w-full flex flex-col md:flex-row items-center justify-center md:justify-between overflow-hidden">
+
         {/* LEFT/TOP: ACTIVE IMAGE PREVIEW */}
-        <div className={`absolute z-10 bg-zinc-900 flex items-center justify-center rounded-lg overflow-hidden shadow-2xl transition-all duration-500 ${
-          isMobile 
-            ? 'top-[12%] left-1/2 -translate-x-1/2 w-[260px] aspect-[4/3]' 
-            : 'left-[10%] md:left-[15%] lg:left-[20%] w-[320px] md:w-[400px] aspect-[4/3]'
-        }`}>
+        <div className={`absolute z-10 bg-zinc-900 flex items-center justify-center rounded-xs overflow-hidden shadow-sm transition-all duration-400 ${isMobile
+          ? 'top-[12%] left-1/2 -translate-x-1/2 w-[260px] aspect-[4/3]'
+          : 'left-[10%] md:left-[15%] lg:left-[20%] w-[320px] md:w-[550px] aspect-[16/9]'
+          }`}>
           {projects.map((project, i) => {
             const isActive = i === activeIndex
             const coverSrc = getProjectCoverSrc(project, 800)
@@ -129,12 +128,11 @@ export default function TimelineView({ projects }: Props) {
         </div>
 
         {/* RIGHT/BOTTOM: TIMELINE ARC */}
-        <div className={`absolute pointer-events-none flex items-center justify-center ${
-          isMobile 
-            ? 'top-[55%] left-1/2 -translate-x-1/2 w-[300px] h-[400px]'
-            : 'right-0 top-1/2 -translate-y-1/2 w-[600px] lg:w-[800px] h-[600px] lg:h-[800px]'
-        }`}>
-          
+        <div className={`absolute pointer-events-none flex items-center justify-center ${isMobile
+          ? 'top-[55%] left-1/2 -translate-x-1/2 w-[300px] h-[400px]'
+          : 'right-0 top-1/2 -translate-y-1/2 w-[600px] lg:w-[800px] h-[600px] lg:h-[800px]'
+          }`}>
+
           {/* SINGLE CONTINUOUS ORBIT PATH */}
           <svg className="absolute inset-0 w-full h-full" style={{ zIndex: 0 }}>
             {(() => {
@@ -144,7 +142,7 @@ export default function TimelineView({ projects }: Props) {
               const startY = cy + Math.sin(-maxAngle) * radius
               const endX = cx + (1 - Math.cos(maxAngle)) * radius - xOffset + 6
               const endY = cy + Math.sin(maxAngle) * radius
-              
+
               // Angle span is > 180 degrees, so large arc flag is 1
               // Sweeping counter-clockwise from top to bottom while bulging left
               const pathData = `M ${startX} ${startY} A ${radius} ${radius} 0 1 0 ${endX} ${endY}`
@@ -180,9 +178,9 @@ export default function TimelineView({ projects }: Props) {
                   opacity: pt.isActive ? 1 : Math.max(0.1, 1 - Math.abs(pt.distance) * 0.4),
                   scale: pt.isActive ? 1.05 : Math.max(0.65, 0.85 - Math.abs(pt.distance) * 0.06),
                 }}
-                transition={{ 
-                  duration: 0.5, 
-                  ease: [0.22, 1, 0.36, 1] 
+                transition={{
+                  duration: 0.5,
+                  ease: [0.22, 1, 0.36, 1]
                 }}
               >
                 {/* Dot */}
@@ -210,7 +208,7 @@ export default function TimelineView({ projects }: Props) {
                   >
                     {pt.project.title}
                   </motion.p>
-                  <motion.p 
+                  <motion.p
                     className="tracking-[0.15em] font-light leading-none mt-1"
                     animate={{
                       color: pt.isActive ? "#d4d4d8" : "#52525b",

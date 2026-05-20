@@ -40,21 +40,21 @@ function VideoSlide({ videoUrl, caption, isActive }: { videoUrl: string, caption
     <div className="absolute inset-0 bg-zinc-950 flex items-center justify-center p-2 sm:p-4 md:p-6 lg:p-8">
       <div className="relative w-full h-full rounded-xl overflow-hidden bg-black shadow-2xl ring-1 ring-white/10 group">
         {!isPlaying ? (
-          <div 
-            className="absolute inset-0 cursor-pointer" 
+          <div
+            className="absolute inset-0 cursor-pointer"
             onClick={() => setIsPlaying(true)}
           >
             {thumbUrl ? (
-                <Image src={thumbUrl} fill alt="Video thumbnail" className="object-cover transition-transform duration-700 group-hover:scale-105" />
+              <Image src={thumbUrl} fill alt="Video thumbnail" className="object-cover transition-transform duration-700 group-hover:scale-105" />
             ) : (
-                <div className="absolute inset-0 bg-zinc-900 flex items-center justify-center">
-                  <span className="text-white/20 text-xs tracking-widest uppercase">Video</span>
-                </div>
+              <div className="absolute inset-0 bg-zinc-900 flex items-center justify-center">
+                <span className="text-white/20 text-xs tracking-widest uppercase">Video</span>
+              </div>
             )}
             <div className="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/20 transition-colors">
-                <div className="w-16 h-16 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 group-hover:scale-110 transition-transform shadow-2xl">
-                  <svg className="w-6 h-6 text-white ml-1 drop-shadow-md" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
-                </div>
+              <div className="w-16 h-16 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 group-hover:scale-110 transition-transform shadow-2xl">
+                <svg className="w-6 h-6 text-white ml-1 drop-shadow-md" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
+              </div>
             </div>
           </div>
         ) : (
@@ -76,12 +76,12 @@ function VideoSlide({ videoUrl, caption, isActive }: { videoUrl: string, caption
 }
 
 const MediaCarousel = forwardRef<MediaCarouselHandle, Props>(({ items, onIndexChange }, ref) => {
-  const [emblaRef, emblaApi] = useEmblaCarousel({ 
-    loop: false, 
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    loop: false,
     align: 'center',
     dragFree: false
   })
-  
+
   const [currentIndex, setCurrentIndex] = useState(0)
 
   const total = items.length
@@ -122,6 +122,8 @@ const MediaCarousel = forwardRef<MediaCarouselHandle, Props>(({ items, onIndexCh
 
   if (total === 0) return null
 
+  // aspect-[16/9]
+
   return (
     <div
       className="relative w-full aspect-[16/9] bg-zinc-950 overflow-hidden select-none"
@@ -129,11 +131,11 @@ const MediaCarousel = forwardRef<MediaCarouselHandle, Props>(({ items, onIndexCh
       aria-label="Project media carousel"
       ref={emblaRef}
     >
-      <div className="flex h-full touch-pan-y">
+      <div className="flex h-full w-full touch-pan-y">
         {items.map((item, index) => {
           const imgSrc = resolveImageSrc(item)
           const isActive = index === currentIndex
-          
+
           return (
             <div key={item._key || index} className="relative flex-[0_0_100%] min-w-0 h-full">
               {item.type === 'image' ? (
@@ -146,10 +148,10 @@ const MediaCarousel = forwardRef<MediaCarouselHandle, Props>(({ items, onIndexCh
                   sizes="100vw"
                 />
               ) : item.type === 'video' && item.videoUrl ? (
-                <VideoSlide 
-                  videoUrl={item.videoUrl} 
-                  caption={item.caption} 
-                  isActive={isActive} 
+                <VideoSlide
+                  videoUrl={item.videoUrl}
+                  caption={item.caption}
+                  isActive={isActive}
                 />
               ) : (
                 <div className="absolute inset-0 bg-zinc-900 flex items-center justify-center">

@@ -59,7 +59,7 @@ export default function ProjectDetailClient({ project, allProjects }: Props) {
         )}
 
         {/* ── Unified media carousel (centered, max-width) ── */}
-        <div className="relative w-full md:w-[56%] lg:w-[60%] max-w-7xl mx-auto">
+        <div className="relative w-full md:w-[56%] lg:w-[75%] max-w-7xl mx-auto">
           <MediaCarousel
             ref={carouselRef}
             items={allMediaItems}
@@ -79,41 +79,41 @@ export default function ProjectDetailClient({ project, allProjects }: Props) {
         </div>
 
         <Link
-            href="/work"
-            id="project-close"
-            aria-label="Back to work"
-            className="text-md absolute top-6 right-0 md:top-3 md:right-10 z-40 w-9 h-9 flex items-center justify-center text-slate-900 dark:text-white hover:text-slate-600 dark:hover:text-white/70 transition-colors rounded-full cursor-pointer duration-400 font-semibold"
+          href="/work"
+          id="project-close"
+          aria-label="Back to work"
+          className="text-md absolute top-6 right-0 md:top-3 md:right-5 z-40 w-9 h-9 flex items-center justify-center text-slate-900 dark:text-white hover:text-slate-600 dark:hover:text-white/70 transition-colors rounded-full cursor-pointer duration-400 font-semibold"
+        >
+          {/* <X size={16} /> */}
+          CLOSE
+        </Link>
+
+        <div className="absolute bottom-2 left-15 md:bottom-3 md:left-6 z-40 pointer-events-none">
+          <motion.h1
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            className="text-slate-900 dark:text-white text-md md:text-md tracking-tight drop-shadow-2xl font-semibold uppercase"
           >
-            {/* <X size={16} /> */}
-            CLOSE
-          </Link>
-
-        <div className="absolute bottom-2 left-15 md:bottom-5 md:left-10 z-40 pointer-events-none">
-            <motion.h1
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              className="text-slate-900 dark:text-white text-md md:text-md tracking-tight drop-shadow-2xl font-semibold uppercase"
-            >
-              {project.title}
-            </motion.h1>
-          </div>
+            {project.title}
+          </motion.h1>
         </div>
+      </div>
 
-        <div className="absolute bottom-16 right-0 md:bottom-3 md:right-10 z-40 flex items-center gap-4">
-            <span className="text-slate-900 dark:text-white text-md tracking-wide hidden md:block font-semibold">
-              {String(currentMediaIndex + 1).padStart(2, '0')} / {String(totalMedia).padStart(2, '0')}
-            </span>
-            <button
-              id="project-details-open"
-              onClick={() => setDrawerOpen(true)}
-              aria-label="Open project details"
-              className="text-md font-semibold hidden md:flex items-center gap-2 px-4 py-2 tracking-widest uppercase text-slate-900 dark:text-white hover:text-slate-600 dark:hover:text-white/70 rounded-xs transition-all cursor-pointer duration-400"
-            >
-              {/* <Info size={12} /> */}
-              Details
-            </button>
-        </div>
+      <div className="absolute bottom-16 right-0 md:bottom-3 md:right-5 z-40 flex items-center gap-4">
+        <span className="text-slate-900 dark:text-white text-md tracking-wide hidden md:block font-semibold">
+          {String(currentMediaIndex + 1).padStart(2, '0')} / {String(totalMedia).padStart(2, '0')}
+        </span>
+        <button
+          id="project-details-open"
+          onClick={() => setDrawerOpen(true)}
+          aria-label="Open project details"
+          className="text-md font-semibold hidden md:flex items-center gap-2 tracking-widest uppercase text-slate-900 dark:text-white hover:text-slate-600 dark:hover:text-white/70 rounded-xs transition-all cursor-pointer duration-400"
+        >
+          {/* <Info size={12} /> */}
+          Details
+        </button>
+      </div>
 
       {/* Details drawer */}
       <DetailsDrawer
