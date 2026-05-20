@@ -1,9 +1,8 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { motion, useScroll } from 'framer-motion'
 import Image from 'next/image'
-import Link from 'next/link'
-import { motion, AnimatePresence } from 'framer-motion'
 import type { Project } from '@/types'
 import { getProjectCoverSrc } from '@/lib/projectImage'
 
@@ -11,219 +10,220 @@ interface Props {
   projects: Project[]
 }
 
-const RADIUS = 180   // circle radius in px (desktop)
-const RADIUS_SM = 120 // mobile
-
 export default function TimelineView({ projects }: Props) {
-  const [activeYear, setActiveYear] = useState<string | null>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
 
-  // Group by year, sorted descending
-  const byYear = useMemo(() => {
-    return projects.reduce<Record<string, Project[]>>((acc, p) => {
-      const y = p.year ?? 'Unknown'
-      ;(acc[y] ??= []).push(p)
-      return acc
-    }, {})
-  }, [projects])
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"],
+  })
 
-  const years = Object.keys(byYear).sort((a, b) => Number(b) - Number(a))
-  const total = years.length
+  const [activeIndex, setActiveIndex] = useState(0)
 
-  // Featured project for active year (first by order)
-  const featuredProject = useMemo(() => {
-    if (!activeYear) return null
-    const group = byYear[activeYear]
-    return [...group].sort((a, b) => (a.order ?? 99) - (b.order ?? 99))[0] ?? null
-  }, [activeYear, byYear])
+  useEffect(() => {
+    return scrollYProgress.on("change", (v) => {
+      // Map scroll progress to project index
+      const index = Math.floor(v * projects.length)
+      setActiveIndex(Math.min(index, projects.length - 1))
+    })
+  }, [scrollYProgress, projects.length])
 
-  const featuredSrc = featuredProject ? getProjectCoverSrc(featuredProject, 600) : ''
+  // Responsive state
+  const [windowWidth, setWindowWidth] = useState(1200)
+  const [mounted, setMounted] = useState(false)
+  
+  useEffect(() => {
+    setMounted(true)
+    const handleResize = () => setWindowWidth(window.innerWidth)
+    handleResize()
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  const isDesktop = windowWidth >= 1024
+  const isTablet = windowWidth >= 768 && windowWidth < 1024
+  const isMobile = windowWidth < 768
+
+  // Adjust arc radius based on screen size
+  const radius = isMobile ? 120 : (isTablet ? 220 : 300)
+
+  
+  // Angle spacing determines how far apart the items are
+  const angleSpacing = isMobile ? Math.PI / 6 : Math.PI / 8
+  
+  const scrollHeight = `${Math.max(200, projects.length * 30)}vh`
+
+  const xOffset = isMobile ? radius * 0.2 : radius * 0.5
+
+  // Calculate points for items and connector lines
+  const points = projects.map((project, i) => {
+    const distance = i - activeIndex
+    const currentAngle = distance * angleSpacing
+    
+    // X logic: bulge left
+    // x = (1 - cos) * radius - offset
+    // This makes the center item furthest to the left.
+    const x = (1 - Math.cos(currentAngle)) * radius - xOffset
+    const y = Math.sin(currentAngle) * radius
+    
+    return { x, y, distance, currentAngle, isActive: i === activeIndex, project, index: i }
+  })
+
+  // SVG Center Coordinates
+  const cx = isMobile ? 150 : (isTablet ? 300 : 400)
+  const cy = isMobile ? 200 : (isTablet ? 300 : 400)
+
+  // Prevent hydration mismatch but ensure containerRef is rendered for useScroll
+  if (!mounted) {
+    return <div ref={containerRef} className="relative w-full" style={{ height: scrollHeight }} />
+  }
 
   return (
-    <div className="w-full flex flex-col items-center pb-40 pt-8">
-      {/* Circular diagram */}
-      <div
-        className="relative flex items-center justify-center"
-        style={{ width: RADIUS * 2 + 80, height: RADIUS * 2 + 80 }}
-        role="region"
-        aria-label="Timeline"
-      >
-        {/* Years on the circle */}
-        {years.map((year, i) => {
-          const angle = (i / total) * 360 - 90 // start from top
-          const rad = (angle * Math.PI) / 180
-          const x = Math.cos(rad) * RADIUS
-          const y = Math.sin(rad) * RADIUS
-          const isActive = activeYear === year
+    <div ref={containerRef} className="relative w-full" style={{ height: scrollHeight }}>
+      <div className="sticky top-0 h-screen w-full flex flex-col md:flex-row items-center justify-center md:justify-between overflow-hidden">
+        
+        {/* LEFT/TOP: ACTIVE IMAGE PREVIEW */}
+        <div className={`absolute z-10 bg-zinc-900 flex items-center justify-center rounded-lg overflow-hidden shadow-2xl transition-all duration-500 ${
+          isMobile 
+            ? 'top-[12%] left-1/2 -translate-x-1/2 w-[260px] aspect-[4/3]' 
+            : 'left-[10%] md:left-[15%] lg:left-[20%] w-[320px] md:w-[400px] aspect-[4/3]'
+        }`}>
+          {projects.map((project, i) => {
+            const isActive = i === activeIndex
+            const coverSrc = getProjectCoverSrc(project, 800)
 
-          return (
-            <button
-              key={year}
-              id={`timeline-year-${year}`}
-              onClick={() => setActiveYear(isActive ? null : year)}
-              aria-pressed={isActive}
-              aria-label={`${year}: ${byYear[year].length} projects`}
-              className="absolute flex flex-col items-center gap-1 group"
-              style={{
-                left: '50%',
-                top: '50%',
-                transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`,
-              }}
-            >
-              {/* Dot */}
+            if (!isActive) return null
+
+            return (
               <motion.div
-                animate={{
-                  scale: isActive ? 1.6 : 1,
-                  backgroundColor: isActive ? '#ffffff' : 'rgba(255,255,255,0.25)',
-                }}
-                transition={{ duration: 0.25 }}
-                className="w-2 h-2 rounded-full"
-              />
-              {/* Year label */}
-              <span
-                className={`text-xs tracking-widest font-light transition-colors duration-200 whitespace-nowrap ${
-                  isActive ? 'text-white' : 'text-white/30 group-hover:text-white/70'
-                }`}
-              >
-                {year}
-              </span>
-            </button>
-          )
-        })}
-
-        {/* Center: circle outline */}
-        <svg
-          className="absolute inset-0 w-full h-full pointer-events-none"
-          viewBox={`0 0 ${RADIUS * 2 + 80} ${RADIUS * 2 + 80}`}
-          aria-hidden="true"
-        >
-          <circle
-            cx={(RADIUS * 2 + 80) / 2}
-            cy={(RADIUS * 2 + 80) / 2}
-            r={RADIUS}
-            fill="none"
-            stroke="rgba(255,255,255,0.06)"
-            strokeWidth="1"
-            strokeDasharray="4 6"
-          />
-        </svg>
-
-        {/* Center: featured project cover / prompt */}
-        <div className="relative w-36 h-36 md:w-44 md:h-44 rounded-full overflow-hidden bg-zinc-900 flex items-center justify-center">
-          <AnimatePresence mode="wait">
-            {featuredProject && featuredSrc ? (
-              <motion.div
-                key={featuredProject._id}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                key={project._id}
                 className="absolute inset-0"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 1.05 }}
+                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
               >
-                <Link
-                  href={`/work/${featuredProject.slug.current}`}
-                  aria-label={featuredProject.title}
-                  className="block w-full h-full"
-                >
+                {coverSrc ? (
                   <Image
-                    src={featuredSrc}
-                    alt={featuredProject.coverImage?.alt ?? featuredProject.title}
+                    src={coverSrc}
+                    alt={project.coverImage?.alt || project.title}
                     fill
-                    className="object-cover hover:scale-105 transition-transform duration-500"
-                    sizes="200px"
+                    className="object-cover"
+                    sizes="(max-width: 768px) 260px, 400px"
+                    priority
                   />
-                  {/* Title overlay */}
-                  <div className="absolute inset-0 bg-black/40 flex items-end p-3">
-                    <p className="text-white text-[10px] tracking-widest uppercase leading-tight">
-                      {featuredProject.title}
-                    </p>
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center bg-zinc-800">
+                    <span className="text-zinc-500 text-xs tracking-widest uppercase">
+                      No Image
+                    </span>
                   </div>
-                </Link>
+                )}
+                {/* Subtle gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
               </motion.div>
-            ) : featuredProject && !featuredSrc ? (
+            )
+          })}
+        </div>
+
+        {/* RIGHT/BOTTOM: TIMELINE ARC */}
+        <div className={`absolute pointer-events-none flex items-center justify-center ${
+          isMobile 
+            ? 'top-[55%] left-1/2 -translate-x-1/2 w-[300px] h-[400px]'
+            : 'right-0 top-1/2 -translate-y-1/2 w-[600px] lg:w-[800px] h-[600px] lg:h-[800px]'
+        }`}>
+          
+          {/* SINGLE CONTINUOUS ORBIT PATH */}
+          <svg className="absolute inset-0 w-full h-full" style={{ zIndex: 0 }}>
+            {(() => {
+              // Draw a single continuous arc from top to bottom
+              const maxAngle = Math.PI / 1.15
+              const startX = cx + (1 - Math.cos(-maxAngle)) * radius - xOffset + 6
+              const startY = cy + Math.sin(-maxAngle) * radius
+              const endX = cx + (1 - Math.cos(maxAngle)) * radius - xOffset + 6
+              const endY = cy + Math.sin(maxAngle) * radius
+              
+              // Angle span is > 180 degrees, so large arc flag is 1
+              // Sweeping counter-clockwise from top to bottom while bulging left
+              const pathData = `M ${startX} ${startY} A ${radius} ${radius} 0 1 0 ${endX} ${endY}`
+
+              return (
+                <path
+                  d={pathData}
+                  stroke="rgba(255,255,255,0.1)"
+                  strokeWidth="1"
+                  fill="none"
+                />
+              )
+            })()}
+          </svg>
+
+          {/* TIMELINE NODES */}
+          {points.map((pt, i) => {
+            if (Math.abs(pt.currentAngle) > Math.PI / 1.2) return null
+
+            return (
               <motion.div
-                key={`empty-${featuredProject._id}`}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="flex items-center justify-center w-full h-full"
+                key={pt.project._id}
+                className="absolute left-1/2 top-1/2 -mt-[20px] flex items-center gap-2 transition-colors duration-500 h-[40px]"
+                style={{
+                  originX: 0,
+                  originY: 0.5,
+                  zIndex: pt.isActive ? 10 : 1,
+                }}
+                initial={false}
+                animate={{
+                  x: pt.x,
+                  y: pt.y,
+                  opacity: pt.isActive ? 1 : Math.max(0.1, 1 - Math.abs(pt.distance) * 0.4),
+                  scale: pt.isActive ? 1.1 : Math.max(0.7, 1 - Math.abs(pt.distance) * 0.08),
+                }}
+                transition={{ 
+                  duration: 0.5, 
+                  ease: [0.22, 1, 0.36, 1] 
+                }}
               >
-                <Link
-                  href={`/work/${featuredProject.slug.current}`}
-                  className="text-white/40 text-[10px] tracking-widest uppercase text-center px-3 hover:text-white/70 transition-colors"
-                >
-                  {featuredProject.title}
-                </Link>
+                {/* Dot */}
+                <motion.div
+                  className="rounded-full flex-shrink-0"
+                  animate={{
+                    width: pt.isActive ? 12 : 8,
+                    height: pt.isActive ? 12 : 8,
+                    backgroundColor: pt.isActive ? "#ffffff" : "#3f3f46",
+                    boxShadow: pt.isActive ? "0 0 12px rgba(255,255,255,0.6)" : "none"
+                  }}
+                  transition={{ duration: 0.5 }}
+                />
+
+                {/* Text Content - Tighter spacing & editorial typography */}
+                <div className="flex flex-col justify-center -mt-0.5">
+                  <motion.p
+                    className="tracking-wider uppercase whitespace-nowrap leading-tight"
+                    animate={{
+                      color: pt.isActive ? "#ffffff" : "#a1a1aa",
+                      fontWeight: pt.isActive ? 700 : 400,
+                      fontSize: pt.isActive ? (isMobile ? "14px" : "16px") : (isMobile ? "12px" : "14px"),
+                    }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    {pt.project.title}
+                  </motion.p>
+                  <motion.p 
+                    className="tracking-[0.15em] font-light leading-none mt-1"
+                    animate={{
+                      color: pt.isActive ? "#d4d4d8" : "#52525b",
+                      fontSize: pt.isActive ? "11px" : "10px",
+                    }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    {pt.project.year || "Unknown"}
+                  </motion.p>
+                </div>
               </motion.div>
-            ) : (
-              <motion.p
-                key="prompt"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="text-white/15 text-[10px] tracking-widest uppercase text-center px-4"
-              >
-                Select a year
-              </motion.p>
-            )}
-          </AnimatePresence>
+            )
+          })}
         </div>
       </div>
-
-      {/* Project list for active year */}
-      <AnimatePresence>
-        {activeYear && (
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 8 }}
-            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            className="mt-12 w-full max-w-2xl px-6"
-          >
-            <p className="text-white/20 text-xs tracking-widest uppercase mb-6 text-center">
-              {activeYear} — {byYear[activeYear].length} {byYear[activeYear].length === 1 ? 'project' : 'projects'}
-            </p>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-              {[...byYear[activeYear]]
-                .sort((a, b) => (a.order ?? 99) - (b.order ?? 99))
-                .map((project, i) => {
-                  const src = getProjectCoverSrc(project, 600)
-                  return (
-                    <motion.div
-                      key={project._id}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: i * 0.07, duration: 0.35 }}
-                    >
-                      <Link
-                        href={`/work/${project.slug.current}`}
-                        className="group block"
-                        aria-label={project.title}
-                      >
-                        <div className="relative aspect-[3/4] overflow-hidden bg-zinc-900">
-                          {src ? (
-                            <Image
-                              src={src}
-                              alt={project.coverImage?.alt ?? project.title}
-                              fill
-                              sizes="200px"
-                              className="object-cover transition-transform duration-500 group-hover:scale-105"
-                              loading="lazy"
-                            />
-                          ) : (
-                            <div className="absolute inset-0 bg-zinc-800" />
-                          )}
-                        </div>
-                        <p className="mt-2 text-white/50 text-xs tracking-widest uppercase truncate group-hover:text-white/80 transition-colors">
-                          {project.title}
-                        </p>
-                      </Link>
-                    </motion.div>
-                  )
-                })}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </div>
   )
 }
