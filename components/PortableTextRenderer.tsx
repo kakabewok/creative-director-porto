@@ -81,7 +81,7 @@ function renderBlock(block: Block, index: number) {
       )
     default:
       return (
-        <p key={block._key ?? index} className="text-white/60 font-light leading-relaxed">
+        <p key={block._key ?? index} className="text-slate-800 dark:text-white/60 font-light leading-relaxed">
           {children}
         </p>
       )
@@ -102,7 +102,7 @@ export default function PortableTextRenderer({ value }: Props) {
     if (listBuffer.length === 0) return
     const Tag = type === 'bullet' ? 'ul' : 'ol'
     elements.push(
-      <Tag key={`list-${elements.length}`} className="my-3 space-y-1 text-white/60 font-light">
+      <Tag key={`list-${elements.length}`} className="my-3 space-y-1 text-slate-800 dark:text-white/60 font-light">
         {listBuffer.map((b, i) => renderBlock(b, i))}
       </Tag>
     )

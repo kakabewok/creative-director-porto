@@ -1,12 +1,14 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect, Suspense } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { Search } from 'lucide-react'
 import type { Project, ProjectCategory } from '@/types'
 import { getProjectCoverSrc } from '@/lib/projectImage'
+import { useDebounce } from '@/hooks/useDebounce'
 
 const CATEGORIES: ProjectCategory[] = ['Videography', 'Branding', 'Photography', 'Digital Campaign']
 
@@ -14,9 +16,45 @@ interface Props {
   projects: Project[]
 }
 
-export default function SearchClient({ projects }: Props) {
-  const [query, setQuery] = useState('')
-  const [activeCategory, setActiveCategory] = useState<ProjectCategory | null>(null)
+function SearchClientInner({ projects }: Props) {
+  const router = useRouter()
+  const searchParams = useSearchParams()
+
+  const initialQuery = searchParams.get('q') || ''
+  const initialCategory = (searchParams.get('category') as ProjectCategory) || null
+
+  const [query, setQuery] = useState(initialQuery)
+  const [activeCategory, setActiveCategory] = useState<ProjectCategory | null>(initialCategory)
+
+  const debouncedQuery = useDebounce(query, 300)
+
+  // Sync state to URL
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams.toString())
+
+    if (debouncedQuery.trim()) {
+      params.set('q', debouncedQuery.trim())
+    } else {
+      params.delete('q')
+    }
+
+    if (activeCategory) {
+      params.set('category', activeCategory)
+    } else {
+      params.delete('category')
+    }
+
+    const queryString = params.toString()
+    const newUrl = queryString ? `/search?${queryString}` : '/search'
+
+    // Compare without the leading ? for searchParams.toString()
+    const currentQueryString = searchParams.toString()
+    const currentUrl = currentQueryString ? `/search?${currentQueryString}` : '/search'
+
+    if (currentUrl !== newUrl) {
+      router.replace(newUrl, { scroll: false })
+    }
+  }, [debouncedQuery, activeCategory, router, searchParams])
 
   const categoryCounts = useMemo(() => {
     return CATEGORIES.reduce<Record<string, number>>((acc, cat) => {
@@ -28,8 +66,8 @@ export default function SearchClient({ projects }: Props) {
   const results = useMemo(() => {
     let list = projects
     if (activeCategory) list = list.filter((p) => p.category === activeCategory)
-    if (query.trim()) {
-      const q = query.trim().toLowerCase()
+    if (debouncedQuery.trim()) {
+      const q = debouncedQuery.trim().toLowerCase()
       list = list.filter(
         (p) =>
           p.title.toLowerCase().includes(q) ||
@@ -39,17 +77,14 @@ export default function SearchClient({ projects }: Props) {
       )
     }
     return list
-  }, [projects, query, activeCategory])
+  }, [projects, debouncedQuery, activeCategory])
 
-  const showResults = query.trim() !== '' || activeCategory !== null
+  const showResults = debouncedQuery.trim() !== '' || activeCategory !== null
 
   return (
-    // Fix 8: full height centering — input sits in upper-middle via flex + pt
     <div className="h-[calc(100dvh-68px)] bg-white dark:bg-black flex flex-col">
-
       {/* ── Upper section: search + categories (centered, upper-middle) ── */}
       <div className="flex flex-col items-center justify-center pt-[22vh] pb-12 px-6">
-
         {/* Search input — max width, centered */}
         <div className="w-full max-w-xl mb-10">
           <div className="relative">
@@ -80,11 +115,10 @@ export default function SearchClient({ projects }: Props) {
                 id={`category-${cat.toLowerCase().replace(/\s+/g, '-')}`}
                 onClick={() => setActiveCategory(activeCategory === cat ? null : cat)}
                 aria-pressed={activeCategory === cat}
-                className={`cursor-pointer px-5 py-2 rounded-xs text-xs tracking-widest uppercase font-light border transition-all duration-400 ${
-                  activeCategory === cat
+                className={`cursor-pointer px-5 py-2 rounded-xs text-xs tracking-widest uppercase font-light border transition-all duration-400 ${activeCategory === cat
                     ? 'bg-slate-950 dark:bg-white text-slate-50 dark:text-black border-slate-950 dark:border-white'
                     : 'border-slate-900 dark:border-white/90 text-slate-900 dark:text-white/90 hover:border-slate-700 dark:hover:border-slate-200 hover:text-slate-700 dark:hover:text-slate-200'
-                }`}
+                  }`}
               >
                 {cat} ({categoryCounts[cat] ?? 0})
               </button>
@@ -109,6 +143,13 @@ export default function SearchClient({ projects }: Props) {
             <div className="max-w-6xl mx-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 md:gap-6 lg:gap-7">
               {results.map((project, i) => {
                 const src = getProjectCoverSrc(project, 800)
+
+                // Construct URL with current search params
+                const currentParams = searchParams.toString()
+                const href = currentParams
+                  ? `/work/${project.slug.current}?${currentParams}`
+                  : `/work/${project.slug.current}`
+
                 return (
                   <motion.article
                     key={project._id}
@@ -117,7 +158,7 @@ export default function SearchClient({ projects }: Props) {
                     transition={{ delay: i * 0.04, duration: 0.35 }}
                   >
                     <Link
-                      href={`/work/${project.slug.current}`}
+                      href={href}
                       className="group block"
                       aria-label={project.title}
                     >
@@ -134,11 +175,6 @@ export default function SearchClient({ projects }: Props) {
                         ) : (
                           <div className="absolute inset-0 bg-zinc-800" />
                         )}
-                        {/* <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-                          <span className="text-white text-xs tracking-widest uppercase drop-shadow-sm">
-                            {project.title}
-                          </span>
-                        </div> */}
                       </div>
                       <p className="duration-400 mt-4 text-slate-900 dark:text-white/40 text-xs tracking-widest uppercase truncate group-hover:text-slate-400 dark:group-hover:text-white/70 transition-colors">
                         {project.title}
@@ -152,5 +188,13 @@ export default function SearchClient({ projects }: Props) {
         </motion.div>
       )}
     </div>
+  )
+}
+
+export default function SearchClient(props: Props) {
+  return (
+    <Suspense fallback={<div className="h-[calc(100dvh-68px)] bg-white dark:bg-black"></div>}>
+      <SearchClientInner {...props} />
+    </Suspense>
   )
 }

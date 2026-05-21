@@ -55,41 +55,41 @@ export default function DetailsDrawer({ project, onClose }: Props) {
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed top-0 right-0 bottom-0 z-50 w-full max-w-sm md:max-w-md bg-[#0f0f0f] border-l border-white/8 overflow-y-auto outline-none"
+            className="fixed top-0 right-0 bottom-0 z-50 w-full max-w-sm md:max-w-md bg-slate-50 dark:bg-[#0f0f0f] border-l border-slate-200 dark:border-white/8 overflow-y-auto outline-none"
           >
             {/* Close */}
             <button
               id="details-drawer-close"
               onClick={onClose}
               aria-label="Close details"
-              className="absolute top-5 right-5 w-8 h-8 flex items-center justify-center text-white/40 hover:text-white transition-colors rounded-full"
+              className="cursor-pointer absolute top-5 right-5 w-8 h-8 flex items-center justify-center text-slate-900 dark:text-white/40 hover:text-slate-600 dark:hover:text-white transition-colors rounded-full"
             >
               <X size={16} />
             </button>
 
             <div className="px-8 pt-16 pb-12 space-y-8">
               {/* Title */}
-              <h2 className="text-white text-2xl font-light tracking-tight leading-snug">
+              <h2 className="text-slate-900 dark:text-white text-2xl font-light tracking-tight leading-snug">
                 {project.title}
               </h2>
 
-            <dl className="grid grid-cols-2 gap-y-5 gap-x-4">
-              {project.year ? (
-                <React.Fragment key="year">
-                  <dt className="text-white/30 text-xs tracking-widest uppercase">Year</dt>
-                  <dd className="text-white/70 text-sm font-light">{project.year}</dd>
-                </React.Fragment>
-              ) : null}
+              <dl className="grid grid-cols-2 gap-y-5 gap-x-4">
+                {project.year ? (
+                  <React.Fragment key="year">
+                    <dt className="text-slate-950 dark:text-white/30 text-xs tracking-widest uppercase">Year</dt>
+                    <dd className="text-slate-900 dark:text-white/70 text-sm font-light">{project.year}</dd>
+                  </React.Fragment>
+                ) : null}
 
-              {project.category ? (
-                <React.Fragment key="category">
-                  <dt className="text-white/30 text-xs tracking-widest uppercase">Category</dt>
-                  <dd className="text-white/70 text-sm font-light">{project.category}</dd>
-                </React.Fragment>
-              ) : null}
-            </dl>
+                {project.category ? (
+                  <React.Fragment key="category">
+                    <dt className="text-slate-950 dark:text-white/30 text-xs tracking-widest uppercase">Category</dt>
+                    <dd className="text-slate-900 dark:text-white/70 text-sm font-light">{project.category}</dd>
+                  </React.Fragment>
+                ) : null}
+              </dl>
 
-            <div className="w-full h-px bg-white/8" />
+              <div className="w-full h-px bg-black/8 dark:bg-white/8" />
 
               {/* Description */}
               {project.description ? (

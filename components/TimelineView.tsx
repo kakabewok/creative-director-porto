@@ -12,6 +12,16 @@ interface Props {
 }
 
 export default function TimelineView({ projects }: Props) {
+  const [isDark, setIsDark] = useState(false)
+
+  useEffect(() => {
+    const check = () => setIsDark(document.documentElement.classList.contains('dark'))
+    check()
+    const observer = new MutationObserver(check)
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
+    return () => observer.disconnect()
+  }, [])
+
   const containerRef = useRef<HTMLDivElement>(null)
 
   // Use container option so Framer Motion tracks the internal scroll of containerRef
@@ -182,7 +192,8 @@ export default function TimelineView({ projects }: Props) {
                   return (
                     <path
                       d={pathData}
-                      stroke="rgba(255,255,255,0.1)"
+                      // stroke="rgba(255,255,255,0.1)"
+                      stroke={isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.06)"}
                       strokeWidth="1"
                       fill="none"
                     />
@@ -197,7 +208,7 @@ export default function TimelineView({ projects }: Props) {
                 return (
                   <motion.div
                     key={pt.project._id}
-                    className="absolute left-1/2 top-1/2 -mt-[20px] flex items-center gap-2 transition-colors duration-500 h-[40px]"
+                    className="absolute left-1/2 top-1/2 mt-[-20px] flex items-center gap-2 transition-colors duration-500 h-[40px]"
                     style={{
                       originX: 0,
                       originY: 0.5,
@@ -221,7 +232,10 @@ export default function TimelineView({ projects }: Props) {
                       animate={{
                         width: pt.isActive ? 12 : 8,
                         height: pt.isActive ? 12 : 8,
-                        backgroundColor: pt.isActive ? "#ffffff" : "#3f3f46",
+                        // backgroundColor: pt.isActive ? "#ffffff" : "#3f3f46",
+                        backgroundColor: pt.isActive
+                          ? (isDark ? "#ffffff" : "#18181b")
+                          : (isDark ? "#a1a1aa" : "#71717a"),
                         boxShadow: pt.isActive ? "0 0 12px rgba(255,255,255,0.6)" : "none"
                       }}
                       transition={{ duration: 0.5 }}
@@ -232,7 +246,10 @@ export default function TimelineView({ projects }: Props) {
                       <motion.p
                         className="tracking-wider uppercase whitespace-nowrap leading-tight"
                         animate={{
-                          color: pt.isActive ? "#ffffff" : "#a1a1aa",
+                          // color: pt.isActive ? "#ffffff" : "#a1a1aa",
+                          color: pt.isActive
+                            ? (isDark ? "#ffffff" : "#18181b")
+                            : (isDark ? "#a1a1aa" : "#71717a"),
                           fontWeight: pt.isActive ? 700 : 400,
                           fontSize: pt.isActive ? (isMobile ? "14px" : "16px") : (isMobile ? "12px" : "14px"),
                         }}
@@ -240,10 +257,14 @@ export default function TimelineView({ projects }: Props) {
                       >
                         {pt.project.title}
                       </motion.p>
+
                       <motion.p
                         className="tracking-[0.15em] font-light leading-none mt-1"
                         animate={{
-                          color: pt.isActive ? "#d4d4d8" : "#52525b",
+                          // color: pt.isActive ? "#d4d4d8" : "#52525b",
+                          color: pt.isActive
+                            ? (isDark ? "#ffffff" : "#18181b")
+                            : (isDark ? "#a1a1aa" : "#71717a"),
                           fontSize: pt.isActive ? "11px" : "10px",
                         }}
                         transition={{ duration: 0.5 }}
