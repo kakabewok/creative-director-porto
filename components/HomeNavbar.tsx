@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation'
 
 export default function HomeNavbar() {
   const pathname = usePathname()
-// bg-[#0a0a0a]/95
+  // bg-[#0a0a0a]/95
   return (
     <header
       className="sticky top-0 z-20 bg-transparent backdrop-blur-xs"
@@ -18,7 +18,7 @@ export default function HomeNavbar() {
         {/* Left — Brand */}
         <Link
           href="/"
-          className={`${pathname === '/' ? 'text-slate-400 dark:text-slate-500' : 'text-slate-900 dark:text-white'} text-xs md:text-lg cursor-pointer font-semibold tracking-normal uppercase duration-500 hover:text-slate-800 dark:hover:text-white/50 transition-colors`}
+          className={`${pathname === '/' ? 'text-slate-400 dark:text-slate-500' : 'text-slate-900 dark:text-white'} text-xs md:text-lg cursor-pointer font-semibold tracking-normal uppercase duration-500 hover:text-slate-500 dark:hover:text-white/50 transition-colors`}
           aria-label="Home"
         >
           Rangga Djoned
@@ -26,7 +26,7 @@ export default function HomeNavbar() {
 
         <Link
           href="/work"
-          className={`${pathname === '/work' ? 'text-slate-400 dark:text-slate-500' : 'text-slate-900 dark:text-white'} text-xs md:text-lg cursor-pointer font-semibold tracking-normal uppercase duration-500 hover:text-slate-800 dark:hover:text-white/50 transition-colors`}
+          className={`${pathname === '/work' ? 'text-slate-400 dark:text-slate-500' : 'text-slate-900 dark:text-white'} text-xs md:text-lg cursor-pointer font-semibold tracking-normal uppercase duration-500 hover:text-slate-500 dark:hover:text-white/50 transition-colors`}
           aria-label="Home"
         >
           Work
@@ -34,7 +34,7 @@ export default function HomeNavbar() {
 
         <Link
           href="/information"
-          className={`${pathname === '/information' ? 'text-slate-400 dark:text-slate-500' : 'text-slate-900 dark:text-white'} text-xs md:text-lg cursor-pointer font-semibold tracking-normal uppercase duration-500 hover:text-slate-800 dark:hover:text-white/50 transition-colors`}
+          className={`${pathname === '/information' ? 'text-slate-400 dark:text-slate-500' : 'text-slate-900 dark:text-white'} text-xs md:text-lg cursor-pointer font-semibold tracking-normal uppercase duration-500 hover:text-slate-500 dark:hover:text-white/50 transition-colors`}
           aria-label="Information"
         >
           Information
@@ -42,7 +42,7 @@ export default function HomeNavbar() {
 
         <Link
           href="/search"
-          className={`${pathname === '/search' ? 'text-slate-400 dark:text-slate-500' : 'text-slate-900 dark:text-white'} text-xs md:text-lg cursor-pointer font-semibold tracking-normal uppercase duration-500 hover:text-slate-800 dark:hover:text-white/50 transition-colors`}
+          className={`${pathname === '/search' ? 'text-slate-400 dark:text-slate-500' : 'text-slate-900 dark:text-white'} text-xs md:text-lg cursor-pointer font-semibold tracking-normal uppercase duration-500 hover:text-slate-500 dark:hover:text-white/50 transition-colors`}
           aria-label="Search"
         >
           Search
