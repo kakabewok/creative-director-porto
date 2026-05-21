@@ -170,7 +170,7 @@ export default function TimelineView({ projects }: Props) {
             </div>
 
             {/* RIGHT/BOTTOM: TIMELINE ARC */}
-            <div className={`absolute pointer-events-none flex items-center justify-center ${isMobile
+            <div className={`border border-red-500 absolute pointer-events-none flex items-center justify-center ${isMobile
               ? 'top-[55%] left-1/2 -translate-x-1/2 w-[300px] h-[400px]'
               : 'right-0 top-1/2 -translate-y-1/2 w-[600px] lg:w-[800px] h-[600px] lg:h-[800px]'
               }`}>
@@ -205,13 +205,18 @@ export default function TimelineView({ projects }: Props) {
               {points.map((pt, i) => {
                 if (Math.abs(pt.currentAngle) > Math.PI / 1.2) return null
 
+                // Calculate text offset from the dot (pushing outwards to the left)
+                const textOffsetX = -24 * Math.cos(pt.currentAngle)
+                const textOffsetY = 24 * Math.sin(pt.currentAngle)
+
+                // Depending on circle side, anchor the text differently
+                const isLeftOfDot = textOffsetX < 0
+
                 return (
                   <motion.div
                     key={pt.project._id}
-                    className="absolute left-1/2 top-1/2 mt-[-20px] flex items-center gap-2 transition-colors duration-500 h-[40px]"
+                    className="absolute left-1/2 top-1/2 w-0 h-0"
                     style={{
-                      originX: 0,
-                      originY: 0.5,
                       zIndex: pt.isActive ? 10 : 1,
                     }}
                     initial={false}
@@ -226,13 +231,12 @@ export default function TimelineView({ projects }: Props) {
                       ease: [0.22, 1, 0.36, 1]
                     }}
                   >
-                    {/* Dot */}
+                    {/* Dot (centered exactly on pt.x, pt.y) */}
                     <motion.div
-                      className="rounded-full flex-shrink-0"
+                      className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full"
                       animate={{
                         width: pt.isActive ? 12 : 8,
                         height: pt.isActive ? 12 : 8,
-                        // backgroundColor: pt.isActive ? "#ffffff" : "#3f3f46",
                         backgroundColor: pt.isActive
                           ? (isDark ? "#ffffff" : "#18181b")
                           : (isDark ? "#a1a1aa" : "#71717a"),
@@ -241,37 +245,49 @@ export default function TimelineView({ projects }: Props) {
                       transition={{ duration: 0.5 }}
                     />
 
-                    {/* Text Content - Tighter spacing & editorial typography */}
-                    <div className="flex flex-col justify-center -mt-0.5">
-                      <motion.p
-                        className="tracking-wider uppercase whitespace-nowrap leading-tight"
-                        animate={{
-                          // color: pt.isActive ? "#ffffff" : "#a1a1aa",
-                          color: pt.isActive
-                            ? (isDark ? "#ffffff" : "#18181b")
-                            : (isDark ? "#a1a1aa" : "#71717a"),
-                          fontWeight: pt.isActive ? 700 : 400,
-                          fontSize: pt.isActive ? (isMobile ? "14px" : "16px") : (isMobile ? "12px" : "14px"),
-                        }}
-                        transition={{ duration: 0.5 }}
+                    {/* Text Content - positioned along the arc, strictly horizontal */}
+                    <motion.div
+                      className="absolute left-1/2 top-1/2"
+                      initial={false}
+                      animate={{
+                        x: textOffsetX,
+                        y: textOffsetY,
+                      }}
+                      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                    >
+                      <div
+                        className={`absolute top-1/2 -translate-y-1/2 flex flex-col justify-center gap-[2px] leading-[0.95] whitespace-nowrap ${isLeftOfDot ? 'right-0 items-end text-right' : 'left-0 items-start text-left'
+                          }`}
                       >
-                        {pt.project.title}
-                      </motion.p>
+                        <motion.span
+                          className="tracking-wider uppercase"
+                          animate={{
+                            color: pt.isActive
+                              ? (isDark ? "#ffffff" : "#18181b")
+                              : (isDark ? "#a1a1aa" : "#71717a"),
+                            fontWeight: pt.isActive ? 500 : 300,
+                            fontSize: pt.isActive ? (isMobile ? "11px" : "16px") : (isMobile ? "11px" : "14px"),
+                          }}
+                          transition={{ duration: 0.5 }}
+                        >
+                          {pt.project.title}
+                        </motion.span>
 
-                      <motion.p
-                        className="tracking-[0.15em] font-light leading-none mt-1"
-                        animate={{
-                          // color: pt.isActive ? "#d4d4d8" : "#52525b",
-                          color: pt.isActive
-                            ? (isDark ? "#ffffff" : "#18181b")
-                            : (isDark ? "#a1a1aa" : "#71717a"),
-                          fontSize: pt.isActive ? "11px" : "10px",
-                        }}
-                        transition={{ duration: 0.5 }}
-                      >
-                        {pt.project.year || "Unknown"}
-                      </motion.p>
-                    </div>
+                        <motion.span
+                          className="tracking-[0.15em]"
+                          animate={{
+                            color: pt.isActive
+                              ? (isDark ? "#ffffff" : "#18181b")
+                              : (isDark ? "#a1a1aa" : "#71717a"),
+                            fontWeight: pt.isActive ? 400 : 300,
+                            fontSize: pt.isActive ? (isMobile ? "9px" : "11px") : (isMobile ? "9px" : "10px"),
+                          }}
+                          transition={{ duration: 0.5 }}
+                        >
+                          {pt.project.year || "Unknown"}
+                        </motion.span>
+                      </div>
+                    </motion.div>
                   </motion.div>
                 )
               })}
