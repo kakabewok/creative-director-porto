@@ -30,13 +30,13 @@ export default async function InformationPage() {
 
   return (
     <>
-      <main className="min-h-screen bg-white dark:bg-black pt-8 pb-28" aria-label="Information page">
+      <main className="min-h-screen bg-white dark:bg-black pt-4 lg:pt-8 pb-28" aria-label="Information page">
         {/* Floating section nav — rendered here, positioned fixed via CSS */}
         <InformationNav />
         <div className="max-w-6xl mx-auto px-6 md:px-10">
           {/* ── Two-column layout ── */}
           <section id="biography" className="scroll-mt-24">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-11 lg:gap-20 pt-12 mb-10 lg:mb-20">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-11 lg:gap-20 pt-5 lgpt-12 mb-10 lg:mb-20">
               {/* Left — profile image */}
               <div className="relative">
                 <h1 className='text-slate-900 dark:text-white font-semibold text-lg md:text-3xl mb-5 tracking-tight'>BIOGRAPHY</h1>
@@ -154,7 +154,7 @@ export default async function InformationPage() {
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label={link.platform}
-                        className="flex items-center gap-1 px-1 py-2 rounded-xs text-sm text-slate-400 hover:text-slate-950 dark:text-white/40 dark:hover:text-white hover:border-white/30 transition-all duration-400"
+                        className="flex items-center gap-1 px-1 py-1 rounded-xs text-sm text-slate-400 hover:text-slate-950 dark:text-white/40 dark:hover:text-white hover:border-white/30 transition-all duration-400"
                       >
                         <span aria-hidden="true">
                           {/* {SOCIAL_ICONS[link.icon?.toLowerCase() ?? ''] ?? '↗'} */}

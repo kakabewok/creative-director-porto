@@ -4,7 +4,7 @@ import WorkSpectrumView from '@/modules/WorkSpectrumView'
 
 export const metadata: Metadata = {
   title: 'Work — Spectrum',
-  description: 'Browse the full spectrum of Rangga Djoned\'s work — a grid of cinematic projects spanning videography, branding, photography, and digital campaigns.',
+  description: 'Browse the full spectrum of Rangga Djoned\'s work',
 }
 
 export default async function SpectrumPage() {

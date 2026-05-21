@@ -55,7 +55,7 @@ export default function DetailsDrawer({ project, onClose }: Props) {
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed top-0 right-0 bottom-0 z-50 w-full max-w-sm md:max-w-md bg-slate-50 dark:bg-[#0f0f0f] border-l border-slate-200 dark:border-white/8 overflow-y-auto outline-none"
+            className="fixed top-0 right-0 bottom-0 z-50 w-full max-w-md md:max-w-md bg-slate-50 dark:bg-[#0f0f0f] border-l border-slate-200 dark:border-white/8 overflow-y-auto outline-none"
           >
             {/* Close */}
             <button

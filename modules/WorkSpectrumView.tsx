@@ -22,9 +22,9 @@ export default function WorkSpectrumView({ projects }: Props) {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
-      className="px-6 pt-3"
+      className="px-2 lg:px-5 pt-3"
     >
-      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-3 lg:gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-2 md:gap-3 lg:gap-4">
         {sorted.map((project, i) => (
           <ProjectCard
             key={project._id}

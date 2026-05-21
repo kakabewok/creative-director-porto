@@ -84,9 +84,9 @@ function SearchClientInner({ projects }: Props) {
   return (
     <div className="h-[calc(100dvh-68px)] bg-white dark:bg-black flex flex-col">
       {/* ── Upper section: search + categories (centered, upper-middle) ── */}
-      <div className="flex flex-col items-center justify-center pt-[22vh] pb-12 px-6">
+      <div className="flex flex-col items-center justify-center pt-[22vh] pb-12 px-3 md:px-4 lg:px-6">
         {/* Search input — max width, centered */}
-        <div className="w-full max-w-xl mb-10">
+        <div className="w-full max-w-xs md:max-w-xl mb-10">
           <div className="relative">
             <Search
               size={17}
@@ -108,7 +108,7 @@ function SearchClientInner({ projects }: Props) {
         {/* Categories — centered under input */}
         <div className="flex flex-col items-center gap-5">
           <p className="text-slate-900 dark:text-white/90 text-[11px] tracking-[0.25em] uppercase">or explore by</p>
-          <div className="flex flex-wrap justify-center gap-4">
+          <div className="flex flex-wrap justify-center gap-1.5 lg:gap-2">
             {CATEGORIES.map((cat) => (
               <button
                 key={cat}
@@ -133,14 +133,14 @@ function SearchClientInner({ projects }: Props) {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.35 }}
-          className="flex-1 px-6 md:px-10 pb-24"
+          className="flex-1 px-2 md:px-3 lg:px-4 pb-24"
         >
           {results.length === 0 ? (
             <p className="text-white/20 text-sm tracking-widest text-center py-16">
               No results found.
             </p>
           ) : (
-            <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5 lg:gap-6">
+            <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5 lg:gap-6">
               {results.map((project, i) => {
                 const src = getProjectCoverSrc(project, 800)
 

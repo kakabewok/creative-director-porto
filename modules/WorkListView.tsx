@@ -22,7 +22,7 @@ export default function WorkListView({ projects }: Props) {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
-      className="flex flex-col items-center gap-16 px-6 pt-10"
+      className="flex flex-col items-center gap-5 lg:gap-13 px-2 md:px-3 lg:px-4 pt-10"
     >
       {sorted.map((project, i) => (
         <ProjectCard

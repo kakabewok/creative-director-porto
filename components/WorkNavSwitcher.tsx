@@ -83,7 +83,7 @@ export default function WorkNavSwitcher({ visible = true }: Props) {
                     : 'dark:text-white/40 dark:hover:text-white/80 text-black/40 hover:text-black/80'
                     }`}
                 >
-                  <span className="hidden sm:inline cursor-pointer font-normal">{label}</span>
+                  <span className="cursor-pointer font-normal">{label}</span>
                 </Link>
               );
             })}

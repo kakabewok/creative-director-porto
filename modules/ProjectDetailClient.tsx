@@ -71,13 +71,13 @@ export default function ProjectDetailClient({ project, allProjects }: Props) {
           onClick={() => router.back()}
           id="project-close"
           aria-label="Back to work"
-          className="text-md absolute top-6 right-0 md:top-3 md:right-5 z-40 w-9 h-9 flex items-center justify-center text-slate-900 dark:text-white hover:text-slate-600 dark:hover:text-white/70 transition-colors rounded-full cursor-pointer duration-400 font-semibold"
+          className="text-md absolute top-3 right-5 md:top-3 md:right-5 z-40 w-9 h-9 flex items-center justify-center text-slate-900 dark:text-white hover:text-slate-600 dark:hover:text-white/70 transition-colors rounded-full cursor-pointer duration-400 font-semibold"
         >
           {/* <X size={16} /> */}
           CLOSE
         </button>
 
-        <div className="absolute bottom-2 left-15 md:bottom-3 md:left-6 z-40 pointer-events-none">
+        <div className="absolute bottom-3 left-5 md:bottom-3 md:left-6 z-40 pointer-events-none">
           <motion.h1
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
@@ -94,14 +94,14 @@ export default function ProjectDetailClient({ project, allProjects }: Props) {
         id="project-details-open"
         onClick={() => setDrawerOpen(true)}
         aria-label="Open project details"
-        className="z-40 lg:hidden absolute top-3 left-5 text-md font-semibold flex items-center gap-2 tracking-widest uppercase text-slate-900 dark:text-white hover:text-slate-600 dark:hover:text-white/70 rounded-xs transition-all cursor-pointer duration-400"
+        className="z-40 lg:hidden absolute top-4 left-4 md:top-3 md:left-5 text-md font-semibold flex items-center tracking-normal uppercase text-slate-900 dark:text-white hover:text-slate-600 dark:hover:text-white/70 rounded-xs transition-all cursor-pointer duration-400"
       >
         {/* <Info size={12} /> */}
         Details
       </button>
 
-      <div className="absolute bottom-16 right-0 md:bottom-3 md:right-5 z-40 flex items-center gap-4">
-        <span className="text-slate-900 dark:text-white text-md tracking-wide hidden md:block font-semibold">
+      <div className="absolute bottom-3 right-5 md:bottom-3 md:right-5 z-40 flex items-center gap-4">
+        <span className="text-slate-900 dark:text-white text-md tracking-wide font-semibold">
           {String(currentMediaIndex + 1).padStart(2, '0')} / {String(totalMedia).padStart(2, '0')}
         </span>
         <button
