@@ -38,7 +38,7 @@ export default function DetailsDrawer({ project, onClose }: Props) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm cursor-pointer"
+            className="fixed inset-0 z-50 bg-black/50  cursor-pointer"
             onClick={onClose}
             aria-hidden="true"
           />

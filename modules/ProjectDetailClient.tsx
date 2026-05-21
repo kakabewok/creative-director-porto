@@ -59,23 +59,12 @@ export default function ProjectDetailClient({ project, allProjects }: Props) {
         )}
 
         {/* ── Unified media carousel (centered, max-width) ── */}
-        <div className="relative w-full md:w-[56%] lg:w-[75%] max-w-7xl mx-auto">
+        <div className="relative w-full lg:w-[75%] max-w-7xl mx-auto">
           <MediaCarousel
             ref={carouselRef}
             items={allMediaItems}
             onIndexChange={setCurrentMediaIndex}
           />
-
-          {/* Mobile: details — top-left */}
-          <button
-            id="project-details-open-mobile"
-            onClick={() => setDrawerOpen(true)}
-            aria-label="Open project details"
-            className="absolute -top-12 left-0 md:hidden z-40 flex items-center gap-2 px-3 py-1.5 text-xs tracking-wider text-white/60 hover:text-white border border-white/20 rounded-full backdrop-blur-sm bg-black/30 transition-all"
-          >
-            <Info size={12} />
-            Details
-          </button>
         </div>
 
         <button
@@ -100,6 +89,17 @@ export default function ProjectDetailClient({ project, allProjects }: Props) {
         </div>
       </div>
 
+      {/* Mobile: details — top-left */}
+      <button
+        id="project-details-open"
+        onClick={() => setDrawerOpen(true)}
+        aria-label="Open project details"
+        className="z-40 lg:hidden absolute top-3 left-5 text-md font-semibold flex items-center gap-2 tracking-widest uppercase text-slate-900 dark:text-white hover:text-slate-600 dark:hover:text-white/70 rounded-xs transition-all cursor-pointer duration-400"
+      >
+        {/* <Info size={12} /> */}
+        Details
+      </button>
+
       <div className="absolute bottom-16 right-0 md:bottom-3 md:right-5 z-40 flex items-center gap-4">
         <span className="text-slate-900 dark:text-white text-md tracking-wide hidden md:block font-semibold">
           {String(currentMediaIndex + 1).padStart(2, '0')} / {String(totalMedia).padStart(2, '0')}
@@ -108,7 +108,7 @@ export default function ProjectDetailClient({ project, allProjects }: Props) {
           id="project-details-open"
           onClick={() => setDrawerOpen(true)}
           aria-label="Open project details"
-          className="text-md font-semibold hidden md:flex items-center gap-2 tracking-widest uppercase text-slate-900 dark:text-white hover:text-slate-600 dark:hover:text-white/70 rounded-xs transition-all cursor-pointer duration-400"
+          className="hidden lg:flex text-md font-semibold items-center gap-2 tracking-widest uppercase text-slate-900 dark:text-white hover:text-slate-600 dark:hover:text-white/70 rounded-xs transition-all cursor-pointer duration-400"
         >
           {/* <Info size={12} /> */}
           Details

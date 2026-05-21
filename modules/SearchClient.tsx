@@ -116,8 +116,8 @@ function SearchClientInner({ projects }: Props) {
                 onClick={() => setActiveCategory(activeCategory === cat ? null : cat)}
                 aria-pressed={activeCategory === cat}
                 className={`cursor-pointer px-5 py-2 rounded-xs text-xs tracking-widest uppercase font-light border transition-all duration-400 ${activeCategory === cat
-                    ? 'bg-slate-950 dark:bg-white text-slate-50 dark:text-black border-slate-950 dark:border-white'
-                    : 'border-slate-900 dark:border-white/90 text-slate-900 dark:text-white/90 hover:border-slate-700 dark:hover:border-slate-200 hover:text-slate-700 dark:hover:text-slate-200'
+                  ? 'bg-slate-950 dark:bg-white text-slate-50 dark:text-black border-slate-950 dark:border-white'
+                  : 'border-slate-900 dark:border-white/90 text-slate-900 dark:text-white/90 hover:border-slate-700 dark:hover:border-slate-200 hover:text-slate-700 dark:hover:text-slate-200'
                   }`}
               >
                 {cat} ({categoryCounts[cat] ?? 0})
@@ -140,7 +140,7 @@ function SearchClientInner({ projects }: Props) {
               No results found.
             </p>
           ) : (
-            <div className="max-w-6xl mx-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 md:gap-6 lg:gap-7">
+            <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5 lg:gap-6">
               {results.map((project, i) => {
                 const src = getProjectCoverSrc(project, 800)
 
@@ -176,7 +176,7 @@ function SearchClientInner({ projects }: Props) {
                           <div className="absolute inset-0 bg-zinc-800" />
                         )}
                       </div>
-                      <p className="duration-400 mt-4 text-slate-900 dark:text-white/40 text-xs tracking-widest uppercase truncate group-hover:text-slate-400 dark:group-hover:text-white/70 transition-colors">
+                      <p className="duration-400 mt-1.5 text-slate-900 dark:text-white/40 text-xs tracking-widest uppercase truncate group-hover:text-slate-400 dark:group-hover:text-white/70 transition-colors">
                         {project.title}
                       </p>
                     </Link>

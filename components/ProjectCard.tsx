@@ -26,9 +26,8 @@ export default function ProjectCard({ project, index, coverSrc, mode = 'list', p
       <Link href={`/work/${project.slug.current}`} aria-label={project.title}>
         {/* Image wrapper */}
         <div
-          className={`relative overflow-hidden bg-zinc-900 ${
-            isSpectrum ? 'aspect-[4/3]' : 'w-full aspect-[16/9] max-w-3xl mx-auto'
-          }`}
+          className={`relative overflow-hidden bg-zinc-900 ${isSpectrum ? 'aspect-video' : 'w-full aspect-video max-w-3xl mx-auto'
+            }`}
         >
           {coverSrc ? (
             <Image
