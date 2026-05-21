@@ -5,6 +5,7 @@ import { motion, useScroll } from 'framer-motion'
 import Image from 'next/image'
 import type { Project } from '@/types'
 import { getProjectCoverSrc } from '@/lib/projectImage'
+import Link from 'next/link'
 
 interface Props {
   projects: Project[]
@@ -130,24 +131,29 @@ export default function TimelineView({ projects }: Props) {
                     exit={{ opacity: 0, scale: 1.05 }}
                     transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                   >
-                    {coverSrc ? (
-                      <Image
-                        src={coverSrc}
-                        alt={project.coverImage?.alt || project.title}
-                        fill
-                        className="object-cover"
-                        sizes="(max-width: 768px) 260px, 400px"
-                        priority
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center bg-zinc-800">
-                        <span className="text-zinc-500 text-xs tracking-widest uppercase">
-                          No Image
-                        </span>
-                      </div>
-                    )}
-                    {/* Subtle gradient overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                    <Link
+                      href={`/work/${project.slug.current}`}
+                      className="block w-full h-full relative cursor-pointer group"
+                    >
+                      {coverSrc ? (
+                        <Image
+                          src={coverSrc}
+                          alt={project.coverImage?.alt || project.title}
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 768px) 260px, 400px"
+                          priority
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center bg-zinc-800">
+                          <span className="text-zinc-500 text-xs tracking-widest uppercase">
+                            No Image
+                          </span>
+                        </div>
+                      )}
+                      {/* Subtle gradient overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                    </Link>
                   </motion.div>
                 )
               })}

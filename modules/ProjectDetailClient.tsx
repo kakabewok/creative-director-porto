@@ -9,6 +9,7 @@ import { getProjectCoverSrc } from '@/lib/projectImage'
 import MediaCarousel, { type MediaCarouselHandle } from '@/components/MediaCarousel'
 import DetailsDrawer from '@/components/DetailsDrawer'
 import type { GalleryItem } from '@/types'
+import { useRouter } from 'next/navigation';
 
 interface Props {
   project: Project
@@ -16,6 +17,7 @@ interface Props {
 }
 
 export default function ProjectDetailClient({ project, allProjects }: Props) {
+  const router = useRouter();
   const [drawerOpen, setDrawerOpen] = useState(false)
   const closeDrawer = useCallback(() => setDrawerOpen(false), [])
 
@@ -26,8 +28,6 @@ export default function ProjectDetailClient({ project, allProjects }: Props) {
   // Starts with the cover (image or video), then appends gallery items
   const allMediaItems = buildMediaItems(project)
   const totalMedia = allMediaItems.length
-
-  // relative min-h-screen
 
   return (
     <>
@@ -78,15 +78,15 @@ export default function ProjectDetailClient({ project, allProjects }: Props) {
           </button>
         </div>
 
-        <Link
-          href="/work"
+        <button
+          onClick={() => router.back()}
           id="project-close"
           aria-label="Back to work"
           className="text-md absolute top-6 right-0 md:top-3 md:right-5 z-40 w-9 h-9 flex items-center justify-center text-slate-900 dark:text-white hover:text-slate-600 dark:hover:text-white/70 transition-colors rounded-full cursor-pointer duration-400 font-semibold"
         >
           {/* <X size={16} /> */}
           CLOSE
-        </Link>
+        </button>
 
         <div className="absolute bottom-2 left-15 md:bottom-3 md:left-6 z-40 pointer-events-none">
           <motion.h1
