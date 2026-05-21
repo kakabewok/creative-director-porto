@@ -1,137 +1,38 @@
 'use client'
 
-import { useMemo, useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { useState } from 'react'
 import type { Project } from '@/types'
-import { getProjectCoverSrc } from '@/lib/projectImage'
-// import HomeNavbar from '@/components/HomeNavbar'
 import ScrollTrigger from '@/components/ScrollTrigger'
-import ProjectCard from '@/components/ProjectCard'
-import TimelineView from '@/components/TimelineView'
-import LayoutSwitcher, { type ViewMode } from '@/components/LayoutSwitcher'
-import Link from 'next/link'
-import Navbar from '@/components/Navbar'
+import WorkListView from '@/modules/WorkListView'
+import WorkNavSwitcher from '@/components/WorkNavSwitcher'
 import HomeNavbar from '@/components/HomeNavbar'
 
 interface Props {
   projects: Project[]
   mode: 'overlay' | 'standalone'
+  view?: 'list'
 }
 
 export default function WorkSection({ projects, mode }: Props) {
   const isOverlay = mode === 'overlay'
-  const [viewMode, setViewMode] = useState<ViewMode>('list')
   const [isWorkActive, setIsWorkActive] = useState(!isOverlay)
 
-  const sorted = useMemo(
-    () => [...projects].sort((a, b) => (a.order ?? 99) - (b.order ?? 99)),
-    [projects]
-  )
-
   return (
-    <div className={isOverlay ? "relative z-10 bg-white dark:bg-black" : "bg-white dark:bg-black"}>
-      {/* ScrollTrigger only tracks scroll state on the home page overlay, no URL routing */}
+    <div className={isOverlay ? 'relative z-10 bg-white dark:bg-black' : 'bg-white dark:bg-black'}>
+      {/* ScrollTrigger only on home overlay — controls nav visibility on scroll */}
       {isOverlay && (
         <ScrollTrigger onActiveChange={setIsWorkActive} />
       )}
 
-      {/* Embedded sticky navbar for overlay mode (since global navbar is hidden on home) */}
+      {/* Embedded sticky navbar for overlay mode */}
       {isOverlay && <HomeNavbar />}
 
-      {/* ── Work content — switches between list / spectrum / timeline ── */}
       <section id="work" aria-label="Selected work" className="pb-32 min-h-screen">
-
-        {/* Header: Only show "View All" link on home page overlay */}
-        {/* <div className="px-6 md:px-10 mb-14 flex items-center justify-between max-w-3xl mx-auto">
-          <p className="text-white/20 text-xs tracking-[0.25em] uppercase">
-            {isOverlay ? 'Selected Work' : `${projects.length} Projects`}
-          </p>
-          {isOverlay && (
-            <Link
-              href="/work"
-              className="text-white/30 text-xs tracking-widest uppercase hover:text-white/70 transition-colors"
-            >
-              View All →
-            </Link>
-          )}
-        </div> */}
-
-        {/* Layout views */}
-        <AnimatePresence mode="wait">
-          {viewMode === 'list' && (
-            <motion.div
-              key="list"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="flex flex-col items-center gap-16 px-6 pt-10"
-            >
-              {sorted.map((project, i) => (
-                <ProjectCard
-                  key={project._id}
-                  project={project}
-                  index={i}
-                  coverSrc={getProjectCoverSrc(project, 1200)}
-                  mode="list"
-                  priority={i === 0}
-                />
-              ))}
-            </motion.div>
-          )}
-
-          {viewMode === 'spectrum' && (
-            <motion.div
-              key="spectrum"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="px-6 pt-3"
-            >
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-5 lg:gap-6">
-                {sorted.map((project, i) => (
-                  <ProjectCard
-                    key={project._id}
-                    project={project}
-                    index={i}
-                    coverSrc={getProjectCoverSrc(project, 800)}
-                    mode="spectrum"
-                  />
-                ))}
-              </div>
-            </motion.div>
-          )}
-
-          {viewMode === 'timeline' && (
-            <motion.div
-              key="timeline"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              <TimelineView projects={sorted} />
-            </motion.div>
-          )}
-        </AnimatePresence>
+        <WorkListView projects={projects} />
       </section>
 
-      {/* Floating Layout Switcher */}
-      <AnimatePresence>
-        {(isWorkActive || mode === 'standalone') && (
-          <motion.div
-            key="work-layout-switcher"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 10 }}
-            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed bottom-2.5 left-1/2 -translate-x-1/2 z-40"
-          >
-            <LayoutSwitcher mode={viewMode} onChange={setViewMode} />
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Floating route-based nav switcher — fades in when work section is active */}
+      <WorkNavSwitcher visible={isWorkActive || mode === 'standalone'} />
     </div>
   )
 }
