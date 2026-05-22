@@ -125,19 +125,19 @@ export default function TimelineView({ projects }: Props) {
                 flex
                 items-center
                 justify-center
-                absolute right-4 top-1/2 -translate-y-1/2
-                md:relative md:right-auto md:top-auto md:-translate-y-0
-                md:-translate-x-[5vw] lg:-translate-x-[10vw]
+                absolute right-8 top-1/2 -translate-y-1/2
+                md:relative md:right-auto md:top-auto md:translate-y-0
+                md:translate-x-[-5vw] lg:translate-x-[-10vw]
                 w-[130px]
                 md:w-[35vw]
                 lg:w-[26vw]
                 max-w-[400px]
-                aspect-[4/3]
-                md:aspect-[16/9]
+                aspect-4/3
+                md:aspect-video
                 bg-zinc-900
-                rounded-md
+                rounded-xs
                 overflow-hidden
-                shadow-xl
+                shadow-sm
                 transition-all
                 duration-500
               "
