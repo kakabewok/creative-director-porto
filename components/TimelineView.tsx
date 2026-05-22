@@ -60,36 +60,36 @@ export default function TimelineView({ projects }: Props) {
   const isMobile = windowWidth < 768
 
   // Adjust arc radius based on screen size
-  const radius = isMobile ? 120 : (isTablet ? 220 : 300)
+  const radius = isMobile ? 160 : (isTablet ? 260 : 340)
   const labelRadius = radius + 20
 
   const spreadFactor = isMobile ? 0.9 : (isTablet ? 0.78 : 0.7)
   const angleSpacing = (isMobile ? Math.PI / 6 : Math.PI / 8) * spreadFactor
 
   const scrollHeight = `${Math.max(200, projects.length * 30)}vh`
-  const xOffset = isMobile ? radius * 0.2 : radius * 0.5
 
   const points = projects.map((project, i) => {
     const distance = i - activeIndex
     const currentAngle = distance * angleSpacing
 
-    // X logic: bulge right so it wraps around the right side of the image
-    const x = (Math.cos(currentAngle) - 1) * radius + xOffset
+    // Perfectly centered circular orbit
+    const x = Math.cos(currentAngle) * radius
     const y = Math.sin(currentAngle) * radius
     
-    // Label positioning
+    // Label positioning radially outwards
     const textOffsetX = (labelRadius - radius) * Math.cos(currentAngle)
     const textOffsetY = (labelRadius - radius) * Math.sin(currentAngle)
 
     return { x, y, textOffsetX, textOffsetY, distance, currentAngle, isActive: i === activeIndex, project, index: i }
   })
 
-  // Center for the SVG
-  const cx = isMobile ? 150 : (isTablet ? 300 : 400)
-  const cy = isMobile ? 200 : (isTablet ? 300 : 400)
+  // Container dimensions
+  const svgWidth = isMobile ? 400 : (isTablet ? 600 : 800)
+  const svgHeight = isMobile ? 500 : (isTablet ? 700 : 900)
   
-  const svgWidth = isMobile ? 300 : (isTablet ? 600 : 800)
-  const svgHeight = isMobile ? 400 : (isTablet ? 600 : 800)
+  // Center for the SVG
+  const cx = svgWidth / 2
+  const cy = svgHeight / 2
 
   if (!mounted) {
     return (
@@ -126,20 +126,16 @@ export default function TimelineView({ projects }: Props) {
                 flex
                 items-center
                 justify-center
-                translate-x-0
-                translate-y-[-10%]
-                md:translate-y-0
-                md:translate-x-[-8%]
-                w-[82vw]
-                md:w-[60vw]
-                lg:w-[48vw]
-                max-w-[720px]
+                w-[75vw]
+                md:w-[50vw]
+                lg:w-[40vw]
+                max-w-[540px]
                 aspect-[4/3]
                 md:aspect-[16/9]
                 bg-zinc-900
-                rounded-xs
+                rounded-md
                 overflow-hidden
-                shadow-sm
+                shadow-xl
                 transition-all
                 duration-500
               "
@@ -195,15 +191,10 @@ export default function TimelineView({ projects }: Props) {
                 flex 
                 items-center 
                 justify-center 
-                left-[-55%] 
-                bottom-[-25%] 
-                top-auto 
-                scale-[0.72] 
-                md:scale-100 
-                md:left-[-18%] 
-                md:top-1/2 
-                md:-translate-y-1/2 
-                md:bottom-auto
+                left-1/2 
+                top-1/2 
+                -translate-x-1/2 
+                -translate-y-1/2 
               "
               style={{
                 width: svgWidth,
@@ -214,12 +205,10 @@ export default function TimelineView({ projects }: Props) {
               <svg className="absolute inset-0 w-full h-full" style={{ zIndex: 0 }}>
                 {(() => {
                   const maxAngle = Math.PI / 1.15
-                  const circleCx = cx - radius + xOffset
-                  const circleCy = cy
-                  const startX = circleCx + Math.cos(-maxAngle) * radius
-                  const startY = circleCy + Math.sin(-maxAngle) * radius
-                  const endX = circleCx + Math.cos(maxAngle) * radius
-                  const endY = circleCy + Math.sin(maxAngle) * radius
+                  const startX = cx + Math.cos(-maxAngle) * radius
+                  const startY = cy + Math.sin(-maxAngle) * radius
+                  const endX = cx + Math.cos(maxAngle) * radius
+                  const endY = cy + Math.sin(maxAngle) * radius
 
                   // Sweep flag = 1 (clockwise) draws the right side of the circle
                   const pathData = `M ${startX} ${startY} A ${radius} ${radius} 0 1 1 ${endX} ${endY}`
