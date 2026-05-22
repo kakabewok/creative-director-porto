@@ -60,7 +60,7 @@ export default function TimelineView({ projects }: Props) {
   const isMobile = windowWidth < 768
 
   // Adjust arc radius based on screen size
-  const radius = isMobile ? 160 : (isTablet ? 260 : 340)
+  const radius = isMobile ? 120 : (isTablet ? 220 : 280)
   const labelRadius = radius + 20
 
   const spreadFactor = isMobile ? 0.9 : (isTablet ? 0.78 : 0.7)
@@ -84,8 +84,8 @@ export default function TimelineView({ projects }: Props) {
   })
 
   // Container dimensions
-  const svgWidth = isMobile ? 400 : (isTablet ? 600 : 800)
-  const svgHeight = isMobile ? 500 : (isTablet ? 700 : 900)
+  const svgWidth = isMobile ? 300 : (isTablet ? 600 : 800)
+  const svgHeight = isMobile ? 400 : (isTablet ? 700 : 900)
   
   // Center for the SVG
   const cx = svgWidth / 2
@@ -121,15 +121,16 @@ export default function TimelineView({ projects }: Props) {
             {/* IMAGE CONTAINER */}
             <div
               className="
-                relative
                 z-20
                 flex
                 items-center
                 justify-center
-                w-[75vw]
-                md:w-[50vw]
-                lg:w-[40vw]
-                max-w-[540px]
+                absolute right-4 top-1/2 -translate-y-1/2
+                md:relative md:right-auto md:top-auto md:-translate-y-0
+                w-[130px]
+                md:w-[35vw]
+                lg:w-[26vw]
+                max-w-[400px]
                 aspect-[4/3]
                 md:aspect-[16/9]
                 bg-zinc-900
@@ -191,9 +192,11 @@ export default function TimelineView({ projects }: Props) {
                 flex 
                 items-center 
                 justify-center 
-                left-1/2 
+                left-0 
+                -translate-x-[40%] 
+                md:left-1/2 
+                md:-translate-x-1/2 
                 top-1/2 
-                -translate-x-1/2 
                 -translate-y-1/2 
               "
               style={{
@@ -204,14 +207,14 @@ export default function TimelineView({ projects }: Props) {
               {/* SINGLE CONTINUOUS ORBIT PATH */}
               <svg className="absolute inset-0 w-full h-full" style={{ zIndex: 0 }}>
                 {(() => {
-                  const maxAngle = Math.PI / 1.15
+                  const maxAngle = Math.PI / 2
                   const startX = cx + Math.cos(-maxAngle) * radius
                   const startY = cy + Math.sin(-maxAngle) * radius
                   const endX = cx + Math.cos(maxAngle) * radius
                   const endY = cy + Math.sin(maxAngle) * radius
 
                   // Sweep flag = 1 (clockwise) draws the right side of the circle
-                  const pathData = `M ${startX} ${startY} A ${radius} ${radius} 0 1 1 ${endX} ${endY}`
+                  const pathData = `M ${startX} ${startY} A ${radius} ${radius} 0 0 1 ${endX} ${endY}`
 
                   return (
                     <path
@@ -226,7 +229,7 @@ export default function TimelineView({ projects }: Props) {
 
               {/* TIMELINE NODES */}
               {points.map((pt, i) => {
-                if (Math.abs(pt.currentAngle) > Math.PI / 1.2) return null
+                if (Math.abs(pt.currentAngle) > Math.PI / 2.05) return null
 
                 return (
                   <motion.div
