@@ -11,8 +11,23 @@ interface Props {
 export default function HeroClient({ name, tagline }: Props) {
   const videoRef = useRef<HTMLVideoElement>(null)
 
+  // useEffect(() => {
+  //   videoRef.current?.play().catch(() => { })
+  // }, [])
+
   useEffect(() => {
-    videoRef.current?.play().catch(() => {})
+    const video = videoRef.current
+    if (!video) return
+
+    video.muted = true
+
+    video.play().catch(() => {
+      const handleInteraction = () => {
+        video.play().catch(() => { })
+      }
+      document.addEventListener('touchstart', handleInteraction, { once: true })
+      document.addEventListener('click', handleInteraction, { once: true })
+    })
   }, [])
 
   return (
@@ -39,6 +54,7 @@ export default function HeroClient({ name, tagline }: Props) {
           disablePictureInPicture
           // @ts-ignore
           disableRemotePlayback
+          x-webkit-airplay="deny"
         >
           <source
             src="https://res.cloudinary.com/demo/video/upload/elephants.webm"
