@@ -64,7 +64,7 @@ export default function TimelineView({ projects }: Props) {
   const labelRadius = radius + 20
 
   // Decrease spacing between points (nodes) along the arc
-  const angleSpacing = isMobile ? Math.PI / 12 : (isTablet ? Math.PI / 16 : Math.PI / 20)
+  const angleSpacing = isMobile ? Math.PI / 16 : (isTablet ? Math.PI / 22 : Math.PI / 28)
 
   const scrollHeight = `${Math.max(200, projects.length * 30)}vh`
 
@@ -101,7 +101,7 @@ export default function TimelineView({ projects }: Props) {
 
   // overflow-hidden
   return (
-    <div className="h-screen overflow-hidden w-full border border-red-500">
+    <div className="h-screen overflow-hidden w-full">
       <div
         ref={containerRef}
         className="h-full overflow-y-auto scroll-smooth no-scrollbar touch-pan-y"
@@ -117,7 +117,7 @@ export default function TimelineView({ projects }: Props) {
         `}</style>
         <div className="relative w-full" style={{ height: scrollHeight }}>
           {/* SHARED PARENT CONTAINER */}
-          <div className="sticky top-0 w-full h-screen overflow-hidden flex items-center justify-center">
+          <div className="sticky top-0 w-full h-screen overflow-hidden flex items-center justify-center z-60 pointer-events-none">
 
             {/* IMAGE CONTAINER */}
             <div
@@ -126,7 +126,8 @@ export default function TimelineView({ projects }: Props) {
                 flex
                 items-center
                 justify-center
-                absolute right-8 top-1/2 -translate-y-1/2
+                pointer-events-auto
+                absolute right-5 top-1/2 -translate-y-1/2
                 md:relative md:right-auto md:top-auto md:translate-y-0
                 md:translate-x-[-5vw] lg:translate-x-[-10vw]
                 w-[130px]
@@ -136,7 +137,7 @@ export default function TimelineView({ projects }: Props) {
                 aspect-4/3
                 md:aspect-video
                 bg-zinc-900
-                rounded-xs
+                rounded-none
                 overflow-hidden
                 shadow-sm
                 transition-all
@@ -186,7 +187,7 @@ export default function TimelineView({ projects }: Props) {
               })}
             </div>
 
-            {/* TIMELINE ARC */}
+            {/* TIMELINE ARC (left: position circle)*/}
             <div
               className="
                 absolute 
@@ -195,7 +196,7 @@ export default function TimelineView({ projects }: Props) {
                 items-center 
                 justify-center 
                 left-0 
-                translate-x-[-70%] 
+                translate-x-[-85%] 
                 md:left-[27%] lg:left-[28%] 
                 md:-translate-x-1/2 
                 top-1/2 
@@ -245,8 +246,8 @@ export default function TimelineView({ projects }: Props) {
                     animate={{
                       x: pt.x,
                       y: pt.y,
-                      opacity: pt.isActive ? 1 : Math.max(0.2, 1 - Math.abs(pt.distance) * 0.4),
-                      scale: pt.isActive ? 1.05 : Math.max(0.65, 0.85 - Math.abs(pt.distance) * 0.06),
+                      opacity: pt.isActive ? 1 : Math.max(0.3, 1 - Math.abs(pt.distance) * 0.5), // opacity range in title = 0.3 - 1
+                      scale: pt.isActive ? 1.05 : Math.max(0.85, 0.90 - Math.abs(pt.distance) * 0.16), // scale title in range 0.65 - 0.85
                     }}
                     transition={{
                       duration: 0.5,
@@ -261,15 +262,15 @@ export default function TimelineView({ projects }: Props) {
                         height: pt.isActive ? 12 : 8,
                         backgroundColor: pt.isActive
                           ? (isDark ? "#ffffff" : "#18181b")
-                          : (isDark ? "#a1a1aa" : "#71717a"),
-                        boxShadow: pt.isActive ? "0 0 12px rgba(255,255,255,0.6)" : "none"
+                          : (isDark ? "#d4d4d8" : "#3f3f46"),
+                        boxShadow: pt.isActive ? "0 0 12px rgba(255,255,255,0.9)" : "none"
                       }}
                       transition={{ duration: 0.5 }}
                     />
 
                     {/* Clickable Label */}
                     <motion.div
-                      className="absolute left-1/2 top-1/2"
+                      className="absolute left-1/2 top-1/2 pointer-events-auto"
                       initial={false}
                       animate={{
                         x: pt.textOffsetX,
@@ -285,7 +286,7 @@ export default function TimelineView({ projects }: Props) {
                           }`}
                       >
                         <span
-                          className={`uppercase leading-[1.1] transition-colors duration-300 max-w-[180px] ${pt.isActive
+                          className={`uppercase leading-[1.1] whitespace-nowrap max-w-[380px] transition-colors duration-300 ${pt.isActive
                             ? "text-black dark:text-white font-bold text-[11px] md:text-[14px]"
                             : "text-neutral-600 dark:text-neutral-300 font-medium text-[11px] md:text-[14px]"
                             }`}
