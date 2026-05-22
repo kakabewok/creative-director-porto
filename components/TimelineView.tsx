@@ -157,7 +157,7 @@ export default function TimelineView({ projects }: Props) {
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 1.05 }}
-                    transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                    transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                   >
                     <Link
                       href={`/work/${project.slug.current}`}
@@ -250,7 +250,7 @@ export default function TimelineView({ projects }: Props) {
                       scale: pt.isActive ? 1.05 : Math.max(0.85, 0.90 - Math.abs(pt.distance) * 0.16), // scale title in range 0.65 - 0.85
                     }}
                     transition={{
-                      duration: 0.5,
+                      duration: 0.2,
                       ease: [0.22, 1, 0.36, 1]
                     }}
                   >
@@ -278,7 +278,7 @@ export default function TimelineView({ projects }: Props) {
                         rotate: pt.currentAngle * (180 / Math.PI),
                       }}
                       style={{ originX: 0, originY: 0.5 }}
-                      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                      transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
                     >
                       <Link
                         href={`/work/${pt.project.slug.current}`}
