@@ -12,7 +12,7 @@ export default function HomeNavbar() {
       aria-label="Site header"
     >
       <nav
-        className="flex items-center justify-between px-6 md:px-10 py-5"
+        className="flex items-center justify-between px-2 md:px-3 lg:px-6 py-5"
         aria-label="Main navigation"
       >
         {/* Left — Brand */}

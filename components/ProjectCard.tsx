@@ -26,7 +26,7 @@ export default function ProjectCard({ project, index, coverSrc, mode = 'list', p
       <Link href={`/work/${project.slug.current}`} aria-label={project.title}>
         {/* Image wrapper */}
         <div
-          className={`relative overflow-hidden bg-zinc-900 ${isSpectrum ? 'aspect-video' : 'w-full aspect-video max-w-3xl mx-auto'
+          className={`relative overflow-hidden bg-zinc-900 ${isSpectrum ? 'aspect-video' : 'w-full aspect-video max-w-3xl md:max-w-4xl lg:max-w-3xl mx-auto'
             }`}
         >
           {coverSrc ? (
@@ -58,7 +58,7 @@ export default function ProjectCard({ project, index, coverSrc, mode = 'list', p
 
         {/* List mode title */}
         {!isSpectrum && (
-          <div className="flex items-end justify-between mt-1.5 max-w-3xl mx-auto px-1">
+          <div className="flex items-end justify-between mt-1.5 max-w-3xl md:max-w-4xl lg:max-w-3xl mx-auto px-1">
             <h2 className="text-slate-900 dark:text-white/80 text-sm font-semibold tracking-widest uppercase group-hover:text-slate-800 dark:group-hover:text-slate-50 transition-colors duration-300">
               {project.title}
             </h2>
