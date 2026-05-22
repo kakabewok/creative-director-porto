@@ -59,12 +59,12 @@ export default function TimelineView({ projects }: Props) {
   const isTablet = windowWidth >= 768 && windowWidth < 1024
   const isMobile = windowWidth < 768
 
-  // Adjust arc radius based on screen size
-  const radius = isMobile ? 120 : (isTablet ? 220 : 280)
+  // Adjust arc radius based on screen size (increased to feel taller/more vertical)
+  const radius = isMobile ? 220 : (isTablet ? 360 : 500)
   const labelRadius = radius + 20
 
-  const spreadFactor = isMobile ? 0.9 : (isTablet ? 0.78 : 0.7)
-  const angleSpacing = (isMobile ? Math.PI / 6 : Math.PI / 8) * spreadFactor
+  // Decrease spacing between points (nodes) along the arc
+  const angleSpacing = isMobile ? Math.PI / 12 : (isTablet ? Math.PI / 16 : Math.PI / 20)
 
   const scrollHeight = `${Math.max(200, projects.length * 30)}vh`
 
@@ -75,7 +75,7 @@ export default function TimelineView({ projects }: Props) {
     // Perfectly centered circular orbit
     const x = Math.cos(currentAngle) * radius
     const y = Math.sin(currentAngle) * radius
-    
+
     // Label positioning radially outwards
     const textOffsetX = (labelRadius - radius) * Math.cos(currentAngle)
     const textOffsetY = (labelRadius - radius) * Math.sin(currentAngle)
@@ -84,9 +84,9 @@ export default function TimelineView({ projects }: Props) {
   })
 
   // Container dimensions
-  const svgWidth = isMobile ? 300 : (isTablet ? 600 : 800)
-  const svgHeight = isMobile ? 400 : (isTablet ? 700 : 900)
-  
+  const svgWidth = isMobile ? 500 : (isTablet ? 800 : 1100)
+  const svgHeight = isMobile ? 500 : (isTablet ? 800 : 1100)
+
   // Center for the SVG
   const cx = svgWidth / 2
   const cy = svgHeight / 2
@@ -127,6 +127,7 @@ export default function TimelineView({ projects }: Props) {
                 justify-center
                 absolute right-4 top-1/2 -translate-y-1/2
                 md:relative md:right-auto md:top-auto md:-translate-y-0
+                md:-translate-x-[5vw] lg:-translate-x-[10vw]
                 w-[130px]
                 md:w-[35vw]
                 lg:w-[26vw]
@@ -185,7 +186,7 @@ export default function TimelineView({ projects }: Props) {
             </div>
 
             {/* TIMELINE ARC */}
-            <div 
+            <div
               className="
                 absolute 
                 pointer-events-none 
@@ -193,8 +194,8 @@ export default function TimelineView({ projects }: Props) {
                 items-center 
                 justify-center 
                 left-0 
-                -translate-x-[40%] 
-                md:left-1/2 
+                translate-x-[-70%] 
+                md:left-[27%] lg:left-[28%] 
                 md:-translate-x-1/2 
                 top-1/2 
                 -translate-y-1/2 
@@ -285,21 +286,19 @@ export default function TimelineView({ projects }: Props) {
                         }}
                       >
                         <span
-                          className={`uppercase break-words leading-[1.1] transition-colors duration-300 max-w-[180px] ${
-                            pt.isActive
-                              ? "text-black dark:text-white font-bold text-[11px] md:text-[14px]"
-                              : "text-neutral-400 dark:text-neutral-500 font-medium text-[11px] md:text-[14px]"
-                          }`}
+                          className={`uppercase break-words leading-[1.1] transition-colors duration-300 max-w-[180px] ${pt.isActive
+                            ? "text-black dark:text-white font-bold text-[11px] md:text-[14px]"
+                            : "text-neutral-400 dark:text-neutral-500 font-medium text-[11px] md:text-[14px]"
+                            }`}
                         >
                           {pt.project.title}
                         </span>
 
                         <span
-                          className={`tracking-[0.15em] transition-colors duration-300 ${
-                            pt.isActive
-                              ? "text-black dark:text-white font-medium text-[9px] md:text-[11px]"
-                              : "text-neutral-400 dark:text-neutral-500 font-normal text-[9px] md:text-[11px]"
-                          }`}
+                          className={`tracking-[0.15em] transition-colors duration-300 ${pt.isActive
+                            ? "text-black dark:text-white font-medium text-[9px] md:text-[11px]"
+                            : "text-neutral-400 dark:text-neutral-500 font-normal text-[9px] md:text-[11px]"
+                            }`}
                         >
                           {pt.project.year || "Unknown"}
                         </span>
