@@ -99,8 +99,9 @@ export default function TimelineView({ projects }: Props) {
     )
   }
 
+  // overflow-hidden
   return (
-    <div className="h-screen overflow-hidden w-full">
+    <div className="h-screen overflow-hidden w-full border border-red-500">
       <div
         ref={containerRef}
         className="h-full overflow-y-auto scroll-smooth no-scrollbar touch-pan-y"
@@ -116,7 +117,7 @@ export default function TimelineView({ projects }: Props) {
         `}</style>
         <div className="relative w-full" style={{ height: scrollHeight }}>
           {/* SHARED PARENT CONTAINER */}
-          <div className="sticky top-0 relative w-full h-screen overflow-hidden flex items-center justify-center">
+          <div className="sticky top-0 w-full h-screen overflow-hidden flex items-center justify-center">
 
             {/* IMAGE CONTAINER */}
             <div
@@ -220,7 +221,7 @@ export default function TimelineView({ projects }: Props) {
                   return (
                     <path
                       d={pathData}
-                      stroke={isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.06)"}
+                      stroke={isDark ? "rgba(255,255,255,0.2)" : "rgba(0,0,0,0.08)"}
                       strokeWidth="1"
                       fill="none"
                     />
@@ -280,15 +281,13 @@ export default function TimelineView({ projects }: Props) {
                     >
                       <Link
                         href={`/work/${pt.project.slug.current}`}
-                        className="group absolute top-1/2 -translate-y-1/2 left-0 flex flex-col justify-center gap-[2px] cursor-pointer transition-all duration-300 hover:translate-x-[4px] hover:opacity-100"
-                        style={{
-                          opacity: pt.isActive ? 1 : 0.6,
-                        }}
+                        className={`group absolute top-1/2 -translate-y-1/2 left-0 flex flex-col justify-center gap-[2px] cursor-pointer transition-all duration-300 hover:translate-x-[4px] hover:opacity-100 ${pt.isActive ? "opacity-100" : "opacity-95"
+                          }`}
                       >
                         <span
-                          className={`uppercase break-words leading-[1.1] transition-colors duration-300 max-w-[180px] ${pt.isActive
+                          className={`uppercase leading-[1.1] transition-colors duration-300 max-w-[180px] ${pt.isActive
                             ? "text-black dark:text-white font-bold text-[11px] md:text-[14px]"
-                            : "text-neutral-400 dark:text-neutral-500 font-medium text-[11px] md:text-[14px]"
+                            : "text-neutral-600 dark:text-neutral-300 font-medium text-[11px] md:text-[14px]"
                             }`}
                         >
                           {pt.project.title}
@@ -297,7 +296,7 @@ export default function TimelineView({ projects }: Props) {
                         <span
                           className={`tracking-[0.15em] transition-colors duration-300 ${pt.isActive
                             ? "text-black dark:text-white font-medium text-[9px] md:text-[11px]"
-                            : "text-neutral-400 dark:text-neutral-500 font-normal text-[9px] md:text-[11px]"
+                            : "text-neutral-600 dark:text-neutral-400 font-normal text-[9px] md:text-[11px]"
                             }`}
                         >
                           {pt.project.year || "Unknown"}
