@@ -24,7 +24,6 @@ export default function TimelineView({ projects }: Props) {
 
   const containerRef = useRef<HTMLDivElement>(null)
 
-  // Use container option so Framer Motion tracks the internal scroll of containerRef
   const { scrollYProgress } = useScroll({
     container: containerRef,
   })
@@ -33,13 +32,11 @@ export default function TimelineView({ projects }: Props) {
 
   useEffect(() => {
     return scrollYProgress.on("change", (v) => {
-      // Map scroll progress to project index
       const index = Math.floor(v * projects.length)
       setActiveIndex(Math.min(index, projects.length - 1))
     })
   }, [scrollYProgress, projects.length])
 
-  // Responsive state
   const [windowWidth, setWindowWidth] = useState(1200)
   const [mounted, setMounted] = useState(false)
 
@@ -51,7 +48,6 @@ export default function TimelineView({ projects }: Props) {
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
-  // Disable page scroll while Timeline is active
   useEffect(() => {
     document.body.style.overflow = "hidden"
     return () => {
@@ -65,36 +61,36 @@ export default function TimelineView({ projects }: Props) {
 
   // Adjust arc radius based on screen size
   const radius = isMobile ? 120 : (isTablet ? 220 : 300)
+  const labelRadius = radius + 20
 
-  // Compress point density along the arc (smaller = denser)
   const spreadFactor = isMobile ? 0.9 : (isTablet ? 0.78 : 0.7)
-
-  // Angle spacing determines how far apart the items are
   const angleSpacing = (isMobile ? Math.PI / 6 : Math.PI / 8) * spreadFactor
 
   const scrollHeight = `${Math.max(200, projects.length * 30)}vh`
-
   const xOffset = isMobile ? radius * 0.2 : radius * 0.5
 
-  // Calculate points for items and connector lines
   const points = projects.map((project, i) => {
     const distance = i - activeIndex
     const currentAngle = distance * angleSpacing
 
-    // X logic: bulge left
-    // x = (1 - cos) * radius - offset
-    // This makes the center item furthest to the left.
-    const x = (1 - Math.cos(currentAngle)) * radius - xOffset
+    // X logic: bulge right so it wraps around the right side of the image
+    const x = (Math.cos(currentAngle) - 1) * radius + xOffset
     const y = Math.sin(currentAngle) * radius
+    
+    // Label positioning
+    const textOffsetX = (labelRadius - radius) * Math.cos(currentAngle)
+    const textOffsetY = (labelRadius - radius) * Math.sin(currentAngle)
 
-    return { x, y, distance, currentAngle, isActive: i === activeIndex, project, index: i }
+    return { x, y, textOffsetX, textOffsetY, distance, currentAngle, isActive: i === activeIndex, project, index: i }
   })
 
-  // SVG Center Coordinates
+  // Center for the SVG
   const cx = isMobile ? 150 : (isTablet ? 300 : 400)
   const cy = isMobile ? 200 : (isTablet ? 300 : 400)
+  
+  const svgWidth = isMobile ? 300 : (isTablet ? 600 : 800)
+  const svgHeight = isMobile ? 400 : (isTablet ? 600 : 800)
 
-  // Prevent hydration mismatch but ensure containerRef is rendered for useScroll
   if (!mounted) {
     return (
       <div className="h-screen overflow-hidden w-full opacity-0">
@@ -119,16 +115,38 @@ export default function TimelineView({ projects }: Props) {
           }
         `}</style>
         <div className="relative w-full" style={{ height: scrollHeight }}>
-          <div className="border border-red-500 sticky top-0 h-screen w-full flex flex-col md:flex-row items-center justify-center md:justify-between overflow-hidden">
+          {/* SHARED PARENT CONTAINER */}
+          <div className="sticky top-0 relative w-full h-screen overflow-hidden flex items-center justify-center">
 
-            {/* LEFT/TOP: ACTIVE IMAGE PREVIEW */}
-            <div className={`absolute z-10 bg-zinc-900 flex items-center justify-center rounded-xs overflow-hidden shadow-sm transition-all duration-400 ${isMobile
-              ? 'top-[12%] left-1/2 -translate-x-1/2 w-[260px] aspect-[4/3]'
-              : 'left-[10%] md:left-[15%] lg:left-[20%] w-[320px] md:w-[550px] aspect-[16/9]'
-              }`}>
+            {/* IMAGE CONTAINER */}
+            <div
+              className="
+                relative
+                z-20
+                flex
+                items-center
+                justify-center
+                translate-x-0
+                translate-y-[-10%]
+                md:translate-y-0
+                md:translate-x-[-8%]
+                w-[82vw]
+                md:w-[60vw]
+                lg:w-[48vw]
+                max-w-[720px]
+                aspect-[4/3]
+                md:aspect-[16/9]
+                bg-zinc-900
+                rounded-xs
+                overflow-hidden
+                shadow-sm
+                transition-all
+                duration-500
+              "
+            >
               {projects.map((project, i) => {
                 const isActive = i === activeIndex
-                const coverSrc = getProjectCoverSrc(project, 800)
+                const coverSrc = getProjectCoverSrc(project, 1200)
 
                 if (!isActive) return null
 
@@ -151,7 +169,7 @@ export default function TimelineView({ projects }: Props) {
                           alt={project.coverImage?.alt || project.title}
                           fill
                           className="object-cover"
-                          sizes="(max-width: 768px) 260px, 400px"
+                          sizes="(max-width: 768px) 82vw, (max-width: 1024px) 60vw, 48vw"
                           priority
                         />
                       ) : (
@@ -162,37 +180,53 @@ export default function TimelineView({ projects }: Props) {
                         </div>
                       )}
                       {/* Subtle gradient overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-60" />
                     </Link>
                   </motion.div>
                 )
               })}
             </div>
 
-            {/* RIGHT/BOTTOM: TIMELINE ARC */}
-            <div className={`border border-red-500 absolute pointer-events-none flex items-center justify-center ${isMobile
-              ? 'top-[55%] left-1/2 -translate-x-1/2 w-[300px] h-[400px]'
-              : 'right-0 top-1/2 -translate-y-1/2 w-[600px] lg:w-[800px] h-[600px] lg:h-[800px]'
-              }`}>
-
+            {/* TIMELINE ARC */}
+            <div 
+              className="
+                absolute 
+                pointer-events-none 
+                flex 
+                items-center 
+                justify-center 
+                left-[-55%] 
+                bottom-[-25%] 
+                top-auto 
+                scale-[0.72] 
+                md:scale-100 
+                md:left-[-18%] 
+                md:top-1/2 
+                md:-translate-y-1/2 
+                md:bottom-auto
+              "
+              style={{
+                width: svgWidth,
+                height: svgHeight
+              }}
+            >
               {/* SINGLE CONTINUOUS ORBIT PATH */}
               <svg className="absolute inset-0 w-full h-full" style={{ zIndex: 0 }}>
                 {(() => {
-                  // Draw a single continuous arc from top to bottom
                   const maxAngle = Math.PI / 1.15
-                  const startX = cx + (1 - Math.cos(-maxAngle)) * radius - xOffset + 6
-                  const startY = cy + Math.sin(-maxAngle) * radius
-                  const endX = cx + (1 - Math.cos(maxAngle)) * radius - xOffset + 6
-                  const endY = cy + Math.sin(maxAngle) * radius
+                  const circleCx = cx - radius + xOffset
+                  const circleCy = cy
+                  const startX = circleCx + Math.cos(-maxAngle) * radius
+                  const startY = circleCy + Math.sin(-maxAngle) * radius
+                  const endX = circleCx + Math.cos(maxAngle) * radius
+                  const endY = circleCy + Math.sin(maxAngle) * radius
 
-                  // Angle span is > 180 degrees, so large arc flag is 1
-                  // Sweeping counter-clockwise from top to bottom while bulging left
-                  const pathData = `M ${startX} ${startY} A ${radius} ${radius} 0 1 0 ${endX} ${endY}`
+                  // Sweep flag = 1 (clockwise) draws the right side of the circle
+                  const pathData = `M ${startX} ${startY} A ${radius} ${radius} 0 1 1 ${endX} ${endY}`
 
                   return (
                     <path
                       d={pathData}
-                      // stroke="rgba(255,255,255,0.1)"
                       stroke={isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.06)"}
                       strokeWidth="1"
                       fill="none"
@@ -205,25 +239,19 @@ export default function TimelineView({ projects }: Props) {
               {points.map((pt, i) => {
                 if (Math.abs(pt.currentAngle) > Math.PI / 1.2) return null
 
-                // Calculate text offset from the dot (pushing outwards to the left)
-                const textOffsetX = -24 * Math.cos(pt.currentAngle)
-                const textOffsetY = 24 * Math.sin(pt.currentAngle)
-
-                // Depending on circle side, anchor the text differently
-                const isLeftOfDot = textOffsetX < 0
-
                 return (
                   <motion.div
                     key={pt.project._id}
                     className="absolute left-1/2 top-1/2 w-0 h-0"
                     style={{
-                      zIndex: pt.isActive ? 10 : 1,
+                      zIndex: pt.isActive ? 30 : 10,
+                      pointerEvents: 'auto',
                     }}
                     initial={false}
                     animate={{
                       x: pt.x,
                       y: pt.y,
-                      opacity: pt.isActive ? 1 : Math.max(0.1, 1 - Math.abs(pt.distance) * 0.4),
+                      opacity: pt.isActive ? 1 : Math.max(0.2, 1 - Math.abs(pt.distance) * 0.4),
                       scale: pt.isActive ? 1.05 : Math.max(0.65, 0.85 - Math.abs(pt.distance) * 0.06),
                     }}
                     transition={{
@@ -231,9 +259,9 @@ export default function TimelineView({ projects }: Props) {
                       ease: [0.22, 1, 0.36, 1]
                     }}
                   >
-                    {/* Dot (centered exactly on pt.x, pt.y) */}
+                    {/* Dot */}
                     <motion.div
-                      className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full"
+                      className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none"
                       animate={{
                         width: pt.isActive ? 12 : 8,
                         height: pt.isActive ? 12 : 8,
@@ -245,48 +273,45 @@ export default function TimelineView({ projects }: Props) {
                       transition={{ duration: 0.5 }}
                     />
 
-                    {/* Text Content - positioned along the arc, strictly horizontal */}
+                    {/* Clickable Label */}
                     <motion.div
                       className="absolute left-1/2 top-1/2"
                       initial={false}
                       animate={{
-                        x: textOffsetX,
-                        y: textOffsetY,
+                        x: pt.textOffsetX,
+                        y: pt.textOffsetY,
+                        rotate: pt.currentAngle * (180 / Math.PI),
                       }}
+                      style={{ originX: 0, originY: 0.5 }}
                       transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                     >
-                      <div
-                        className={`absolute top-1/2 -translate-y-1/2 flex flex-col justify-center gap-[2px] leading-[0.95] whitespace-nowrap ${isLeftOfDot ? 'right-0 items-end text-right' : 'left-0 items-start text-left'
-                          }`}
+                      <Link
+                        href={`/work/${pt.project.slug.current}`}
+                        className="group absolute top-1/2 -translate-y-1/2 left-0 flex flex-col justify-center gap-[2px] cursor-pointer transition-all duration-300 hover:translate-x-[4px] hover:opacity-100"
+                        style={{
+                          opacity: pt.isActive ? 1 : 0.6,
+                        }}
                       >
-                        <motion.span
-                          className="tracking-wider uppercase"
-                          animate={{
-                            color: pt.isActive
-                              ? (isDark ? "#ffffff" : "#18181b")
-                              : (isDark ? "#a1a1aa" : "#71717a"),
-                            fontWeight: pt.isActive ? 500 : 300,
-                            fontSize: pt.isActive ? (isMobile ? "11px" : "16px") : (isMobile ? "11px" : "14px"),
-                          }}
-                          transition={{ duration: 0.5 }}
+                        <span
+                          className={`uppercase break-words leading-[1.1] transition-colors duration-300 max-w-[180px] ${
+                            pt.isActive
+                              ? "text-black dark:text-white font-bold text-[11px] md:text-[14px]"
+                              : "text-neutral-400 dark:text-neutral-500 font-medium text-[11px] md:text-[14px]"
+                          }`}
                         >
                           {pt.project.title}
-                        </motion.span>
+                        </span>
 
-                        <motion.span
-                          className="tracking-[0.15em]"
-                          animate={{
-                            color: pt.isActive
-                              ? (isDark ? "#ffffff" : "#18181b")
-                              : (isDark ? "#a1a1aa" : "#71717a"),
-                            fontWeight: pt.isActive ? 400 : 300,
-                            fontSize: pt.isActive ? (isMobile ? "9px" : "11px") : (isMobile ? "9px" : "10px"),
-                          }}
-                          transition={{ duration: 0.5 }}
+                        <span
+                          className={`tracking-[0.15em] transition-colors duration-300 ${
+                            pt.isActive
+                              ? "text-black dark:text-white font-medium text-[9px] md:text-[11px]"
+                              : "text-neutral-400 dark:text-neutral-500 font-normal text-[9px] md:text-[11px]"
+                          }`}
                         >
                           {pt.project.year || "Unknown"}
-                        </motion.span>
-                      </div>
+                        </span>
+                      </Link>
                     </motion.div>
                   </motion.div>
                 )
