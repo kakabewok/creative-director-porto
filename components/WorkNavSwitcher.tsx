@@ -7,7 +7,7 @@ import { List, Grid2X2, Clock } from 'lucide-react'
 
 const MODES = [
   { href: '/work', id: 'list', icon: <List size={14} />, label: 'List' },
-  { href: '/work/spectrum', id: 'spectrum', icon: <Grid2X2 size={14} />, label: 'Spectrum' },
+  { href: '/work/spectrum', id: 'spectrum', icon: <Grid2X2 size={14} />, label: 'Grid' },
   { href: '/work/timeline', id: 'timeline', icon: <Clock size={14} />, label: 'Timeline' },
 ]
 
