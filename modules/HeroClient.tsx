@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 
 import { UserProfile } from '@/types'
@@ -11,6 +11,7 @@ interface Props {
 }
 
 export default function HeroClient({ user }: Props) {
+  const [mounted, setMounted] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
 
   const heroVideo =
@@ -22,14 +23,28 @@ export default function HeroClient({ user }: Props) {
     mockUser.heroPoster?.asset?.url
 
   useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  useEffect(() => {
+    if (!mounted) return
     const video = videoRef.current
     if (!video) return
-    video.muted = true
-    video.defaultMuted = true
-    video.play().catch(() => {
-      document.addEventListener('touchstart', () => video.play().catch(() => { }), { once: true })
-    })
-  }, [])
+
+    const attemptPlay = async () => {
+      try {
+        video.muted = true
+        video.defaultMuted = true
+        await video.play()
+      } catch (err) {
+        console.log("Autoplay blocked:", err)
+      }
+    }
+
+    attemptPlay()
+  }, [mounted])
+
+  if (!mounted) return null
 
   return (
     <>
@@ -73,8 +88,9 @@ export default function HeroClient({ user }: Props) {
           muted
           loop
           playsInline
-          preload="metadata"
+          preload="auto"
           poster={heroPoster}
+          controls={false}
           controlsList="nodownload nofullscreen noremoteplayback"
           disablePictureInPicture
           aria-hidden="true"
