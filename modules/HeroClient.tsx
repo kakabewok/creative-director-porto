@@ -20,6 +20,7 @@ export default function HeroClient({ name, tagline }: Props) {
     if (!video) return
 
     video.muted = true
+    video.defaultMuted = true  // ← ini kunci untuk Safari
 
     video.play().catch(() => {
       const handleInteraction = () => {
@@ -42,7 +43,7 @@ export default function HeroClient({ name, tagline }: Props) {
         aria-label="Hero section"
       >
         {/* Background video */}
-        <video
+        {/* <video
           ref={videoRef}
           className="absolute inset-0 w-full h-full object-cover opacity-60"
           autoPlay
@@ -55,6 +56,26 @@ export default function HeroClient({ name, tagline }: Props) {
           // @ts-ignore
           disableRemotePlayback
           x-webkit-airplay="deny"
+        > */}
+        <video
+          ref={(el) => {
+            if (el) {
+              el.muted = true          // set langsung ke DOM element
+              el.defaultMuted = true   // penting untuk Safari
+                ; (videoRef as any).current = el
+            }
+          }}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          aria-hidden="true"
+          disablePictureInPicture
+          // @ts-ignore
+          disableRemotePlayback
+          x-webkit-airplay="deny"
+          className="absolute inset-0 w-full h-full object-cover opacity-60"
         >
           <source
             src="https://res.cloudinary.com/demo/video/upload/elephants.webm"
