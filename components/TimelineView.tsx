@@ -117,7 +117,7 @@ export default function TimelineView({ projects }: Props) {
         `}</style>
         <div className="relative w-full" style={{ height: scrollHeight }}>
           {/* SHARED PARENT CONTAINER */}
-          <div className="sticky top-0 w-full h-screen overflow-hidden flex items-center justify-center z-60 pointer-events-none">
+          <div className="sticky top-0 w-full h-screen overflow-hidden flex items-center justify-center z-50 pointer-events-none">
 
             {/* IMAGE CONTAINER */}
             <div
