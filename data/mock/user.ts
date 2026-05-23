@@ -3,6 +3,8 @@ import type { UserProfile } from '@/types'
 export const mockUser: UserProfile = {
   _id: 'mock-user-1',
   name: 'Rangga Djoned',
+  heroVideo: { asset: { url: 'https://res.cloudinary.com/demo/video/upload/elephants.webm' } },
+  heroPoster: { asset: { url: '/mock/hero-poster.jpg' } },
   tagline: 'Creative Director',
   profileImage: {
     _type: 'image',

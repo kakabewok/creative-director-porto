@@ -28,6 +28,21 @@ export const userSchema = {
       ],
     },
     {
+      name: 'heroVideo',
+      title: 'Hero Opening Video',
+      type: 'file',
+      options: {
+        accept: 'video/mp4,video/webm',
+      },
+      description: 'Fullscreen looping hero background video',
+    },
+    {
+      name: 'heroPoster',
+      title: 'Hero Video Poster',
+      type: 'image',
+      options: { hotspot: true },
+    },
+    {
       name: 'tagline',
       title: 'Tagline',
       type: 'string',

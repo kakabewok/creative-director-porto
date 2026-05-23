@@ -7,6 +7,16 @@ export const userQuery = `*[_type == "user"][0]{
     asset,
     alt
   },
+  heroVideo{
+    asset->{
+      url
+    }
+  },
+  heroPoster{
+    asset->{
+      url
+    }
+  },
   tagline,
   aboutText,
   email,

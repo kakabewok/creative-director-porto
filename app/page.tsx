@@ -17,7 +17,7 @@ export default async function HomePage() {
     <>
     <Navbar />
     <main>
-      <HeroClient name={user.name} tagline={user.tagline ?? ''} />
+      <HeroClient user={user} />
       <WorkSection projects={projects} mode="overlay" view="list" />
     </main>
     </>

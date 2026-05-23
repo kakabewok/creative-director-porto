@@ -3,17 +3,23 @@
 import { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 
+import { UserProfile } from '@/types'
+import { mockUser } from '@/data/mock/user'
+
 interface Props {
-  name: string
-  tagline: string
+  user: UserProfile
 }
 
-export default function HeroClient({ name, tagline }: Props) {
+export default function HeroClient({ user }: Props) {
   const videoRef = useRef<HTMLVideoElement>(null)
 
-  // useEffect(() => {
-  //   videoRef.current?.play().catch(() => { })
-  // }, [])
+  const heroVideo =
+    user?.heroVideo?.asset?.url ||
+    mockUser.heroVideo?.asset?.url
+
+  const heroPoster =
+    user?.heroPoster?.asset?.url ||
+    mockUser.heroPoster?.asset?.url
 
   useEffect(() => {
     const video = videoRef.current
@@ -61,25 +67,24 @@ export default function HeroClient({ name, tagline }: Props) {
           />
         </video> */}
 
-        <video
-          ref={videoRef}
+        <motion.video
+          ref={videoRef as any}
           autoPlay
           muted
           loop
           playsInline
-          preload="auto"
+          preload="metadata"
+          poster={heroPoster}
+          controlsList="nodownload nofullscreen noremoteplayback"
+          disablePictureInPicture
           aria-hidden="true"
-          className="absolute inset-0 w-full h-full object-cover opacity-60"
+          className="absolute inset-0 w-full h-full object-cover object-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.6 }}
+          transition={{ duration: 1.2 }}
         >
-          <source
-            src="https://res.cloudinary.com/demo/video/upload/elephants.webm"
-            type="video/webm"
-          />
-          <source
-            src="https://res.cloudinary.com/demo/video/upload/elephants.mp4"
-            type="video/mp4"
-          />
-        </video>
+          <source src={heroVideo} type="video/mp4" />
+        </motion.video>
 
         {/* Vignette */}
         <div
@@ -95,17 +100,17 @@ export default function HeroClient({ name, tagline }: Props) {
             transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
             className="text-white text-3xl sm:text-5xl md:text-6xl font-bold tracking-normal mb-6 leading-none uppercase"
           >
-            {name}
+            {user?.name}
           </motion.h1>
 
-          {tagline && (
+          {user?.tagline && (
             <motion.p
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.55 }}
               className="text-white/40 text-xs sm:text-sm tracking-[0.22em] uppercase font-light max-w-xs sm:max-w-sm"
             >
-              {tagline}
+              {user?.tagline}
             </motion.p>
           )}
 

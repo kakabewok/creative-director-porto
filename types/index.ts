@@ -30,6 +30,8 @@ export interface UserProfile {
   _id: string
   name: string
   profileImage?: SanityImage
+  heroVideo?: { asset?: { url?: string } }
+  heroPoster?: { asset?: { url?: string } }
   tagline?: string
   aboutText?: string
   email?: string
