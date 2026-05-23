@@ -18,16 +18,10 @@ export default function HeroClient({ name, tagline }: Props) {
   useEffect(() => {
     const video = videoRef.current
     if (!video) return
-
     video.muted = true
-    video.defaultMuted = true  // ← ini kunci untuk Safari
-
+    video.defaultMuted = true
     video.play().catch(() => {
-      const handleInteraction = () => {
-        video.play().catch(() => { })
-      }
-      document.addEventListener('touchstart', handleInteraction, { once: true })
-      document.addEventListener('click', handleInteraction, { once: true })
+      document.addEventListener('touchstart', () => video.play().catch(() => { }), { once: true })
     })
   }, [])
 
@@ -56,25 +50,25 @@ export default function HeroClient({ name, tagline }: Props) {
           // @ts-ignore
           disableRemotePlayback
           x-webkit-airplay="deny"
-        > */}
+        >
+          <source
+            src="https://res.cloudinary.com/demo/video/upload/elephants.webm"
+            type="video/webm"
+          />
+          <source
+            src="https://res.cloudinary.com/demo/video/upload/elephants.mp4"
+            type="video/mp4"
+          />
+        </video> */}
+
         <video
-          ref={(el) => {
-            if (el) {
-              el.muted = true          // set langsung ke DOM element
-              el.defaultMuted = true   // penting untuk Safari
-                ; (videoRef as any).current = el
-            }
-          }}
+          ref={videoRef}
           autoPlay
           muted
           loop
           playsInline
           preload="auto"
           aria-hidden="true"
-          disablePictureInPicture
-          // @ts-ignore
-          disableRemotePlayback
-          x-webkit-airplay="deny"
           className="absolute inset-0 w-full h-full object-cover opacity-60"
         >
           <source
