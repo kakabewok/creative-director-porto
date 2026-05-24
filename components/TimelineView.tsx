@@ -175,10 +175,10 @@ export default function TimelineView({ projects }: Props) {
                 absolute left-6 top-0
                 md:relative md:left-auto md:top-auto
                 h-full
-                md:w-[200px] lg:w-[220px] shrink-0
-                [mask-image:linear-gradient(to_bottom,transparent_0%,black_16%,black_84%,transparent_100%)]
+                w-[150px] md:w-[200px] lg:w-[220px] shrink-0
+                mask-[linear-gradient(to_bottom,transparent_0%,black_16%,black_84%,transparent_100%)]
                 [-webkit-mask-image:linear-gradient(to_bottom,transparent_0%,black_16%,black_84%,transparent_100%)]
-                md:[mask-image:linear-gradient(to_bottom,transparent_0%,black_12%,black_88%,transparent_100%)]
+                md:mask-[linear-gradient(to_bottom,transparent_0%,black_12%,black_88%,transparent_100%)]
                 md:[-webkit-mask-image:linear-gradient(to_bottom,transparent_0%,black_12%,black_88%,transparent_100%)]
               "
             >
@@ -234,9 +234,9 @@ export default function TimelineView({ projects }: Props) {
                           }`}
                       >
                         <span
-                          className={`uppercase leading-[1] tracking-tight max-w-[140px] md:max-w-[220px] break-words transition-colors duration-300 ${pt.isActive
-                            ? "text-black dark:text-white font-bold text-[11px] md:text-[14px]"
-                            : "text-neutral-400 dark:text-neutral-500 font-medium text-[11px] md:text-[14px]"
+                          className={`uppercase leading-none tracking-tight max-w-[140px] md:max-w-[220px] wrap-break-words transition-colors duration-300 ${pt.isActive
+                            ? "text-black dark:text-white font-bold text-[16px] md:text-[19px]"
+                            : "text-neutral-300 dark:text-neutral-600 font-medium text-[11px] md:text-[14px]"
                             }`}
                         >
                           {pt.project.title}
