@@ -59,37 +59,19 @@ export default function TimelineView({ projects }: Props) {
   const isTablet = windowWidth >= 768 && windowWidth < 1024
   const isMobile = windowWidth < 768
 
-  // Adjust arc radius based on screen size (increased to feel taller/more vertical)
-  const radius = isMobile ? 220 : (isTablet ? 360 : 500)
-  const labelRadius = radius + 20
-
-  // Decrease spacing between points (nodes) along the arc
-  const angleSpacing = isMobile ? Math.PI / 16 : (isTablet ? Math.PI / 22 : Math.PI / 28)
+  // Vertical spacing between items
+  const itemSpacing = isMobile ? 65 : (isTablet ? 80 : 100)
 
   const scrollHeight = `${Math.max(200, projects.length * 30)}vh`
 
   const points = projects.map((project, i) => {
     const distance = i - activeIndex
-    const currentAngle = distance * angleSpacing
 
-    // Perfectly centered circular orbit
-    const x = Math.cos(currentAngle) * radius
-    const y = Math.sin(currentAngle) * radius
+    // Vertical positioning
+    const y = distance * itemSpacing
 
-    // Label positioning radially outwards
-    const textOffsetX = (labelRadius - radius) * Math.cos(currentAngle)
-    const textOffsetY = (labelRadius - radius) * Math.sin(currentAngle)
-
-    return { x, y, textOffsetX, textOffsetY, distance, currentAngle, isActive: i === activeIndex, project, index: i }
+    return { y, distance, isActive: i === activeIndex, project, index: i }
   })
-
-  // Container dimensions
-  const svgWidth = isMobile ? 500 : (isTablet ? 800 : 1100)
-  const svgHeight = isMobile ? 500 : (isTablet ? 800 : 1100)
-
-  // Center for the SVG
-  const cx = svgWidth / 2
-  const cy = svgHeight / 2
 
   if (!mounted) {
     return (
@@ -187,108 +169,66 @@ export default function TimelineView({ projects }: Props) {
               })}
             </div>
 
-            {/* TIMELINE ARC (left: position circle)*/}
+            {/* TIMELINE (Vertical) */}
             <div
               className="
                 absolute 
                 pointer-events-none 
-                flex 
-                items-center 
-                justify-center 
-                left-0 
-                translate-x-[-85%] 
-                md:left-[27%] lg:left-[28%] 
-                md:-translate-x-1/2 
-                top-1/2 
-                -translate-y-1/2 
+                left-6
+                md:left-[14vw] lg:left-[18vw]
+                top-0
+                h-full
               "
-              style={{
-                width: svgWidth,
-                height: svgHeight
-              }}
             >
-              {/* SINGLE CONTINUOUS ORBIT PATH */}
-              <svg className="absolute inset-0 w-full h-full" style={{ zIndex: 0 }}>
-                {(() => {
-                  const maxAngle = Math.PI / 2
-                  const startX = cx + Math.cos(-maxAngle) * radius
-                  const startY = cy + Math.sin(-maxAngle) * radius
-                  const endX = cx + Math.cos(maxAngle) * radius
-                  const endY = cy + Math.sin(maxAngle) * radius
+              {/* VERTICAL LINE */}
+              <div className="absolute left-[5.5px] top-0 h-full w-px bg-neutral-300 dark:bg-neutral-700" />
 
-                  // Sweep flag = 1 (clockwise) draws the right side of the circle
-                  const pathData = `M ${startX} ${startY} A ${radius} ${radius} 0 0 1 ${endX} ${endY}`
+              {/* TIMELINE NODES ANCHOR */}
+              <div className="absolute top-1/2 left-0 -translate-y-1/2">
+                {points.map((pt) => {
+                  // Hide items that are too far vertically to improve performance
+                  if (Math.abs(pt.distance) > 12) return null
 
                   return (
-                    <path
-                      d={pathData}
-                      stroke={isDark ? "rgba(255,255,255,0.2)" : "rgba(0,0,0,0.08)"}
-                      strokeWidth="1"
-                      fill="none"
-                    />
-                  )
-                })()}
-              </svg>
-
-              {/* TIMELINE NODES */}
-              {points.map((pt, i) => {
-                if (Math.abs(pt.currentAngle) > Math.PI / 2.05) return null
-
-                return (
-                  <motion.div
-                    key={pt.project._id}
-                    className="absolute left-1/2 top-1/2 w-0 h-0"
-                    style={{
-                      zIndex: pt.isActive ? 30 : 10,
-                      pointerEvents: 'auto',
-                    }}
-                    initial={false}
-                    animate={{
-                      x: pt.x,
-                      y: pt.y,
-                      opacity: pt.isActive ? 1 : Math.max(0.3, 1 - Math.abs(pt.distance) * 0.5), // opacity range in title = 0.3 - 1
-                      scale: pt.isActive ? 1.05 : Math.max(0.85, 0.90 - Math.abs(pt.distance) * 0.16), // scale title in range 0.65 - 0.85
-                    }}
-                    transition={{
-                      duration: 0.2,
-                      ease: [0.22, 1, 0.36, 1]
-                    }}
-                  >
-                    {/* Dot */}
                     <motion.div
-                      className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none"
-                      animate={{
-                        width: pt.isActive ? 12 : 8,
-                        height: pt.isActive ? 12 : 8,
-                        backgroundColor: pt.isActive
-                          ? (isDark ? "#ffffff" : "#18181b")
-                          : (isDark ? "#d4d4d8" : "#3f3f46"),
-                        boxShadow: pt.isActive ? "0 0 12px rgba(255,255,255,0.9)" : "none"
+                      key={pt.project._id}
+                      className="absolute left-0 top-0 pointer-events-auto flex items-start gap-3 md:gap-4 w-[140px] md:w-[200px] lg:w-[220px]"
+                      style={{
+                        zIndex: pt.isActive ? 30 : 10,
+                        // Center vertically so `y: 0` is exactly in the middle
+                        translateY: '-50%'
                       }}
-                      transition={{ duration: 0.5 }}
-                    />
-
-                    {/* Clickable Label */}
-                    <motion.div
-                      className="absolute left-1/2 top-1/2 pointer-events-auto"
                       initial={false}
                       animate={{
-                        x: pt.textOffsetX,
-                        y: pt.textOffsetY,
-                        rotate: pt.currentAngle * (180 / Math.PI),
+                        y: pt.y,
+                        opacity: pt.isActive ? 1 : 0.6,
+                        x: pt.isActive ? 0 : -4,
                       }}
-                      style={{ originX: 0, originY: 0.5 }}
-                      transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                      transition={{
+                        duration: 0.35,
+                        ease: "easeOut",
+                      }}
                     >
+                      {/* DOT */}
+                      <motion.div
+                        className="mt-1.5 h-3 w-3 shrink-0 rounded-full bg-black dark:bg-white"
+                        initial={false}
+                        animate={{
+                          scale: pt.isActive ? 1 : 0.6,
+                        }}
+                        transition={{ duration: 0.35, ease: "easeOut" }}
+                      />
+
+                      {/* Clickable Label */}
                       <Link
                         href={`/work/${pt.project.slug.current}`}
-                        className={`group absolute top-1/2 -translate-y-1/2 left-0 flex flex-col justify-center gap-[2px] cursor-pointer transition-all duration-300 hover:translate-x-[4px] hover:opacity-100 ${pt.isActive ? "opacity-100" : "opacity-95"
+                        className={`group flex flex-col justify-center gap-[2px] cursor-pointer transition-all duration-300 hover:translate-x-1 hover:opacity-100 ${pt.isActive ? "opacity-100" : "opacity-95"
                           }`}
                       >
                         <span
-                          className={`uppercase leading-[1.1] whitespace-nowrap max-w-[380px] transition-colors duration-300 ${pt.isActive
+                          className={`uppercase leading-[1] tracking-tight max-w-[140px] md:max-w-[220px] break-words transition-colors duration-300 ${pt.isActive
                             ? "text-black dark:text-white font-bold text-[11px] md:text-[14px]"
-                            : "text-neutral-600 dark:text-neutral-300 font-medium text-[11px] md:text-[14px]"
+                            : "text-neutral-400 dark:text-neutral-500 font-medium text-[11px] md:text-[14px]"
                             }`}
                         >
                           {pt.project.title}
@@ -297,16 +237,16 @@ export default function TimelineView({ projects }: Props) {
                         <span
                           className={`tracking-[0.15em] transition-colors duration-300 ${pt.isActive
                             ? "text-black dark:text-white font-medium text-[9px] md:text-[11px]"
-                            : "text-neutral-600 dark:text-neutral-400 font-normal text-[9px] md:text-[11px]"
+                            : "text-neutral-400 dark:text-neutral-500 font-normal text-[9px] md:text-[11px]"
                             }`}
                         >
                           {pt.project.year || "Unknown"}
                         </span>
                       </Link>
                     </motion.div>
-                  </motion.div>
-                )
-              })}
+                  )
+                })}
+              </div>
             </div>
           </div>
         </div>
