@@ -99,7 +99,7 @@ export default function TimelineView({ projects }: Props) {
         `}</style>
         <div className="relative w-full" style={{ height: scrollHeight }}>
           {/* SHARED PARENT CONTAINER */}
-          <div className="sticky top-0 w-full h-screen overflow-hidden flex items-center justify-center z-50 pointer-events-none">
+          <div className="sticky top-0 w-full h-screen overflow-hidden flex md:flex-row-reverse items-center justify-center z-50 pointer-events-none md:gap-16 lg:gap-32">
 
             {/* IMAGE CONTAINER */}
             <div
@@ -111,7 +111,6 @@ export default function TimelineView({ projects }: Props) {
                 pointer-events-auto
                 absolute right-5 top-1/2 -translate-y-1/2
                 md:relative md:right-auto md:top-auto md:translate-y-0
-                md:translate-x-[-5vw] lg:translate-x-[-10vw]
                 w-[130px]
                 md:w-[35vw]
                 lg:w-[26vw]
@@ -172,16 +171,26 @@ export default function TimelineView({ projects }: Props) {
             {/* TIMELINE (Vertical) */}
             <div
               className="
-                absolute 
                 pointer-events-none 
-                left-6
-                md:left-[14vw] lg:left-[18vw]
-                top-0
+                absolute left-6 top-0
+                md:relative md:left-auto md:top-auto
                 h-full
+                md:w-[200px] lg:w-[220px] shrink-0
+                [mask-image:linear-gradient(to_bottom,transparent_0%,black_16%,black_84%,transparent_100%)]
+                [-webkit-mask-image:linear-gradient(to_bottom,transparent_0%,black_16%,black_84%,transparent_100%)]
+                md:[mask-image:linear-gradient(to_bottom,transparent_0%,black_12%,black_88%,transparent_100%)]
+                md:[-webkit-mask-image:linear-gradient(to_bottom,transparent_0%,black_12%,black_88%,transparent_100%)]
               "
             >
               {/* VERTICAL LINE */}
-              <div className="absolute left-[5.5px] top-0 h-full w-px bg-neutral-300 dark:bg-neutral-700" />
+              <div
+                className="
+                  absolute left-[5.5px] top-0 h-full w-px 
+                  bg-gradient-to-b 
+                  from-transparent via-neutral-300 to-transparent 
+                  dark:from-transparent dark:via-neutral-700 dark:to-transparent
+                "
+              />
 
               {/* TIMELINE NODES ANCHOR */}
               <div className="absolute top-1/2 left-0 -translate-y-1/2">
@@ -202,7 +211,6 @@ export default function TimelineView({ projects }: Props) {
                       animate={{
                         y: pt.y,
                         opacity: pt.isActive ? 1 : 0.6,
-                        x: pt.isActive ? 0 : -4,
                       }}
                       transition={{
                         duration: 0.35,
