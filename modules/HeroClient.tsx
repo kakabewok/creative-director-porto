@@ -5,6 +5,7 @@ import { motion } from 'framer-motion'
 
 import { UserProfile } from '@/types'
 import { mockUser } from '@/data/mock/user'
+import Loading from '@/components/Loading'
 
 interface Props {
   user: UserProfile
@@ -44,7 +45,11 @@ export default function HeroClient({ user }: Props) {
     attemptPlay()
   }, [mounted])
 
-  if (!mounted) return null
+  if (!mounted) return (
+    <div className='h-screen bg-black'>
+      {/* <Loading /> */}
+    </div>
+  )
 
   return (
     <>
