@@ -1,0 +1,25 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: porto_app
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      # Sanity env variables
+      - NEXT_PUBLIC_SANITY_PROJECT_ID=${SANITY_PROJECT_ID}
+      - NEXT_PUBLIC_SANITY_DATASET=${SANITY_DATASET}
+      - SANITY_API_TOKEN=${SANITY_API_TOKEN}
+    networks:
+      - traefik_network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.porto.rule=Host(`ranggadjoned.com`) || Host(`www.ranggadjoned.com`)"
+      - "traefik.http.routers.porto.entrypoints=websecure"
+      - "traefik.http.routers.porto.tls.certresolver=letsencrypt"
+      - "traefik.http.services.porto.loadbalancer.server.port=3000"
+
+networks:
+  traefik_network:
+    external: true
