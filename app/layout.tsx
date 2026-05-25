@@ -1,10 +1,6 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
-import Navbar from '@/components/Navbar'
-import PageTransition from '@/components/PageTransition'
-import ThemeToggle from '@/components/ThemeToggle'
-import ResponsiveNavbar from '@/components/ResponsiveNavbar'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -18,8 +14,8 @@ export const metadata: Metadata = {
     template: '%s | Rangga Djoned',
   },
   description:
-    'Portfolio of Rangga Djoned — Creative Director based in Jakarta, Indonesia. Videography, Branding, Photography, Digital Campaigns.',
-  keywords: ['Creative Director', 'Videography', 'Branding', 'Photography', 'Jakarta'],
+    'Portfolio of Rangga Djoned - Creative Director based in Jakarta, Indonesia.',
+  keywords: ['Creative Director', 'Videography', 'Branding', 'Photography', 'Jakarta', 'Event', 'Rangga Djoned'],
   authors: [{ name: 'Rangga Djoned' }],
   openGraph: {
     type: 'website',
@@ -48,11 +44,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body className="antialiased min-h-full">
-        <ResponsiveNavbar />
-        <ThemeToggle />
-        <PageTransition>
-          {children}
-        </PageTransition>
+        {children}
       </body>
     </html>
   )

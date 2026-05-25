@@ -136,7 +136,7 @@ function SearchClientInner({ projects }: Props) {
           className="flex-1 px-2 md:px-3 lg:px-4 pb-24"
         >
           {results.length === 0 ? (
-            <p className="text-white/20 text-sm tracking-widest text-center py-16">
+            <p className="text-slate-300 dark:text-white/30 text-sm tracking-widest text-center py-16">
               No results found.
             </p>
           ) : (
