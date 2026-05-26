@@ -26,10 +26,10 @@ const SOCIAL_ICONS: Record<string, React.ReactNode> = {
 
 export default async function InformationPage() {
   const user = await fetchUser()
-  
+
   let profileSrc = ''
   if (user.profileImage?.secure_url) {
-    profileSrc = optimizeCloudinaryUrl(user.profileImage.secure_url, 800)
+    profileSrc = optimizeCloudinaryUrl(user.profileImage.secure_url)
   }
 
   return (
@@ -48,7 +48,7 @@ export default async function InformationPage() {
                   {profileSrc ? (
                     <Image
                       src={profileSrc}
-                      alt={user.profileImage?.alt ?? `${user.name} portrait`}
+                      alt={`${user.name} portrait`}
                       fill
                       priority
                       className="object-cover"
@@ -57,7 +57,7 @@ export default async function InformationPage() {
                   ) : (
                     <Image
                       src={profileSrc}
-                      alt={user.profileImage?.alt ?? `${user.name} portrait`}
+                      alt={`${user.name} portrait`}
                       fill
                       priority
                       className="object-cover"
