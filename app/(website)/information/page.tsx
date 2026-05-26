@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
-import { fetchUser } from '@/lib/fetchData'
-import { urlForImage } from '@/sanity/image'
+import { fetchUser } from '@/lib/sanity/fetchers'
+import { optimizeCloudinaryUrl } from '@/lib/media'
 import InformationNav from '@/modules/InformationNav'
 import {
   SiInstagram,
@@ -26,7 +26,11 @@ const SOCIAL_ICONS: Record<string, React.ReactNode> = {
 
 export default async function InformationPage() {
   const user = await fetchUser()
-  const profileSrc = urlForImage(user.profileImage, 800)
+  
+  let profileSrc = ''
+  if (user.profileImage?.secure_url) {
+    profileSrc = optimizeCloudinaryUrl(user.profileImage.secure_url, 800)
+  }
 
   return (
     <>
@@ -52,7 +56,7 @@ export default async function InformationPage() {
                     />
                   ) : (
                     <Image
-                      src={user.profileImage?.asset?._ref ?? ''}
+                      src={profileSrc}
                       alt={user.profileImage?.alt ?? `${user.name} portrait`}
                       fill
                       priority

@@ -4,8 +4,10 @@ export const userQuery = `*[_type == "user"][0]{
   _id,
   name,
   profileImage{
-    asset,
-    alt
+    secure_url,
+    public_id,
+    width,
+    height
   },
   heroVideo{
     asset->{
@@ -13,9 +15,10 @@ export const userQuery = `*[_type == "user"][0]{
     }
   },
   heroPoster{
-    asset->{
-      url
-    }
+    secure_url,
+    public_id,
+    width,
+    height
   },
   tagline,
   aboutText,
@@ -44,16 +47,20 @@ export const projectsQuery = `*[_type == "project"] | order(order asc, _createdA
   category,
   year,
   coverImage{
-    asset,
-    alt
+    secure_url,
+    public_id,
+    width,
+    height
   },
   coverVideoUrl,
   gallery[]{
     _key,
     type,
     image{
-      asset,
-      alt
+      secure_url,
+      public_id,
+      width,
+      height
     },
     videoUrl,
     caption
@@ -71,16 +78,20 @@ export const projectBySlugQuery = `*[_type == "project" && slug.current == $slug
   category,
   year,
   coverImage{
-    asset,
-    alt
+    secure_url,
+    public_id,
+    width,
+    height
   },
   coverVideoUrl,
   gallery[]{
     _key,
     type,
     image{
-      asset,
-      alt
+      secure_url,
+      public_id,
+      width,
+      height
     },
     videoUrl,
     caption

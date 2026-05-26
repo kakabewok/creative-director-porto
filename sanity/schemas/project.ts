@@ -1,6 +1,6 @@
 // sanity/schemas/project.ts
 // ─────────────────────────────────────────────────
-// Project schema — matches Project TypeScript type exactly.
+// Project schema — uses cloudinaryImage for all image fields.
 
 export const projectSchema = {
   name: 'project',
@@ -93,17 +93,8 @@ export const projectSchema = {
     {
       name: 'coverImage',
       title: 'Cover Image',
-      type: 'image',
-      options: { hotspot: true },
+      type: 'cloudinary.asset',
       validation: (Rule: any) => Rule.required(),
-      fields: [
-        {
-          name: 'alt',
-          title: 'Alt Text',
-          type: 'string',
-          description: 'Describe the image for SEO.',
-        },
-      ],
     },
     {
       name: 'coverVideoUrl',
@@ -137,17 +128,9 @@ export const projectSchema = {
             {
               name: 'image',
               title: 'Image',
-              type: 'image',
-              options: { hotspot: true },
+              type: 'cloudinary.asset',
               hidden: ({ parent }: { parent: { type?: string } }) =>
                 parent?.type !== 'image',
-              fields: [
-                {
-                  name: 'alt',
-                  title: 'Alt Text',
-                  type: 'string',
-                },
-              ],
             },
             {
               name: 'videoUrl',
@@ -164,9 +147,9 @@ export const projectSchema = {
             },
           ],
           preview: {
-            select: { title: 'caption', media: 'image', subtitle: 'type' },
-            prepare({ title, media, subtitle }: any) {
-              return { title: title ?? subtitle, media }
+            select: { title: 'caption', subtitle: 'type' },
+            prepare({ title, subtitle }: any) {
+              return { title: title ?? subtitle }
             },
           },
         },
@@ -184,7 +167,6 @@ export const projectSchema = {
     select: {
       title: 'title',
       subtitle: 'category',
-      media: 'coverImage',
     },
   },
 }

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { fetchProjects } from '@/lib/fetchData'
+import { fetchProjects } from '@/lib/sanity/fetchers'
 import WorkListView from '@/modules/WorkListView'
 
 export const metadata: Metadata = {

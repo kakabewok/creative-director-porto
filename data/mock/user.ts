@@ -4,15 +4,11 @@ export const mockUser: UserProfile = {
   _id: 'mock-user-1',
   name: 'Rangga Djoned',
   heroVideo: { asset: { url: 'https://res.cloudinary.com/demo/video/upload/elephants.mp4' } },
-  heroPoster: { asset: { url: '/mock/hero-poster.jpg' } },
+  heroPoster: { secure_url: '/mock/hero-poster.jpg', public_id: 'mock1' },
   tagline: 'Creative Director',
   profileImage: {
-    _type: 'image',
-    asset: {
-      _ref: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80',
-      _type: 'reference',
-    },
-    alt: 'Rangga Djoned Portrait',
+    secure_url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80',
+    public_id: 'mock2',
   },
   aboutText: `I am a creative director and visual storyteller based in Jakarta, Indonesia. My work spans across videography, branding, photography, and digital campaigns — always with a focus on atmosphere, narrative, and aesthetic precision.
 

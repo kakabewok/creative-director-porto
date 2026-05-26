@@ -147,7 +147,7 @@ export default function TimelineView({ projects }: Props) {
                       {coverSrc ? (
                         <Image
                           src={coverSrc}
-                          alt={project.coverImage?.alt || project.title}
+                          alt={project.title}
                           fill
                           className="object-cover"
                           sizes="(max-width: 768px) 82vw, (max-width: 1024px) 60vw, 48vw"

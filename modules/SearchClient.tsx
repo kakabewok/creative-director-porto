@@ -166,7 +166,7 @@ function SearchClientInner({ projects }: Props) {
                         {src ? (
                           <Image
                             src={src}
-                            alt={project.coverImage?.alt ?? project.title}
+                            alt={project.title}
                             fill
                             sizes="(max-width:768px) 100vw, 33vw"
                             className="object-cover transition-transform duration-400 group-hover:scale-105"

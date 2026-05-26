@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { fetchProjects } from '@/lib/fetchData'
+import { fetchProjects } from '@/lib/sanity/fetchers'
 import SearchClient from '@/modules/SearchClient'
 import Navbar from '@/components/Navbar'
 

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { fetchProjectBySlug, fetchProjects } from '@/lib/fetchData'
+import { fetchProjectBySlug, fetchProjects } from '@/lib/sanity/fetchers'
 import ProjectDetailClient from '@/modules/ProjectDetailClient'
 
 export async function generateStaticParams() {

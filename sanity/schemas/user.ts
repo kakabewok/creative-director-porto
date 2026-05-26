@@ -1,6 +1,8 @@
 // sanity/schemas/user.ts
 // ─────────────────────────────────────────────────
-// User profile schema — matches UserProfile TypeScript type exactly.
+// User profile schema — uses cloudinaryImage for image fields.
+
+import { cloudinaryAssetSourcePlugin } from "sanity-plugin-cloudinary";
 
 export const userSchema = {
   name: 'user',
@@ -16,31 +18,28 @@ export const userSchema = {
     {
       name: 'profileImage',
       title: 'Profile Image',
-      type: 'image',
-      options: { hotspot: true },
-      fields: [
-        {
-          name: 'alt',
-          title: 'Alt Text',
-          type: 'string',
-          description: 'Describe the image for SEO and accessibility.',
-        },
-      ],
+      type: 'cloudinary.asset',
+      options: {
+        sources: [cloudinaryAssetSourcePlugin],
+        cloudinary: {
+          folder: 'portofolio/profile',
+          uploadPreset: 'porto-rd-preset' // Otomatis masuk folder sesuai settingan preset di web Cloudinary
+        }
+      }
     },
     {
-      name: 'heroVideo',
-      title: 'Hero Opening Video',
-      type: 'file',
-      options: {
-        accept: 'video/mp4,video/webm',
-      },
-      description: 'Fullscreen looping hero background video',
+      name: 'videoHero',
+      title: 'Video Hero Singkat (Cloudinary)',
+      type: 'cloudinary.asset', // Di plugin Cloudinary, tipe video juga menggunakan 'image' atau 'cloudinary.asset'
+      // options: {
+      //   sources: [cloudinaryAssetSourcePlugin],
+      // },
+      description: 'Upload video singkat tanpa suara (durasi 5-10 detik) untuk background hero.'
     },
     {
       name: 'heroPoster',
       title: 'Hero Video Poster',
-      type: 'image',
-      options: { hotspot: true },
+      type: 'cloudinary.asset',
     },
     {
       name: 'tagline',

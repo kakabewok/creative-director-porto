@@ -2,7 +2,7 @@ import { forwardRef, useImperativeHandle, useState, useCallback, useEffect } fro
 import Image from 'next/image'
 import useEmblaCarousel from 'embla-carousel-react'
 import type { GalleryItem } from '@/types'
-import { urlForImage } from '@/sanity/image'
+import { optimizeCloudinaryUrl } from '@/lib/media'
 import { toEmbedUrl, getYoutubeThumbnail } from '@/lib/mediaUtils'
 
 export type CarouselMediaItem = GalleryItem & { resolvedUrl?: string }
@@ -21,10 +21,11 @@ export interface MediaCarouselHandle {
 
 function resolveImageSrc(item: CarouselMediaItem): string {
   if (item.resolvedUrl) return item.resolvedUrl
-  if (item.image) {
-    const sanityUrl = urlForImage(item.image, 1600)
-    if (sanityUrl) return sanityUrl
+  
+  if (item.image?.secure_url) {
+    return optimizeCloudinaryUrl(item.image.secure_url)
   }
+  
   return '/mock/project-placeholder.jpg'
 }
 
@@ -141,7 +142,7 @@ const MediaCarousel = forwardRef<MediaCarouselHandle, Props>(({ items, onIndexCh
               {item.type === 'image' ? (
                 <Image
                   src={imgSrc}
-                  alt={item.image?.alt ?? item.caption ?? 'Gallery image'}
+                  alt={item.caption || "Gallery item"}
                   fill
                   className="object-cover"
                   priority={index === 0}

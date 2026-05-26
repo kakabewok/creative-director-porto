@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { fetchUser, fetchProjects } from '@/lib/fetchData'
+import { fetchUser, fetchProjects } from '@/lib/sanity/fetchers'
 import HeroClient from '@/modules/HeroClient'
 import WorkSection from '@/modules/WorkSection'
 import Navbar from '@/components/Navbar'

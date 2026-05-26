@@ -20,8 +20,8 @@ export default function HeroClient({ user }: Props) {
     mockUser.heroVideo?.asset?.url
 
   const heroPoster =
-    user?.heroPoster?.asset?.url ||
-    mockUser.heroPoster?.asset?.url
+    user?.heroPoster?.secure_url ||
+    mockUser.heroPoster?.secure_url
 
   useEffect(() => {
     setMounted(true)

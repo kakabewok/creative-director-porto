@@ -142,11 +142,11 @@ function buildMediaItems(project: Project): CarouselMediaItem[] {
   })
 
   // 2. Cover video (optional)
-  if (project.coverVideoUrl) {
+  if (project.coverVideo) {
     items.push({
       _key: '__cover-vid',
       type: 'video',
-      videoUrl: project.coverVideoUrl,
+      videoUrl: project.coverVideo,
       caption: project.title,
     })
   }

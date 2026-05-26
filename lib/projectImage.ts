@@ -1,20 +1,22 @@
-import { urlForImage } from '@/sanity/image'
+import { optimizeCloudinaryUrl } from '@/lib/media'
 import { PLACEHOLDER_IMAGES } from '@/data/mock/projects'
 import type { Project } from '@/types'
 import { getYoutubeThumbnail } from '@/lib/mediaUtils'
 
 /**
  * Returns the best available cover image URL for a project:
- * 1. Real Sanity CDN URL (when valid Sanity asset ref)
+ * 1. Cloudinary optimized URL
  * 2. Video thumbnail (if available)
  * 3. Local mock placeholder image
  */
-export function getProjectCoverSrc(project: Project, width = 1200): string {
-  const sanityUrl = urlForImage(project.coverImage, width)
-  if (sanityUrl) return sanityUrl
+export function getProjectCoverSrc(project: Project, width = 1600): string {
+  // Direct Cloudinary URL from our cloudinaryAsset object
+  if (project.coverImage?.secure_url) {
+    return optimizeCloudinaryUrl(project.coverImage.secure_url)
+  }
 
-  if (project.coverVideoUrl) {
-    const thumb = getYoutubeThumbnail(project.coverVideoUrl)
+  if (project.coverVideo) {
+    const thumb = getYoutubeThumbnail(project.coverVideo)
     if (thumb) return thumb
   }
 
