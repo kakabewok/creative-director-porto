@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { Suspense } from 'react'
 import { fetchProjects } from '@/lib/sanity/fetchers'
 import WorkSpectrumView from '@/modules/WorkSpectrumView'
 
@@ -14,7 +15,9 @@ export default async function SpectrumPage() {
     <main className="min-h-screen bg-white dark:bg-black" aria-label="Work spectrum view">
       <h1 className="sr-only">Work — Spectrum</h1>
       <section id="work" aria-label="Selected work" className="pb-32 min-h-screen">
-        <WorkSpectrumView projects={projects} />
+        <Suspense fallback={<div className="h-screen" />}>
+          <WorkSpectrumView projects={projects} />
+        </Suspense>
       </section>
     </main>
   )

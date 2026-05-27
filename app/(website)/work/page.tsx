@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { Suspense } from 'react'
 import { fetchProjects } from '@/lib/sanity/fetchers'
 import WorkListView from '@/modules/WorkListView'
 
@@ -14,7 +15,9 @@ export default async function WorkPage() {
     <main className="min-h-screen bg-white dark:bg-black" aria-label="Work page">
       <h1 className="sr-only">Work</h1>
       <section id="work" aria-label="Selected work" className="pb-32 min-h-screen">
-        <WorkListView projects={projects} />
+        <Suspense fallback={<div className="h-screen" />}>
+          <WorkListView projects={projects} />
+        </Suspense>
       </section>
     </main>
   )
