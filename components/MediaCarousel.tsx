@@ -4,6 +4,7 @@ import useEmblaCarousel from 'embla-carousel-react'
 import type { GalleryItem } from '@/types'
 import { optimizeCloudinaryUrl } from '@/lib/media'
 import { toEmbedUrl, getYoutubeThumbnail } from '@/lib/mediaUtils'
+import ReactPlayer from 'react-player'
 
 export type CarouselMediaItem = GalleryItem & { resolvedUrl?: string }
 
@@ -59,17 +60,28 @@ function VideoSlide({ videoUrl, caption, isActive }: { videoUrl: string, caption
             </div>
           </div>
         ) : (
-          <>
-            <iframe
-              src={`${toEmbedUrl(videoUrl)}&autoplay=1`}
-              className="absolute -inset-px w-[calc(100%+2px)] h-[calc(100%+2px)] border-0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              title={caption ?? 'Embedded video'}
-            />
-            {/* Subtle bottom gradient to blend YouTube controls */}
-            <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black/80 to-transparent pointer-events-none" />
-          </>
+          (() => {
+            const Player = ReactPlayer as any;
+            return (
+              <>
+                <Player
+                  url={videoUrl}
+                  width="100%"
+                  height="100%"
+                  playing={true}
+                  controls={true}
+                  config={{
+                    youtube: {
+                      playerVars: { modestbranding: 1, rel: 0, showinfo: 0 }
+                    } as any
+                  }}
+                  className="absolute inset-0"
+                />
+                {/* Subtle bottom gradient to blend YouTube controls */}
+                <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black/80 to-transparent pointer-events-none" />
+              </>
+            );
+          })()
         )}
       </div>
     </div>

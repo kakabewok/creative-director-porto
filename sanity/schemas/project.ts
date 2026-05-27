@@ -1,11 +1,11 @@
-// sanity/schemas/project.ts
-// ─────────────────────────────────────────────────
-// Project schema — uses cloudinaryImage for all image fields.
-
 export const projectSchema = {
   name: 'project',
   title: 'Project',
   type: 'document',
+  groups: [
+    { name: 'basic', title: 'Basic Info', default: true },
+    { name: 'media', title: 'Media' },
+  ],
   orderings: [
     {
       title: 'Order Priority',
@@ -18,6 +18,7 @@ export const projectSchema = {
       name: 'order',
       title: 'Order Priority',
       type: 'number',
+      group: 'basic',
       description: 'Lower number = appears first. Leave blank to sort by creation date.',
       initialValue: 99,
     },
@@ -25,12 +26,14 @@ export const projectSchema = {
       name: 'title',
       title: 'Project Title',
       type: 'string',
+      group: 'basic',
       validation: (Rule: any) => Rule.required(),
     },
     {
       name: 'slug',
       title: 'Slug',
       type: 'slug',
+      group: 'basic',
       options: { source: 'title', maxLength: 96 },
       validation: (Rule: any) => Rule.required(),
     },
@@ -38,6 +41,7 @@ export const projectSchema = {
       name: 'description',
       title: 'Project Description',
       type: 'array',
+      group: 'basic',
       of: [
         {
           type: 'block',
@@ -68,12 +72,14 @@ export const projectSchema = {
       name: 'role',
       title: 'Your Role',
       type: 'string',
+      group: 'basic',
       description: 'e.g. Creative Director, Art Director, Photographer',
     },
     {
       name: 'category',
       title: 'Category',
       type: 'string',
+      group: 'basic',
       options: {
         list: [
           { title: 'Videography', value: 'Videography' },
@@ -88,24 +94,28 @@ export const projectSchema = {
       name: 'year',
       title: 'Year',
       type: 'string',
+      group: 'basic',
       description: 'e.g. 2024',
     },
     {
       name: 'coverImage',
       title: 'Cover Image',
       type: 'cloudinary.asset',
+      group: 'media',
       validation: (Rule: any) => Rule.required(),
     },
     {
       name: 'coverVideoUrl',
       title: 'Cover Video URL',
       type: 'url',
+      group: 'media',
       description: 'Optional YouTube or Vimeo URL used as the hero video.',
     },
     {
       name: 'gallery',
       title: 'Project Gallery',
       type: 'array',
+      group: 'media',
       of: [
         {
           type: 'object',
@@ -159,6 +169,7 @@ export const projectSchema = {
       name: 'featured',
       title: 'Featured Project',
       type: 'boolean',
+      group: 'basic',
       description: 'Mark as featured to highlight this project.',
       initialValue: false,
     },

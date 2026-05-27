@@ -8,17 +8,23 @@ export const userSchema = {
   name: 'user',
   title: 'User Profile',
   type: 'document',
+  groups: [
+    { name: 'basic', title: 'Basic Info', default: true },
+    { name: 'media', title: 'Media' },
+  ],
   fields: [
     {
       name: 'name',
       title: 'Name',
       type: 'string',
+      group: 'basic',
       validation: (Rule: any) => Rule.required(),
     },
     {
       name: 'profileImage',
       title: 'Profile Image',
       type: 'cloudinary.asset',
+      group: 'media',
       options: {
         sources: [cloudinaryAssetSourcePlugin],
         cloudinary: {
@@ -31,6 +37,7 @@ export const userSchema = {
       name: 'videoHero',
       title: 'Video Hero Singkat (Cloudinary)',
       type: 'cloudinary.asset', // Di plugin Cloudinary, tipe video juga menggunakan 'image' atau 'cloudinary.asset'
+      group: 'media',
       // options: {
       //   sources: [cloudinaryAssetSourcePlugin],
       // },
@@ -40,11 +47,13 @@ export const userSchema = {
       name: 'heroPoster',
       title: 'Hero Video Poster',
       type: 'cloudinary.asset',
+      group: 'media',
     },
     {
       name: 'tagline',
       title: 'Tagline',
       type: 'string',
+      group: 'basic',
       description: 'Short slogan that appears under your name on the homepage.',
     },
     {
@@ -52,17 +61,20 @@ export const userSchema = {
       title: 'About Text',
       type: 'text',
       rows: 6,
+      group: 'basic',
       description: 'Biography / about text. Use double line breaks for paragraphs.',
     },
     {
       name: 'email',
       title: 'Email',
       type: 'string',
+      group: 'basic',
     },
     {
       name: 'socialLinks',
       title: 'Social Links',
       type: 'array',
+      group: 'basic',
       of: [
         {
           type: 'object',
@@ -86,6 +98,7 @@ export const userSchema = {
       name: 'experienceHighlights',
       title: 'Experience Highlights',
       type: 'array',
+      group: 'basic',
       of: [
         {
           type: 'object',

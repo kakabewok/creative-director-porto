@@ -2,6 +2,7 @@ import { defineConfig } from 'sanity';
 import { structureTool } from 'sanity/structure';
 import { visionTool } from '@sanity/vision';
 import { GuideWidget } from './components/studio/GuideWidget'
+import { BulkDeleteWidget } from './components/studio/BulkDeleteWidget'
 import { projectSchema } from './sanity/schemas/project';
 import { userSchema } from './sanity/schemas/user';
 import { cloudinarySchemaPlugin } from 'sanity-plugin-cloudinary'
@@ -18,6 +19,11 @@ export default defineConfig({
                 {
                     name: 'guide-widget',
                     component: GuideWidget,
+                    layout: { width: 'full' }
+                },
+                {
+                    name: 'bulk-delete-projects',
+                    component: BulkDeleteWidget,
                     layout: { width: 'full' }
                 },
                 documentListWidget({

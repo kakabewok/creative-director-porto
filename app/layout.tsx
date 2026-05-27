@@ -8,20 +8,33 @@ const inter = Inter({
   display: 'swap',
 })
 
-export const metadata: Metadata = {
-  title: {
-    default: 'Rangga Djoned — Creative Director',
-    template: '%s | Rangga Djoned',
-  },
-  description:
-    'Portfolio of Rangga Djoned - Creative Director based in Jakarta, Indonesia.',
-  keywords: ['Creative Director', 'Videography', 'Branding', 'Photography', 'Jakarta', 'Event', 'Rangga Djoned'],
-  authors: [{ name: 'Rangga Djoned' }],
-  openGraph: {
-    type: 'website',
-    locale: 'en_US',
-    siteName: 'Rangga Djoned',
-  },
+import { fetchUser } from '@/lib/sanity/fetchers'
+
+export async function generateMetadata(): Promise<Metadata> {
+  const user = await fetchUser()
+  const siteName = user?.name || 'Rangga Djoned'
+  const titleDefault = `${siteName} — Creative Director`
+  const ogImage = user?.profileImage?.secure_url || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1200&q=80'
+
+  return {
+    title: {
+      default: titleDefault,
+      template: `%s | ${siteName}`,
+    },
+    description: user?.tagline || 'Portfolio of Rangga Djoned - Creative Director based in Jakarta, Indonesia.',
+    keywords: ['Creative Director', 'Videography', 'Branding', 'Photography', 'Jakarta', 'Event', siteName],
+    authors: [{ name: siteName }],
+    openGraph: {
+      type: 'website',
+      locale: 'en_US',
+      siteName: siteName,
+      images: [{ url: ogImage, width: 1200, height: 630 }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      images: [ogImage]
+    }
+  }
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

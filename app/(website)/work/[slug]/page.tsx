@@ -15,11 +15,24 @@ export async function generateMetadata(
   const project = await fetchProjectBySlug(slug)
   if (!project) return { title: 'Project Not Found' }
 
+  const ogImage = project.coverImage?.secure_url
+    ?? 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1200&q=80'
+
+  function portableTextToPlain(blocks: any[] = []): string {
+    return blocks.map(b => b.children?.map((c: any) => c.text).join('') ?? '').join(' ')
+  }
+
+  const plainDescription = portableTextToPlain(project.description).slice(0, 160) || 
+    (project.role ? `${project.title} — ${project.role} (${project.year ?? ''})` : project.title);
+
   return {
     title: project.title,
-    description: project.role
-      ? `${project.title} — ${project.role} (${project.year ?? ''})`
-      : project.title,
+    description: plainDescription,
+    openGraph: {
+      type: 'article',
+      images: [{ url: ogImage, width: 1200, height: 630 }],
+    },
+    twitter: { card: 'summary_large_image', images: [ogImage] },
   }
 }
 
