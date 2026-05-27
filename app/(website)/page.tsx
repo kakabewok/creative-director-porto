@@ -4,8 +4,6 @@ import HeroClient from '@/modules/HeroClient'
 import WorkSection from '@/modules/WorkSection'
 import Navbar from '@/components/Navbar'
 
-export const revalidate = Number(process.env.NEXT_PUBLIC_PROJECT_REVALIDATE_TIME) || 3600;;
-
 export const metadata: Metadata = {
   title: 'Rangga Djoned — Creative Director',
   description:

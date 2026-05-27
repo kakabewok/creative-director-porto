@@ -1,9 +1,6 @@
 import type { Metadata } from 'next'
 import { fetchProjects } from '@/lib/sanity/fetchers'
 import SearchClient from '@/modules/SearchClient'
-import Navbar from '@/components/Navbar'
-
-export const revalidate = Number(process.env.NEXT_PUBLIC_PROJECT_REVALIDATE_TIME) || 3600;;
 
 export const metadata: Metadata = {
   title: 'Search',

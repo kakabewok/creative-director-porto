@@ -6,7 +6,12 @@ import { Project, UserProfile } from "@/types"
 
 export async function fetchProjects(): Promise<Project[]> {
   try {
-    const sanityProjects = await sanityClient.fetch<Project[]>(PROJECTS_QUERY)
+    const sanityProjects = await sanityClient.fetch<Project[]>(PROJECTS_QUERY, {},
+      {
+        next: {
+          revalidate: Number(process.env.NEXT_PUBLIC_PROJECT_REVALIDATE_TIME) || 3600
+        }
+      })
     return sanityProjects?.length > 0 ? sanityProjects : mockProjects as any
   } catch (error) {
     console.error("Failed to fetch projects from Sanity, using mock data", error)
@@ -16,7 +21,12 @@ export async function fetchProjects(): Promise<Project[]> {
 
 export async function fetchProjectBySlug(slug: string): Promise<Project | null> {
   try {
-    const project = await sanityClient.fetch<Project>(PROJECT_BY_SLUG_QUERY, { slug })
+    const project = await sanityClient.fetch<Project>(PROJECT_BY_SLUG_QUERY, { slug },
+      {
+        next: {
+          revalidate: Number(process.env.NEXT_PUBLIC_PROJECT_REVALIDATE_TIME) || 3600
+        }
+      })
     return project || (mockProjects.find((p) => p.slug.current === slug) as any) || null
   } catch (error) {
     console.error(`Failed to fetch project ${slug} from Sanity, using mock data`, error)
@@ -26,7 +36,12 @@ export async function fetchProjectBySlug(slug: string): Promise<Project | null> 
 
 export async function fetchUser(): Promise<UserProfile> {
   try {
-    const user = await sanityClient.fetch<UserProfile>(USER_QUERY)
+    const user = await sanityClient.fetch<UserProfile>(USER_QUERY, {},
+      {
+        next: {
+          revalidate: Number(process.env.NEXT_PUBLIC_PROJECT_REVALIDATE_TIME) || 3600
+        }
+      })
     return user || mockUser as any
   } catch (error) {
     console.error("Failed to fetch user from Sanity, using mock data", error)

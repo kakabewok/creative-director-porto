@@ -2,8 +2,6 @@ import type { Metadata } from 'next'
 import { fetchProjects } from '@/lib/sanity/fetchers'
 import TimelineView from '@/components/TimelineView'
 
-export const revalidate = Number(process.env.NEXT_PUBLIC_PROJECT_REVALIDATE_TIME) || 3600;;
-
 export const metadata: Metadata = {
   title: 'Work — Timeline',
   description: 'Explore Rangga Djoned\'s work in chronological order — an interactive timeline of cinematic projects across videography, branding, photography, and digital campaigns.',

@@ -3,8 +3,6 @@ import { notFound } from 'next/navigation'
 import { fetchProjectBySlug, fetchProjects } from '@/lib/sanity/fetchers'
 import ProjectDetailClient from '@/modules/ProjectDetailClient'
 
-export const revalidate = Number(process.env.NEXT_PUBLIC_PROJECT_REVALIDATE_TIME) || 3600;;
-
 export async function generateStaticParams() {
   const projects = await fetchProjects()
   return projects.map((p) => ({ slug: p.slug.current }))

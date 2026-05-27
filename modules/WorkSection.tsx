@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { Suspense, useState } from 'react'
 import type { Project } from '@/types'
 import ScrollTrigger from '@/components/ScrollTrigger'
 import WorkListView from '@/modules/WorkListView'
@@ -28,7 +28,9 @@ export default function WorkSection({ projects, mode }: Props) {
       {isOverlay && <HomeNavbar />}
 
       <section id="work" aria-label="Selected work" className="pb-32 min-h-screen">
-        <WorkListView projects={projects} />
+        <Suspense fallback={null}>
+          <WorkListView projects={projects} />
+        </Suspense>
       </section>
 
       {/* Floating route-based nav switcher — fades in when work section is active */}

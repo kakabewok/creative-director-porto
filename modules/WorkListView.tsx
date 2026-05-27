@@ -6,7 +6,6 @@ import { motion } from 'framer-motion'
 import type { Project } from '@/types'
 import { getProjectCoverSrc } from '@/lib/projectImage'
 import ProjectCard from '@/components/ProjectCard'
-import { PROJECTS_PER_PAGE } from '@/constants/pagination'
 import LoadMoreButton from '@/components/work/LoadMoreButton'
 
 interface Props {

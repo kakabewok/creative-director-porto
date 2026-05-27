@@ -3,8 +3,6 @@ import { Suspense } from 'react'
 import { fetchProjects } from '@/lib/sanity/fetchers'
 import WorkListView from '@/modules/WorkListView'
 
-export const revalidate = Number(process.env.NEXT_PUBLIC_PROJECT_REVALIDATE_TIME) || 3600;;
-
 export const metadata: Metadata = {
   title: 'Work',
   description: 'Explore the portfolio of Rangga Djoned — a curated collection of cinematic projects spanning videography, branding, photography, and digital campaigns.',

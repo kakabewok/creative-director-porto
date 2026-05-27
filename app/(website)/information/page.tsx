@@ -10,8 +10,6 @@ import {
 import { FaLinkedin } from 'react-icons/fa'
 import { FaXTwitter } from 'react-icons/fa6'
 
-export const revalidate = Number(process.env.NEXT_PUBLIC_PROJECT_REVALIDATE_TIME) || 3600;;;
-
 export const metadata: Metadata = {
   title: 'Information',
   description: 'Biography, contact, and downloads for Rangga Djoned — Creative Director',
