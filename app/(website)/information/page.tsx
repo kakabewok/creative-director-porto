@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
-import Link from 'next/link'
 import { fetchUser } from '@/lib/sanity/fetchers'
 import { optimizeCloudinaryUrl } from '@/lib/media'
 import InformationNav from '@/modules/InformationNav'
@@ -8,9 +7,10 @@ import {
   SiInstagram,
   SiPinterest,
 } from 'react-icons/si';
-import { FaLinkedin, FaTwitter } from 'react-icons/fa'
-import Navbar from '@/components/Navbar'
+import { FaLinkedin } from 'react-icons/fa'
 import { FaXTwitter } from 'react-icons/fa6'
+
+export const revalidate = Number(process.env.NEXT_PUBLIC_PROJECT_REVALIDATE_TIME) || 3600;;;
 
 export const metadata: Metadata = {
   title: 'Information',

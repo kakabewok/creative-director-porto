@@ -3,6 +3,8 @@ import { notFound } from 'next/navigation'
 import { fetchProjectBySlug, fetchProjects } from '@/lib/sanity/fetchers'
 import ProjectDetailClient from '@/modules/ProjectDetailClient'
 
+export const revalidate = Number(process.env.NEXT_PUBLIC_PROJECT_REVALIDATE_TIME) || 3600;;
+
 export async function generateStaticParams() {
   const projects = await fetchProjects()
   return projects.map((p) => ({ slug: p.slug.current }))
@@ -22,7 +24,7 @@ export async function generateMetadata(
     return blocks.map(b => b.children?.map((c: any) => c.text).join('') ?? '').join(' ')
   }
 
-  const plainDescription = portableTextToPlain(project.description).slice(0, 160) || 
+  const plainDescription = portableTextToPlain(project.description).slice(0, 160) ||
     (project.role ? `${project.title} — ${project.role} (${project.year ?? ''})` : project.title);
 
   return {

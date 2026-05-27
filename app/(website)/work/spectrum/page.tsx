@@ -3,6 +3,8 @@ import { Suspense } from 'react'
 import { fetchProjects } from '@/lib/sanity/fetchers'
 import WorkSpectrumView from '@/modules/WorkSpectrumView'
 
+export const revalidate = Number(process.env.NEXT_PUBLIC_PROJECT_REVALIDATE_TIME) || 3600;;
+
 export const metadata: Metadata = {
   title: 'Work — Spectrum',
   description: 'Browse the full spectrum of Rangga Djoned\'s work',

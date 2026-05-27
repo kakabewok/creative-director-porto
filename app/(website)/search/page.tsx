@@ -3,6 +3,8 @@ import { fetchProjects } from '@/lib/sanity/fetchers'
 import SearchClient from '@/modules/SearchClient'
 import Navbar from '@/components/Navbar'
 
+export const revalidate = Number(process.env.NEXT_PUBLIC_PROJECT_REVALIDATE_TIME) || 3600;;
+
 export const metadata: Metadata = {
   title: 'Search',
   description: 'Search and explore the portfolio of Rangga Djoned by title, category, or year.',

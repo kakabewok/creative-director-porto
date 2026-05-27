@@ -13,13 +13,15 @@ interface Props {
   projects: Project[]
 }
 
+const limit = Number(process.env.NEXT_PUBLIC_PROJECTS_PER_PAGE) || 30;
+
 export default function WorkListView({ projects }: Props) {
   const searchParams = useSearchParams()
-  const [visibleCount, setVisibleCount] = useState(PROJECTS_PER_PAGE)
+  const [visibleCount, setVisibleCount] = useState(limit)
 
   // Reset logic on filter/search change
   useEffect(() => {
-    setVisibleCount(PROJECTS_PER_PAGE)
+    setVisibleCount(limit)
   }, [searchParams])
 
   const sorted = useMemo(
@@ -30,7 +32,7 @@ export default function WorkListView({ projects }: Props) {
   const visibleProjects = sorted.slice(0, visibleCount)
 
   const handleLoadMore = () => {
-    setVisibleCount((prev) => prev + PROJECTS_PER_PAGE)
+    setVisibleCount((prev) => prev + limit)
 
     // Optional smooth scroll after load to improve UX naturally
     setTimeout(() => {
@@ -62,7 +64,7 @@ export default function WorkListView({ projects }: Props) {
         <ProjectCard
           key={project._id}
           project={project}
-          index={i % PROJECTS_PER_PAGE}
+          index={i % limit}
           coverSrc={getProjectCoverSrc(project, 1200)}
           mode="list"
           priority={i === 0}
