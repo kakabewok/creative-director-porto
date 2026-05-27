@@ -30,12 +30,48 @@ export default defineConfig({
                 // projectUsersWidget({ layout: { width: 'medium' } }),
             ]
         }),
-        structureTool(),
+        structureTool({
+            structure: (S) =>
+                S.list()
+                    .title('Content')
+                    .items([
+                        S.listItem()
+                            .title('User Profile')
+                            .id('user')
+                            .child(
+                                S.document()
+                                    .schemaType('user')
+                                    .documentId('user')
+                            ),
+                        // Add regular document types here
+                        S.documentTypeListItem('project').title('Projects'),
+                    ]),
+        }),
         visionTool(),
         cloudinarySchemaPlugin(),
     ],
     schema: {
         types: [projectSchema, userSchema],
+    },
+    document: {
+        actions: (input, context) => {
+            if (context.schemaType === 'user') {
+                const singletonActions = new Set([
+                    "publish",
+                    "discardChanges",
+                    "restore",
+                    "delete",
+                ])
+                return input.filter(({ action }) => action && singletonActions.has(action))
+            }
+            return input
+        },
+        newDocumentOptions: (prev, { creationContext }) => {
+            if (creationContext.type === 'global') {
+                return prev.filter((templateItem) => templateItem.templateId !== 'user')
+            }
+            return prev
+        }
     },
     basePath: '/studio',
 })

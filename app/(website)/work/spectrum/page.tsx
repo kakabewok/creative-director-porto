@@ -15,7 +15,7 @@ export default async function SpectrumPage() {
     <main className="min-h-screen bg-white dark:bg-black" aria-label="Work spectrum view">
       <h1 className="sr-only">Work — Spectrum</h1>
       <section id="work" aria-label="Selected work" className="pb-32 min-h-screen">
-        <Suspense fallback={<div className="h-screen" />}>
+        <Suspense fallback={<div className="h-screen bg-white dark:bg-black" />}>
           <WorkSpectrumView projects={projects} />
         </Suspense>
       </section>
