@@ -9,7 +9,7 @@ export default function LoadMoreButton({ onClick, isVisible }: LoadMoreButtonPro
   if (!isVisible) return null
 
   return (
-    <div className="flex justify-center py-5">
+    <div className="flex justify-center py-7">
       <button
         onClick={onClick}
         className="
@@ -20,7 +20,8 @@ export default function LoadMoreButton({ onClick, isVisible }: LoadMoreButtonPro
           dark:text-neutral-300
           hover:opacity-60
           dark:hover:text-white
-          transition-opacity
+          transition-all
+          duration-400
           cursor-pointer
         "
       >

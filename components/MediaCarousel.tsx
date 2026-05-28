@@ -106,7 +106,7 @@ function VideoSlide({ videoUrl, caption, isActive }: { videoUrl: string, caption
   }
 
   return (
-    <div className="absolute inset-0 bg-zinc-950 flex items-center justify-center p-0">
+    <div className="absolute inset-0 bg-slate-950 flex items-center justify-center p-0">
       <div className="relative w-full h-full rounded-none overflow-hidden bg-black group select-none">
 
         {/* TAMPILAN AWAL: Thumbnail & Tombol Play Besar */}
@@ -147,7 +147,7 @@ function VideoSlide({ videoUrl, caption, isActive }: { videoUrl: string, caption
             />
 
             {/* ZONA 1: JALUR SWIPE ATAS */}
-            < div className="absolute top-0 left-0 right-0 h-[15%] bg-transparent z-30 pointer-events-auto cursor-grab active:cursor-grabbing" />
+            < div className="right-0 absolute top-0 left-0 h-[15%] bg-transparent z-30 pointer-events-auto cursor-grab active:cursor-grabbing" />
 
             {/* ZONA 2: TOMBOL PLAY/PAUSE TENGAH */}
             < div
@@ -170,15 +170,15 @@ function VideoSlide({ videoUrl, caption, isActive }: { videoUrl: string, caption
               href={videoUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="absolute top-4 right-4 z-40 flex items-center gap-2 px-0 py-0 bg-transparent backdrop-blur-md border border-white/10 rounded-full text-white/80 hover:text-white text-xs tracking-wider uppercase transition-all duration-300 pointer-events-auto cursor-pointer shadow-lg"
-              onClick={(e) => e.stopPropagation()} // Mencegah klik tombol ini ikut mem-pause video
+              className="absolute top-4 right-4 z-40 flex items-center gap-2 px-0 py-0 bg-transparent  text-white/80 hover:text-white text-xs tracking-wider uppercase transition-all duration-300 pointer-events-auto cursor-pointer shadow-lg"
+              onClick={(e) => e.stopPropagation()}
             >
               {/* <span>Watch on YouTube</span> */}
               <ExternalLink size={12} className="opacity-70" />
             </a>
 
             {/* Efek Gradasi Estetik */}
-            <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black/60 to-transparent pointer-events-none z-10" />
+            <div className="absolute bottom-0 left-0 right-0 h-24 bg-linear-to-t from-black/30 to-transparent pointer-events-none z-10" />
           </>
         )}
       </div>
