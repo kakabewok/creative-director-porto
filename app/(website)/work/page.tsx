@@ -5,7 +5,7 @@ import WorkListView from '@/modules/WorkListView'
 
 export const metadata: Metadata = {
   title: 'Work',
-  description: 'Explore the portfolio of Rangga Djoned — a curated collection of cinematic projects spanning videography, branding, photography, and digital campaigns.',
+  description: 'Explore the portfolio of Rangga Djoned - a curated collection of cinematic projects.',
 }
 
 export default async function WorkPage() {

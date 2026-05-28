@@ -12,7 +12,7 @@ import { FaXTwitter } from 'react-icons/fa6'
 
 export const metadata: Metadata = {
   title: 'Information',
-  description: 'Biography, contact, and downloads for Rangga Djoned — Creative Director',
+  description: 'Biography, contact, and downloads for Rangga Djoned',
 }
 
 const SOCIAL_ICONS: Record<string, React.ReactNode> = {

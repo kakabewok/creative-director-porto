@@ -3,9 +3,10 @@ import Image from 'next/image'
 import useEmblaCarousel from 'embla-carousel-react'
 import type { GalleryItem } from '@/types'
 import { optimizeCloudinaryUrl } from '@/lib/media'
-import { toEmbedUrl, getYoutubeThumbnail } from '@/lib/mediaUtils'
+import { getYoutubeThumbnail } from '@/lib/mediaUtils'
 import ReactPlayer from 'react-player'
 import { ExternalLink } from 'lucide-react' // 1. Pastikan import ikon ini di bagian atas file
+import Link from 'next/link'
 
 export type CarouselMediaItem = GalleryItem & { resolvedUrl?: string }
 
@@ -106,8 +107,8 @@ function VideoSlide({ videoUrl, caption, isActive }: { videoUrl: string, caption
   }
 
   return (
-    <div className="absolute inset-0 bg-slate-950 flex items-center justify-center p-0">
-      <div className="relative w-full h-full rounded-none overflow-hidden bg-black group select-none">
+    <div className="absolute inset-0 dark:bg-black bg-white flex items-center justify-center p-0">
+      <div className="relative w-full h-full rounded-none overflow-hidden dark:bg-black bg-white group select-none">
 
         {/* TAMPILAN AWAL: Thumbnail & Tombol Play Besar */}
         {!hasStarted ? (
@@ -147,7 +148,7 @@ function VideoSlide({ videoUrl, caption, isActive }: { videoUrl: string, caption
             />
 
             {/* ZONA 1: JALUR SWIPE ATAS */}
-            < div className="right-0 absolute top-0 left-0 h-[15%] bg-transparent z-30 pointer-events-auto cursor-grab active:cursor-grabbing" />
+            < div className="right-0 absolute top-0 left-0 h-[15%] bg-transparent pointer-events-auto z-30 cursor-grab active:cursor-grabbing" />
 
             {/* ZONA 2: TOMBOL PLAY/PAUSE TENGAH */}
             < div
@@ -155,7 +156,7 @@ function VideoSlide({ videoUrl, caption, isActive }: { videoUrl: string, caption
               onClick={togglePlayPause}
             >
               {!isPlaying && (
-                <div className="w-14 h-14 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center border border-white/20 shadow-xl">
+                <div className="w-14 h-14 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center border border-white/20 shadow-md">
                   <svg className="w-5 h-5 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
                 </div>
               )}
@@ -164,21 +165,18 @@ function VideoSlide({ videoUrl, caption, isActive }: { videoUrl: string, caption
             {/* ZONA 3: JALUR SWIPE BAWAH */}
             <div className="absolute bottom-0 left-0 right-0 h-[15%] bg-transparent z-30 pointer-events-auto cursor-grab active:cursor-grabbing" />
 
-            {/* 🛠️ FITUR BARU: TOMBOL DIRECT KE YOUTUBE */}
-            {/* Menggunakan z-40 agar berada di lapisan paling atas dan aman untuk diklik di HP/Laptop */}
-            <a
+            <Link
               href={videoUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="absolute top-4 right-4 z-40 flex items-center gap-2 px-0 py-0 bg-transparent  text-white/80 hover:text-white text-xs tracking-wider uppercase transition-all duration-300 pointer-events-auto cursor-pointer shadow-lg"
+              className="absolute md:top-2 md:right-2 top-1 right-1 z-50 flex items-center gap-2 px-0 py-0 bg-transparent  text-white/80 hover:text-white text-xs tracking-wider uppercase transition-all duration-300 pointer-events-auto cursor-pointer shadow-lg"
               onClick={(e) => e.stopPropagation()}
             >
-              {/* <span>Watch on YouTube</span> */}
-              <ExternalLink size={12} className="opacity-70" />
-            </a>
+              <ExternalLink className="opacity-70 w-4 h-4 md:w-6 md:h-6" />
+            </Link>
 
             {/* Efek Gradasi Estetik */}
-            <div className="absolute bottom-0 left-0 right-0 h-24 bg-linear-to-t from-black/30 to-transparent pointer-events-none z-10" />
+            <div className="absolute bottom-0 left-0 right-0 h-24 bg-linear-to-t from-black/20 to-transparent pointer-events-none z-10" />
           </>
         )}
       </div>
@@ -237,7 +235,7 @@ const MediaCarousel = forwardRef<MediaCarouselHandle, Props>(({ items, onIndexCh
 
   return (
     <div
-      className="relative w-full aspect-[16/9] bg-zinc-950 overflow-hidden select-none"
+      className="relative w-full aspect-video dark:bg-black bg-white overflow-hidden select-none"
       role="region"
       aria-label="Project media carousel"
       ref={emblaRef}

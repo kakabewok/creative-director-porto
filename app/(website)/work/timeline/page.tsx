@@ -4,7 +4,7 @@ import TimelineView from '@/components/TimelineView'
 
 export const metadata: Metadata = {
   title: 'Work — Timeline',
-  description: 'Explore Rangga Djoned\'s work in chronological order — an interactive timeline of cinematic projects across videography, branding, photography, and digital campaigns.',
+  description: 'Explore Rangga Djoned\'s work in chronological order — an interactive timeline of cinematic projects.',
 }
 
 export default async function TimelinePage() {

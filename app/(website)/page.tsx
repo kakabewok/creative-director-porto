@@ -5,9 +5,9 @@ import WorkSection from '@/modules/WorkSection'
 import Navbar from '@/components/Navbar'
 
 export const metadata: Metadata = {
-  title: 'Rangga Djoned — Creative Director',
+  title: 'Rangga Djoned - Creative Director',
   description:
-    'Portfolio of Rangga Djoned — Creative Director based in Jakarta, Indonesia.',
+    'Portfolio of Rangga Djoned - Creative Director based in Jakarta, Indonesia.',
 }
 
 export default async function HomePage() {

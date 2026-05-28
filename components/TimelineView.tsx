@@ -13,14 +13,8 @@ interface Props {
 
 export default function TimelineView({ projects }: Props) {
   const [isDark, setIsDark] = useState(false)
-
-  useEffect(() => {
-    const check = () => setIsDark(document.documentElement.classList.contains('dark'))
-    check()
-    const observer = new MutationObserver(check)
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
-    return () => observer.disconnect()
-  }, [])
+  const [windowWidth, setWindowWidth] = useState(1200)
+  const [mounted, setMounted] = useState(false)
 
   const containerRef = useRef<HTMLDivElement>(null)
 
@@ -30,15 +24,32 @@ export default function TimelineView({ projects }: Props) {
 
   const [activeIndex, setActiveIndex] = useState(0)
 
+  // useEffect(() => {
+  //   const savedY = sessionStorage.getItem('workScrollY')
+  //   if (savedY && containerRef.current) {
+  //     setTimeout(() => { // ← TAMBAH TIMEOUT
+  //       if (containerRef.current) {
+  //         containerRef.current.scrollTop = parseInt(savedY)
+  //         sessionStorage.removeItem('workScrollY')
+  //       }
+  //     }, 50)
+  //   }
+  // }, [])
+
+  useEffect(() => {
+    const check = () => setIsDark(document.documentElement.classList.contains('dark'))
+    check()
+    const observer = new MutationObserver(check)
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
+    return () => observer.disconnect()
+  }, [])
+
   useEffect(() => {
     return scrollYProgress.on("change", (v) => {
       const index = Math.floor(v * projects.length)
       setActiveIndex(Math.min(index, projects.length - 1))
     })
   }, [scrollYProgress, projects.length])
-
-  const [windowWidth, setWindowWidth] = useState(1200)
-  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
     setMounted(true)
@@ -47,6 +58,19 @@ export default function TimelineView({ projects }: Props) {
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
   }, [])
+
+  useEffect(() => {
+    if (!mounted) return
+    const savedY = sessionStorage.getItem('workScrollY')
+    if (savedY && containerRef.current) {
+      setTimeout(() => {
+        if (containerRef.current) {
+          containerRef.current.scrollTop = parseInt(savedY)
+          sessionStorage.removeItem('workScrollY')
+        }
+      }, 50)
+    }
+  }, [mounted])
 
   useEffect(() => {
     document.body.style.overflow = "hidden"
@@ -140,8 +164,10 @@ export default function TimelineView({ projects }: Props) {
                     exit={{ opacity: 0, scale: 1.05 }}
                     transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                   >
+
                     <Link
                       href={`/work/${project.slug.current}`}
+                      onClick={() => sessionStorage.setItem('workScrollY', containerRef.current?.scrollTop.toString() ?? '0')}
                       className="block w-full h-full relative cursor-pointer group"
                     >
                       {coverSrc ? (
@@ -161,7 +187,7 @@ export default function TimelineView({ projects }: Props) {
                         </div>
                       )}
                       {/* Subtle gradient overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-60" />
+                      <div className="absolute inset-0 bg-linear-to-t from-black/40 via-transparent to-transparent opacity-60" />
                     </Link>
                   </motion.div>
                 )
@@ -230,6 +256,7 @@ export default function TimelineView({ projects }: Props) {
                       {/* Clickable Label */}
                       <Link
                         href={`/work/${pt.project.slug.current}`}
+                        onClick={() => sessionStorage.setItem('workScrollY', containerRef.current?.scrollTop.toString() ?? '0')}
                         className={`group flex flex-col justify-center gap-[2px] cursor-pointer transition-all duration-300 hover:translate-x-1 hover:opacity-100 ${pt.isActive ? "opacity-100" : "opacity-95"
                           }`}
                       >

@@ -36,7 +36,7 @@ export default function ProjectDetailClient({ project, allProjects }: Props) {
         {totalMedia > 1 && (
           <button
             onClick={() => carouselRef.current?.paginate(-1)}
-            className="hidden md:flex absolute left-0 top-0 bottom-0 w-[12%] lg:w-[15%] z-30 items-center justify-center group cursor-pointer"
+            className="hidden lg:flex absolute left-0 top-0 bottom-0 w-[12%] lg:w-[15%] z-30 items-center justify-center group cursor-pointer"
             aria-label="Previous image"
           >
             <span className="text-slate-900 dark:text-white/60 text-md tracking-[0.25em] uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -49,7 +49,7 @@ export default function ProjectDetailClient({ project, allProjects }: Props) {
         {totalMedia > 1 && (
           <button
             onClick={() => carouselRef.current?.paginate(1)}
-            className="hidden md:flex absolute right-0 top-0 bottom-0 w-[12%] lg:w-[15%] z-30 items-center justify-center group cursor-pointer"
+            className="hidden lg:flex absolute right-0 top-0 bottom-0 w-[12%] lg:w-[15%] z-30 items-center justify-center group cursor-pointer"
             aria-label="Next image"
           >
             <span className="text-slate-900 dark:text-white/60 text-md tracking-[0.25em] uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -59,7 +59,7 @@ export default function ProjectDetailClient({ project, allProjects }: Props) {
         )}
 
         {/* ── Unified media carousel (centered, max-width) ── */}
-        <div className="relative w-full lg:w-[75%] max-w-7xl mx-auto">
+        <div className="relative w-full lg:max-w-[70%] max-w-7xl mx-auto">
           <MediaCarousel
             ref={carouselRef}
             items={allMediaItems}
