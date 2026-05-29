@@ -34,26 +34,13 @@ export default function HeroClient({ user }: Props) {
 
     const attemptPlay = async () => {
       try {
-        const video = videoRef.current
-        if (!video) return
-
-        video.muted = true          // set programatik juga
-        video.volume = 0            // ← tambahkan ini
+        video.muted = true
+        video.defaultMuted = true
         await video.play()
       } catch (err) {
         console.log("Autoplay blocked:", err)
       }
     }
-
-    // const attemptPlay = async () => {
-    //   try {
-    //     video.muted = true
-    //     video.defaultMuted = true
-    //     await video.play()
-    //   } catch (err) {
-    //     console.log("Autoplay blocked:", err)
-    //   }
-    // }
 
     attemptPlay()
   }, [mounted])
@@ -76,30 +63,7 @@ export default function HeroClient({ user }: Props) {
         aria-label="Hero section"
       >
         {/* Background video */}
-
-        <video
-          ref={videoRef}
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          poster={heroPoster}
-          controls={false}
-          // @ts-ignore
-          webkit-playsinline="true"
-          disablePictureInPicture
-          aria-hidden="true"
-          style={{ opacity: 0, transition: 'opacity 1.2s ease' }}
-          onCanPlay={(e) => {
-            (e.target as HTMLVideoElement).style.opacity = '0.6'
-          }}
-          className="absolute inset-0 w-full h-full object-cover object-center"
-        >
-          <source src={heroVideo} type="video/mp4" />
-        </video>
-
-        {/* <motion.video
+        <motion.video
           ref={videoRef as any}
           autoPlay
           muted
@@ -117,7 +81,7 @@ export default function HeroClient({ user }: Props) {
           transition={{ duration: 1.2 }}
         >
           <source src={heroVideo} type="video/mp4" />
-        </motion.video> */}
+        </motion.video>
 
         {/* Vignette */}
         <div
