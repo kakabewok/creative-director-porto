@@ -29,26 +29,23 @@ export const userSchema = {
         sources: [cloudinaryAssetSourcePlugin],
         cloudinary: {
           folder: 'portofolio/profile',
-          uploadPreset: 'porto-rd-preset' // Otomatis masuk folder sesuai settingan preset di web Cloudinary
+          uploadPreset: 'porto-rd-preset'
         }
       }
     },
     {
       name: 'videoHero',
-      title: 'Video Hero Singkat (Cloudinary)',
-      type: 'cloudinary.asset', // Di plugin Cloudinary, tipe video juga menggunakan 'image' atau 'cloudinary.asset'
-      group: 'media',
-      // options: {
-      //   sources: [cloudinaryAssetSourcePlugin],
-      // },
-      description: 'Upload video singkat tanpa suara (durasi 5-10 detik) untuk background hero.'
-    },
-    {
-      name: 'heroPoster',
-      title: 'Hero Video Poster',
+      title: 'Hero Video',
       type: 'cloudinary.asset',
       group: 'media',
+      description: 'Upload the video that will be played in the background of the hero section. Video must be silent and the duration is max 10 second.'
     },
+    // {
+    //   name: 'heroPoster',
+    //   title: 'Hero Video Poster',
+    //   type: 'cloudinary.asset',
+    //   group: 'media',
+    // },
     {
       name: 'tagline',
       title: 'Tagline',
@@ -73,6 +70,7 @@ export const userSchema = {
     {
       name: 'socialLinks',
       title: 'Social Links',
+      description: 'Add your social media links like Instagram, LinkedIn, Pinterest, etc. In the icon key, use the lowercase platform name.',
       type: 'array',
       group: 'basic',
       of: [
@@ -94,25 +92,25 @@ export const userSchema = {
         },
       ],
     },
-    {
-      name: 'experienceHighlights',
-      title: 'Experience Highlights',
-      type: 'array',
-      group: 'basic',
-      of: [
-        {
-          type: 'object',
-          fields: [
-            { name: 'role', title: 'Role', type: 'string' },
-            { name: 'company', title: 'Company', type: 'string' },
-            { name: 'year', title: 'Year / Period', type: 'string' },
-            { name: 'description', title: 'Description', type: 'text', rows: 3 },
-          ],
-          preview: {
-            select: { title: 'role', subtitle: 'company' },
-          },
-        },
-      ],
-    },
+    // {
+    //   name: 'experienceHighlights',
+    //   title: 'Experience Highlights',
+    //   type: 'array',
+    //   group: 'basic',
+    //   of: [
+    //     {
+    //       type: 'object',
+    //       fields: [
+    //         { name: 'role', title: 'Role', type: 'string' },
+    //         { name: 'company', title: 'Company', type: 'string' },
+    //         { name: 'year', title: 'Year / Period', type: 'string' },
+    //         { name: 'description', title: 'Description', type: 'text', rows: 3 },
+    //       ],
+    //       preview: {
+    //         select: { title: 'role', subtitle: 'company' },
+    //       },
+    //     },
+    //   ],
+    // },
   ],
 }
