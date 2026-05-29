@@ -20,7 +20,7 @@ export const projectSchema = {
       type: 'number',
       group: 'basic',
       description: 'Lower number = appears first. Leave blank to sort by creation date.',
-      initialValue: 99,
+      // initialValue: 99,
     },
     {
       name: 'title',
@@ -35,6 +35,7 @@ export const projectSchema = {
       type: 'slug',
       group: 'basic',
       options: { source: 'title', maxLength: 96 },
+      description: 'Used for the URL of the project page. Generated from title.',
       validation: (Rule: any) => Rule.required(),
     },
     {
@@ -42,6 +43,7 @@ export const projectSchema = {
       title: 'Project Description',
       type: 'array',
       group: 'basic',
+      description: 'Used for the project page. Supports rich text including links.',
       of: [
         {
           type: 'block',
@@ -73,7 +75,7 @@ export const projectSchema = {
       title: 'Your Role',
       type: 'string',
       group: 'basic',
-      description: 'e.g. Creative Director, Art Director, Photographer',
+      description: 'e.g. Creative Director, Art Director, Photographer, etc.',
     },
     {
       name: 'category',
@@ -82,10 +84,13 @@ export const projectSchema = {
       group: 'basic',
       options: {
         list: [
-          { title: 'Videography', value: 'Videography' },
-          { title: 'Branding', value: 'Branding' },
+          { title: 'Creative Direction', value: 'Creative Direction' },
+          { title: 'Branding & Identity', value: 'Branding' },
+          { title: 'Digital Campaigns', value: 'Digital Campaign' },
+          { title: 'Commercials / Film', value: 'Commercials' },
           { title: 'Photography', value: 'Photography' },
-          { title: 'Digital Campaign', value: 'Digital Campaign' },
+          { title: 'Videography', value: 'Videography' },
+          { title: 'Experiential / Spatial', value: 'Experiential' },
         ],
         layout: 'radio',
       },
@@ -102,6 +107,7 @@ export const projectSchema = {
       title: 'Cover Image',
       type: 'cloudinary.asset',
       group: 'media',
+      description: 'Used for the cover image of the project.',
       validation: (Rule: any) => Rule.required(),
     },
     {
@@ -109,7 +115,7 @@ export const projectSchema = {
       title: 'Cover Video URL',
       type: 'url',
       group: 'media',
-      description: 'Optional YouTube or Vimeo URL used as the hero video.',
+      description: 'YouTube or Vimeo URL used as the hero video in the project page. Optional.',
     },
     {
       name: 'gallery',

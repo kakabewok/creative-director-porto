@@ -28,36 +28,36 @@ export default function HeroClient({ user }: Props) {
   }, [])
 
   // old
-  useEffect(() => {
-    if (!mounted) return
-    const video = videoRef.current
-    if (!video) return
-
-    const attemptPlay = async () => {
-      try {
-        video.muted = true
-        video.defaultMuted = true
-        await video.play()
-      } catch (err) {
-        console.log("Autoplay blocked:", err)
-      }
-    }
-
-    attemptPlay()
-  }, [mounted])
-
   // useEffect(() => {
+  //   if (!mounted) return
   //   const video = videoRef.current
   //   if (!video) return
 
-  //   // Force set sebagai DOM attribute, bukan hanya property
-  //   video.setAttribute('muted', '')
-  //   video.setAttribute('playsinline', '')
-  //   video.muted = true
-  //   video.volume = 0
+  //   const attemptPlay = async () => {
+  //     try {
+  //       video.muted = true
+  //       video.defaultMuted = true
+  //       await video.play()
+  //     } catch (err) {
+  //       console.log("Autoplay blocked:", err)
+  //     }
+  //   }
 
-  //   video.play().catch(() => { })
+  //   attemptPlay()
   // }, [mounted])
+
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+
+    // Force set sebagai DOM attribute, bukan hanya property
+    video.setAttribute('muted', '')
+    video.setAttribute('playsinline', '')
+    video.muted = true
+    video.volume = 0
+
+    video.play().catch(() => { })
+  }, [mounted])
 
   if (!mounted) return (
     <div className='h-screen bg-black'>
@@ -78,7 +78,7 @@ export default function HeroClient({ user }: Props) {
       >
         {/* Background video */}
         {/* old */}
-        <motion.video
+        {/* <motion.video
           ref={videoRef as any}
           autoPlay
           muted
@@ -96,9 +96,9 @@ export default function HeroClient({ user }: Props) {
           transition={{ duration: 1.2 }}
         >
           <source src={heroVideo} type="video/mp4" />
-        </motion.video>
+        </motion.video> */}
 
-        {/* <video
+        <video
           ref={videoRef}
           autoPlay
           loop
@@ -113,7 +113,7 @@ export default function HeroClient({ user }: Props) {
           style={{ opacity: 0.6 }}
         >
           <source src={heroVideo} type="video/mp4" />
-        </video> */}
+        </video>
 
         {/* Vignette */}
         <div
