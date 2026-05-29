@@ -34,13 +34,26 @@ export default function HeroClient({ user }: Props) {
 
     const attemptPlay = async () => {
       try {
-        video.muted = true
-        video.defaultMuted = true
+        const video = videoRef.current
+        if (!video) return
+
+        video.muted = true          // set programatik juga
+        video.volume = 0            // ← tambahkan ini
         await video.play()
       } catch (err) {
         console.log("Autoplay blocked:", err)
       }
     }
+
+    // const attemptPlay = async () => {
+    //   try {
+    //     video.muted = true
+    //     video.defaultMuted = true
+    //     await video.play()
+    //   } catch (err) {
+    //     console.log("Autoplay blocked:", err)
+    //   }
+    // }
 
     attemptPlay()
   }, [mounted])
@@ -63,31 +76,30 @@ export default function HeroClient({ user }: Props) {
         aria-label="Hero section"
       >
         {/* Background video */}
-        {/* <video
+
+        <video
           ref={videoRef}
-          className="absolute inset-0 w-full h-full object-cover opacity-60"
           autoPlay
           muted
           loop
           playsInline
-          aria-hidden="true"
           preload="auto"
-          disablePictureInPicture
+          poster={heroPoster}
+          controls={false}
           // @ts-ignore
-          disableRemotePlayback
-          x-webkit-airplay="deny"
+          webkit-playsinline="true"
+          disablePictureInPicture
+          aria-hidden="true"
+          style={{ opacity: 0, transition: 'opacity 1.2s ease' }}
+          onCanPlay={(e) => {
+            (e.target as HTMLVideoElement).style.opacity = '0.6'
+          }}
+          className="absolute inset-0 w-full h-full object-cover object-center"
         >
-          <source
-            src="https://res.cloudinary.com/demo/video/upload/elephants.webm"
-            type="video/webm"
-          />
-          <source
-            src="https://res.cloudinary.com/demo/video/upload/elephants.mp4"
-            type="video/mp4"
-          />
-        </video> */}
+          <source src={heroVideo} type="video/mp4" />
+        </video>
 
-        <motion.video
+        {/* <motion.video
           ref={videoRef as any}
           autoPlay
           muted
@@ -105,7 +117,7 @@ export default function HeroClient({ user }: Props) {
           transition={{ duration: 1.2 }}
         >
           <source src={heroVideo} type="video/mp4" />
-        </motion.video>
+        </motion.video> */}
 
         {/* Vignette */}
         <div
