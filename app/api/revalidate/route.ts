@@ -15,7 +15,7 @@ export async function POST(request: Request) {
             return NextResponse.json({ revalidated: true, message: 'Projects list cache cleaned' });
         }
 
-        if (documentType === 'profile') {
+        if (documentType === 'user') {
             revalidateTag('user', "max");
             console.log('Success: User cache cleaned.');
             return NextResponse.json({ revalidated: true, message: 'Profile updated!' });
