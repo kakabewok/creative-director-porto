@@ -9,7 +9,8 @@ export async function fetchProjects(): Promise<Project[]> {
     const sanityProjects = await sanityClient.fetch<Project[]>(PROJECTS_QUERY, {},
       {
         next: {
-          revalidate: Number(process.env.NEXT_PUBLIC_PROJECT_REVALIDATE_TIME) || 3600
+          revalidate: Number(process.env.NEXT_PUBLIC_PROJECT_REVALIDATE_TIME) || 3600,
+          tags: ['projects']
         }
       })
     return sanityProjects?.length > 0 ? sanityProjects : mockProjects as any
@@ -24,7 +25,8 @@ export async function fetchProjectBySlug(slug: string): Promise<Project | null> 
     const project = await sanityClient.fetch<Project>(PROJECT_BY_SLUG_QUERY, { slug },
       {
         next: {
-          revalidate: Number(process.env.NEXT_PUBLIC_PROJECT_REVALIDATE_TIME) || 3600
+          revalidate: Number(process.env.NEXT_PUBLIC_PROJECT_REVALIDATE_TIME) || 3600,
+          tags: ['projects']
         }
       })
     return project || (mockProjects.find((p) => p.slug.current === slug) as any) || null
@@ -39,7 +41,8 @@ export async function fetchUser(): Promise<UserProfile> {
     const user = await sanityClient.fetch<UserProfile>(USER_QUERY, {},
       {
         next: {
-          revalidate: Number(process.env.NEXT_PUBLIC_PROJECT_REVALIDATE_TIME) || 3600
+          revalidate: Number(process.env.NEXT_PUBLIC_PROJECT_REVALIDATE_TIME) || 3600,
+          tags: ['user']
         }
       })
     return user || mockUser as any
