@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
+import { fetchUser } from '@/lib/sanity/fetchers'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -8,12 +9,10 @@ const inter = Inter({
   display: 'swap',
 })
 
-import { fetchUser } from '@/lib/sanity/fetchers'
-
 export async function generateMetadata(): Promise<Metadata> {
   const user = await fetchUser()
   const siteName = user?.name || 'Rangga Djoned'
-  const titleDefault = `${siteName} — Creative Director`
+  const titleDefault = `${siteName} - Creative Director`
   const ogImage = user?.profileImage?.secure_url || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1200&q=80'
 
   return {
@@ -22,7 +21,7 @@ export async function generateMetadata(): Promise<Metadata> {
       template: `%s | ${siteName}`,
     },
     description: user?.tagline || 'Portfolio of Rangga Djoned - Creative Director based in Jakarta, Indonesia.',
-    keywords: ['Creative Director', 'Videography', 'Branding', 'Photography', 'Jakarta', 'Event', siteName],
+    keywords: ['Creative Director', 'Videography', 'Branding', 'Photography', 'Jakarta', 'Event', 'stage', 'stage lighting', 'stage sound', 'stage audio', 'stage visual', siteName],
     authors: [{ name: siteName }],
     openGraph: {
       type: 'website',
@@ -38,7 +37,6 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-
   return (
     <html lang="en" data-scroll-behavior="smooth" className={`${inter.variable} h-full`} suppressHydrationWarning>
       <head>

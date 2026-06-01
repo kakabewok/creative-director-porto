@@ -13,10 +13,10 @@ interface ProjectItem {
 export function BulkDeleteWidget() {
   const client = useClient({ apiVersion: '2024-01-01' })
   const [projects, setProjects] = useState<ProjectItem[]>([])
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState<boolean>(true)
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
-  const [isDeleting, setIsDeleting] = useState(false)
-  const [showConfirm, setShowConfirm] = useState(false)
+  const [isDeleting, setIsDeleting] = useState<boolean>(false)
+  const [showConfirm, setShowConfirm] = useState<boolean>(false)
 
   const fetchProjects = useCallback(async () => {
     setLoading(true)

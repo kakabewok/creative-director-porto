@@ -2,10 +2,8 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
-
 import { UserProfile } from '@/types'
 import { mockUser } from '@/data/mock/user'
-import Loading from '@/components/Loading'
 
 interface Props {
   user: UserProfile
@@ -58,12 +56,6 @@ export default function HeroClient({ user }: Props) {
 
     video.play().catch(() => { })
   }, [mounted])
-
-  if (!mounted) return (
-    <div className='h-screen bg-black'>
-      {/* <Loading /> */}
-    </div>
-  )
 
   return (
     <>

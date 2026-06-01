@@ -9,7 +9,6 @@ import { cloudinarySchemaPlugin } from 'sanity-plugin-cloudinary'
 import { dashboardTool } from '@sanity/dashboard'
 import { documentListWidget } from 'sanity-plugin-dashboard-widget-document-list'
 
-
 export default defineConfig({
     projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || '02lojwef',
     dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
