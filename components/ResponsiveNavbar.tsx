@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import Navbar from "./Navbar"; 
+import Navbar from "./Navbar";
 
 const WORK_VIEW_ROUTES = ["/work", "/work/spectrum", "/work/timeline"];
 
@@ -18,4 +18,4 @@ export default function ResponsiveNavbar() {
   }
 
   return <Navbar />;
-}
+}

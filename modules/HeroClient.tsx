@@ -10,7 +10,7 @@ interface Props {
 }
 
 export default function HeroClient({ user }: Props) {
-  const [mounted, setMounted] = useState(false)
+  const [mounted, setMounted] = useState<boolean>(false)
   const videoRef = useRef<HTMLVideoElement>(null)
 
   const heroVideo =
@@ -48,7 +48,7 @@ export default function HeroClient({ user }: Props) {
     const video = videoRef.current
     if (!video) return
 
-    // Force set sebagai DOM attribute, bukan hanya property
+    // Force set
     video.setAttribute('muted', '')
     video.setAttribute('playsinline', '')
     video.muted = true
@@ -59,11 +59,6 @@ export default function HeroClient({ user }: Props) {
 
   return (
     <>
-      {/*
-        ── FIXED HERO ──────────────────────────────────────────────────
-        position: fixed so it stays in place while the Work section
-        scrolls over it. z-index: 0 so Work (z-10) covers it.
-      */}
       <section
         className="fixed inset-0 z-0 overflow-hidden bg-black"
         aria-label="Hero section"
@@ -109,7 +104,7 @@ export default function HeroClient({ user }: Props) {
 
         {/* Vignette */}
         <div
-          className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/60 pointer-events-none"
+          className="absolute inset-0 bg-linear-to-b from-black/20 via-transparent to-black/40 pointer-events-none"
           aria-hidden="true"
         />
 
@@ -134,24 +129,6 @@ export default function HeroClient({ user }: Props) {
               {user?.tagline}
             </motion.p>
           )}
-
-          {/* Scroll cue */}
-          {/* <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.6, duration: 0.8 }}
-            className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3"
-            aria-hidden="true"
-          >
-            <span className="text-white/20 text-[10px] tracking-[0.3em] uppercase select-none">
-              Scroll
-            </span>
-            <motion.div
-              animate={{ y: [0, 7, 0] }}
-              transition={{ repeat: Infinity, duration: 2.2, ease: 'easeInOut' }}
-              className="w-px h-10 bg-gradient-to-b from-white/25 to-transparent"
-            />
-          </motion.div> */}
         </div>
       </section>
 

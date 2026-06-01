@@ -34,7 +34,7 @@ export default function Navbar() {
         <Link
           href="/work"
           className={`${pathname.startsWith('/work') ? 'text-slate-400 dark:text-slate-500' : 'text-slate-900 dark:text-white'} text-[13px] md:text-[15px] lg:text-lg font-semibold tracking-normal duration-400 uppercase hover:text-slate-500 dark:hover:text-white/80 transition-colors`}
-          aria-label="Home"
+          aria-label="Work"
         >
           Work
         </Link>

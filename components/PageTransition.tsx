@@ -2,7 +2,6 @@
 
 import { AnimatePresence, motion } from 'framer-motion'
 import { usePathname } from 'next/navigation'
-import { useRef } from 'react'
 
 export default function PageTransition({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
@@ -14,7 +13,6 @@ export default function PageTransition({ children }: { children: React.ReactNode
         className="relative z-0"
         initial={{ opacity: 0.5, y: 0 }}
         animate={{ opacity: 1, y: 0 }}
-        // exit={{ opacity: 0, y: 0 }}
         transition={{ duration: 0.50 }}
       >
         {children}

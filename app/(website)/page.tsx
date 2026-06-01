@@ -10,17 +10,15 @@ export const metadata: Metadata = {
     'Portfolio of Rangga Djoned - Creative Director based in Jakarta, Indonesia.',
 }
 
+// read workSection
+
 export default async function HomePage() {
   const [user, projects] = await Promise.all([fetchUser(), fetchProjects()])
 
   return (
-    <>
-      <Navbar />
-      <main>
-        <HeroClient user={user} />
-        <WorkSection projects={projects} mode="overlay" view="list" />
-      </main>
-    </>
-
+    <main>
+      <HeroClient user={user} />
+      <WorkSection projects={projects} mode="overlay" view="list" />
+    </main>
   )
 }

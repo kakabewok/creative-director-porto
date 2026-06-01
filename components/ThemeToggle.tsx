@@ -5,7 +5,7 @@ import { FiSun, FiMoon } from 'react-icons/fi'
 
 export default function ThemeToggle() {
   const [theme, setTheme] = useState<'light' | 'dark'>('dark')
-  const [mounted, setMounted] = useState(false)
+  const [mounted, setMounted] = useState<boolean>(false)
 
   useEffect(() => {
     setMounted(true)
@@ -41,8 +41,6 @@ export default function ThemeToggle() {
 
   // Prevent hydration mismatch by not rendering anything until mounted
   if (!mounted) return null
-
-  // bottom-16 left-5
 
   return (
     <button
