@@ -183,8 +183,10 @@ export default async function InformationPage() {
 
             <div className="flex flex-col sm:flex-row gap-4 mb-[420px]">
               <a
-                href="#"
-                aria-label="Download High Resolution Images"
+                href={process.env.NEXT_PUBLIC_ASSETS_HD_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="High Resolution Images"
                 className="duration-400 group flex items-center justify-between px-6 py-4 border border-slate-200 hover:border-slate-500 dark:border-white/20 dark:hover:border-white/30 transition-all"
               >
                 <span className="text-slate-700 hover:text-slate-950 dark:text-white/60 text-sm font-light dark:group-hover:text-white transition-colors">
@@ -193,7 +195,8 @@ export default async function InformationPage() {
                 <span className="text-slate-700 hover:text-slate-950 dark:text-white/20 text-xs dark:group-hover:text-white/50 transition-colors ml-8">↗</span>
               </a>
               <a
-                href="#"
+                href="/cv/rangga-djoned-cv.pdf"
+                download
                 aria-label="Download CV PDF"
                 className="duration-400 group flex items-center justify-between px-6 py-4 border border-slate-200 hover:border-slate-500 dark:border-white/20 dark:hover:border-white/30 transition-all"
               >

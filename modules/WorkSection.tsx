@@ -15,7 +15,7 @@ interface Props {
 
 export default function WorkSection({ projects, mode }: Props) {
   const isOverlay = mode === 'overlay'
-  const [isWorkActive, setIsWorkActive] = useState(!isOverlay)
+  const [isWorkActive, setIsWorkActive] = useState<boolean>(!isOverlay)
 
   return (
     <div className={isOverlay ? 'relative z-10 bg-white dark:bg-black' : 'bg-white dark:bg-black'}>

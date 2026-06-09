@@ -27,7 +27,7 @@ export default function ScrollTrigger({ onActiveChange }: Props) {
         window.requestAnimationFrame(() => {
           if (!sentinel) return
           const rect = sentinel.getBoundingClientRect()
-          
+
           // Trigger when the top of the work section is at or above 70% of the viewport height
           // (meaning it has scrolled up by at least 30% of the viewport)
           const isAboveThreshold = rect.top <= window.innerHeight * 0.7

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     'Portfolio of Rangga Djoned - Creative Director based in Jakarta, Indonesia.',
 }
 
-// read workSection
+// read scroll tiger
 
 export default async function HomePage() {
   const [user, projects] = await Promise.all([fetchUser(), fetchProjects()])
