@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { fetchUser, fetchProjects } from '@/lib/sanity/fetchers'
+import { fetchUser, fetchProjects, fetchHeroMedia } from '@/lib/sanity/fetchers'
 import HeroClient from '@/modules/HeroClient'
 import WorkSection from '@/modules/WorkSection'
 import Navbar from '@/components/Navbar'
@@ -13,11 +13,11 @@ export const metadata: Metadata = {
 // read scroll tiger
 
 export default async function HomePage() {
-  const [user, projects] = await Promise.all([fetchUser(), fetchProjects()])
+  const [user, projects, heroMedia] = await Promise.all([fetchUser(), fetchProjects(), fetchHeroMedia()])
 
   return (
     <main>
-      <HeroClient user={user} />
+      <HeroClient user={user} heroMedia={heroMedia} />
       <WorkSection projects={projects} mode="overlay" view="list" />
     </main>
   )

@@ -29,3 +29,4 @@ export interface ExperienceHighlight {
 
 export * from './user'
 export * from './project'
+export * from './heroMedia'

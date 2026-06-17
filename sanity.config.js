@@ -5,6 +5,7 @@ import { GuideWidget } from './components/studio/GuideWidget'
 import { BulkDeleteWidget } from './components/studio/BulkDeleteWidget'
 import { projectSchema } from './sanity/schemas/project';
 import { userSchema } from './sanity/schemas/user';
+import { heroMediaSchema } from './sanity/schemas/heroMedia';
 import { cloudinarySchemaPlugin } from 'sanity-plugin-cloudinary'
 import { dashboardTool } from '@sanity/dashboard'
 import { documentListWidget } from 'sanity-plugin-dashboard-widget-document-list'
@@ -40,7 +41,7 @@ export default defineConfig({
         cloudinarySchemaPlugin(),
     ],
     schema: {
-        types: [projectSchema, userSchema],
+        types: [projectSchema, userSchema, heroMediaSchema],
     },
     basePath: '/studio',
 })

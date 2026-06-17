@@ -101,3 +101,21 @@ export const PROJECT_BY_SLUG_QUERY = groq`
     "is_selected": featured
   }
 `
+
+export const HERO_MEDIA_QUERY = groq`
+  *[_type == "heroMedia" && isActive == true] | order(order asc) {
+    _id,
+    title,
+    mediaType,
+    image {
+      secure_url,
+      public_id,
+      width,
+      height
+    },
+    videoUrl,
+    order,
+    isActive
+  }
+`
+

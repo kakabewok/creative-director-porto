@@ -1,61 +1,102 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
-import { motion } from 'framer-motion'
-import { UserProfile } from '@/types'
-import { mockUser } from '@/data/mock/user'
+import { useEffect, useRef, useState, useCallback } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { UserProfile, HeroMedia } from '@/types'
+import useEmblaCarousel from 'embla-carousel-react'
+import Fade from 'embla-carousel-fade'
+import Image from 'next/image'
 
 interface Props {
   user: UserProfile
+  heroMedia: HeroMedia[]
 }
 
-export default function HeroClient({ user }: Props) {
+export default function HeroClient({ user, heroMedia }: Props) {
   const [mounted, setMounted] = useState<boolean>(false)
-  const videoRef = useRef<HTMLVideoElement>(null)
+  
+  // Embla carousel setup
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    { loop: true, watchDrag: true },
+    [Fade()]
+  )
 
-  const heroVideo =
-    user?.heroVideo?.asset?.url ||
-    mockUser.heroVideo?.asset?.url
+  const timerRef = useRef<NodeJS.Timeout | null>(null)
+  
+  // Ref array for video elements to control playback
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([])
 
-  const heroPoster =
-    user?.heroPoster?.secure_url ||
-    mockUser.heroPoster?.secure_url
+  const clearAutoPlayTimer = useCallback(() => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current)
+      timerRef.current = null
+    }
+  }, [])
+
+  const startAutoPlayTimer = useCallback(() => {
+    clearAutoPlayTimer()
+    // Auto advance after 4 seconds for images
+    timerRef.current = setTimeout(() => {
+      if (emblaApi) emblaApi.scrollNext()
+    }, 4000)
+  }, [emblaApi, clearAutoPlayTimer])
+
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return
+    const index = emblaApi.selectedScrollSnap()
+    
+    // Pause all videos
+    videoRefs.current.forEach((video) => {
+      if (video) {
+        video.pause()
+        video.currentTime = 0
+      }
+    })
+
+    const currentMedia = heroMedia[index]
+    if (currentMedia.mediaType === 'video') {
+      clearAutoPlayTimer()
+      const currentVideo = videoRefs.current[index]
+      if (currentVideo) {
+        currentVideo.play().catch(() => {})
+      }
+    } else {
+      // It's an image, start timer
+      startAutoPlayTimer()
+    }
+  }, [emblaApi, heroMedia, clearAutoPlayTimer, startAutoPlayTimer])
 
   useEffect(() => {
+    if (!emblaApi) return
+    onSelect()
+    emblaApi.on('select', onSelect)
+    emblaApi.on('pointerDown', clearAutoPlayTimer)
+    emblaApi.on('pointerUp', () => {
+      // Resume timer if current slide is image
+      const index = emblaApi.selectedScrollSnap()
+      if (heroMedia[index].mediaType === 'image') {
+        startAutoPlayTimer()
+      }
+    })
+    return () => {
+      emblaApi.off('select', onSelect)
+      emblaApi.off('pointerDown', clearAutoPlayTimer)
+      emblaApi.off('pointerUp', () => {})
+      clearAutoPlayTimer()
+    }
+  }, [emblaApi, onSelect, clearAutoPlayTimer, startAutoPlayTimer, heroMedia])
+
+  useEffect(() => {
+    // eslint-disable-next-line
     setMounted(true)
   }, [])
 
-  // old
-  // useEffect(() => {
-  //   if (!mounted) return
-  //   const video = videoRef.current
-  //   if (!video) return
-
-  //   const attemptPlay = async () => {
-  //     try {
-  //       video.muted = true
-  //       video.defaultMuted = true
-  //       await video.play()
-  //     } catch (err) {
-  //       console.log("Autoplay blocked:", err)
-  //     }
-  //   }
-
-  //   attemptPlay()
-  // }, [mounted])
-
-  useEffect(() => {
-    const video = videoRef.current
-    if (!video) return
-
-    // Force set
-    video.setAttribute('muted', '')
-    video.setAttribute('playsinline', '')
-    video.muted = true
-    video.volume = 0
-
-    video.play().catch(() => { })
-  }, [mounted])
+  // Handler for when video ends
+  const handleVideoEnded = useCallback(() => {
+    if (emblaApi) {
+      emblaApi.scrollNext()
+    }
+  }, [emblaApi])
 
   return (
     <>
@@ -63,72 +104,77 @@ export default function HeroClient({ user }: Props) {
         className="fixed inset-0 z-0 overflow-hidden bg-black"
         aria-label="Hero section"
       >
-        {/* Background video */}
-        {/* old */}
-        {/* <motion.video
-          ref={videoRef as any}
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          poster={heroPoster}
-          controls={false}
-          controlsList="nodownload nofullscreen noremoteplayback"
-          disablePictureInPicture
-          aria-hidden="true"
-          className="absolute inset-0 w-full h-full object-cover object-center"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 0.6 }}
-          transition={{ duration: 1.2 }}
-        >
-          <source src={heroVideo} type="video/mp4" />
-        </motion.video> */}
-
-        <video
-          ref={videoRef}
-          autoPlay
-          loop
-          playsInline
-          preload="auto"
-          poster={heroPoster}
-          // @ts-ignore
-          webkit-playsinline=""
-          disablePictureInPicture
-          aria-hidden="true"
-          className="absolute inset-0 w-full h-full object-cover object-center"
-          style={{ opacity: 0.6 }}
-        >
-          <source src={heroVideo} type="video/mp4" />
-        </video>
+        {/* Embla Carousel Viewport */}
+        <div className="absolute inset-0 w-full h-full" ref={emblaRef}>
+          <div className="flex h-full w-full touch-pan-y">
+            {heroMedia.map((media, index) => (
+              <div
+                key={media._id}
+                className="relative flex-[0_0_100%] min-w-0 h-full w-full"
+                style={{ opacity: 0.6 }}
+              >
+                {media.mediaType === 'image' && media.image?.secure_url && (
+                  <Image
+                    src={media.image.secure_url}
+                    alt={media.title || 'Hero image'}
+                    fill
+                    priority={index === 0}
+                    className="object-cover object-center"
+                    sizes="100vw"
+                  />
+                )}
+                {media.mediaType === 'video' && media.videoUrl && (
+                  <video
+                    ref={(el) => {
+                      videoRefs.current[index] = el
+                    }}
+                    muted
+                    playsInline
+                    preload={index === 0 ? "auto" : "metadata"}
+                    onEnded={handleVideoEnded}
+                    className="absolute inset-0 w-full h-full object-cover object-center"
+                  >
+                    <source src={media.videoUrl} type="video/mp4" />
+                  </video>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
 
         {/* Vignette */}
         <div
-          className="absolute inset-0 bg-linear-to-b from-black/20 via-transparent to-black/40 pointer-events-none"
+          className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/40 pointer-events-none"
           aria-hidden="true"
         />
 
         {/* Centered content */}
-        <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-6">
-          <motion.h1
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
-            className="text-white text-3xl sm:text-5xl md:text-6xl font-bold tracking-normal mb-6 leading-none uppercase"
-          >
-            {user?.name}
-          </motion.h1>
+        <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-6 pointer-events-none">
+          <AnimatePresence>
+            {mounted && (
+              <motion.h1
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
+                className="text-white text-3xl sm:text-5xl md:text-6xl font-bold tracking-normal mb-6 leading-none uppercase"
+              >
+                {user?.name}
+              </motion.h1>
+            )}
+          </AnimatePresence>
 
-          {user?.tagline && (
-            <motion.p
-              initial={{ opacity: 0, y: 14 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.55 }}
-              className="text-white/40 text-xs sm:text-sm tracking-[0.22em] uppercase font-light max-w-xs sm:max-w-sm"
-            >
-              {user?.tagline}
-            </motion.p>
-          )}
+          <AnimatePresence>
+            {mounted && user?.tagline && (
+              <motion.p
+                initial={{ opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.55 }}
+                className="text-white/40 text-xs sm:text-sm tracking-[0.22em] uppercase font-light max-w-xs sm:max-w-sm"
+              >
+                {user?.tagline}
+              </motion.p>
+            )}
+          </AnimatePresence>
         </div>
       </section>
 

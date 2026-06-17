@@ -1,8 +1,9 @@
 import { sanityClient } from "./client"
-import { PROJECTS_QUERY, PROJECT_BY_SLUG_QUERY, USER_QUERY } from "./queries"
+import { PROJECTS_QUERY, PROJECT_BY_SLUG_QUERY, USER_QUERY, HERO_MEDIA_QUERY } from "./queries"
 import { mockProjects } from "@/data/mock/projects"
 import { mockUser } from "@/data/mock/user"
-import { Project, UserProfile } from "@/types"
+import { mockHeroMedia } from "@/data/mock/heroMedia"
+import { Project, UserProfile, HeroMedia } from "@/types"
 
 export async function fetchProjects(): Promise<Project[]> {
   try {
@@ -49,5 +50,21 @@ export async function fetchUser(): Promise<UserProfile> {
   } catch (error) {
     console.error("Failed to fetch user from Sanity, using mock data", error)
     return mockUser as any
+  }
+}
+
+export async function fetchHeroMedia(): Promise<HeroMedia[]> {
+  try {
+    const heroMedia = await sanityClient.fetch<HeroMedia[]>(HERO_MEDIA_QUERY, {},
+      {
+        next: {
+          revalidate: Number(process.env.NEXT_PUBLIC_PROJECT_REVALIDATE_TIME) || 3600,
+          tags: ['heroMedia']
+        }
+      })
+    return heroMedia?.length > 0 ? heroMedia : mockHeroMedia
+  } catch (error) {
+    console.error("Failed to fetch hero media from Sanity, using mock data", error)
+    return mockHeroMedia
   }
 }
