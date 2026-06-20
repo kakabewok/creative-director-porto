@@ -68,10 +68,10 @@ export default async function InformationPage() {
               </div>
 
               {/* Right — about text */}
-              <div className="flex flex-col gap-8">
-                <h1 className="text-slate-950 dark:text-white text-xl md:text-2xl font-normal tracking-tight leading-snug mt-5">
+              <div className="flex flex-col gap-8 pt-0 md:pt-13">
+                {/* <h1 className="text-slate-950 dark:text-white text-xl md:text-2xl font-normal tracking-tight leading-snug mt-5">
                   {user.tagline ?? 'Creative Director'}
-                </h1>
+                </h1> */}
 
                 {user.aboutText && (
                   <div className="space-y-5">

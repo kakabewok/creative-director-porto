@@ -158,7 +158,7 @@ export default function HeroClient({ user, heroMedia }: Props) {
                 initial={{ opacity: 0, y: 14 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.55 }}
-                className="text-left text-white/95 text-2xl md:text-4xl lg:text-5xl tracking-tighter capitalize font-semibold max-w-full lg:max-w-5xl px-4 whitespace-pre-line drop-shadow-xs "
+                className="lg:leading-normal text-left text-white/95 text-xl md:text-2xl lg:text-3xl tracking-tighter capitalize font-semibold max-w-full lg:max-w-5xl px-4 whitespace-pre-line drop-shadow-xs "
               // style={{ textShadow: '0 2px 10px rgba(0,0,0,0.5)' }}
               >
                 {user?.tagline}
