@@ -21,6 +21,12 @@ export async function POST(request: Request) {
             return NextResponse.json({ revalidated: true, message: 'Profile updated!' });
         }
 
+        if (documentType === 'heroMedia') {
+            revalidateTag('heroMedia', "max");
+            console.log('Success: Hero Media cache cleaned.');
+            return NextResponse.json({ revalidated: true, message: 'Hero Media updated!' });
+        }
+
         console.log('Warning: Webhook received, but no matching tag found for type:', documentType);
         return NextResponse.json({ revalidated: false, message: 'No matching tag found' });
 
