@@ -5,7 +5,12 @@ export const mockUser: UserProfile = {
   name: 'Rangga Djoned',
   heroVideo: { asset: { url: 'https://res.cloudinary.com/demo/video/upload/elephants.mp4' } },
   heroPoster: { secure_url: '/mock/hero-poster.jpg', public_id: 'mock1' },
-  tagline: 'Creative Director',
+  tagline: `I don't design what you see.
+I design what stays.
+Beyond form, I design feeling transforming stories into living experiences that move people across stages, cultures, and borders.
+From storytelling to storyliving.
+Designing emotion into world- class live experiences.
+`,
   profileImage: {
     secure_url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80',
     public_id: 'mock2',

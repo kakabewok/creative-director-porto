@@ -14,7 +14,7 @@ interface Props {
 
 export default function HeroClient({ user, heroMedia }: Props) {
   const [mounted, setMounted] = useState<boolean>(false)
-  
+
   // Embla carousel setup
   const [emblaRef, emblaApi] = useEmblaCarousel(
     { loop: true, watchDrag: true },
@@ -22,7 +22,7 @@ export default function HeroClient({ user, heroMedia }: Props) {
   )
 
   const timerRef = useRef<NodeJS.Timeout | null>(null)
-  
+
   // Ref array for video elements to control playback
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([])
 
@@ -44,7 +44,7 @@ export default function HeroClient({ user, heroMedia }: Props) {
   const onSelect = useCallback(() => {
     if (!emblaApi) return
     const index = emblaApi.selectedScrollSnap()
-    
+
     // Pause all videos
     videoRefs.current.forEach((video) => {
       if (video) {
@@ -58,7 +58,7 @@ export default function HeroClient({ user, heroMedia }: Props) {
       clearAutoPlayTimer()
       const currentVideo = videoRefs.current[index]
       if (currentVideo) {
-        currentVideo.play().catch(() => {})
+        currentVideo.play().catch(() => { })
       }
     } else {
       // It's an image, start timer
@@ -81,7 +81,7 @@ export default function HeroClient({ user, heroMedia }: Props) {
     return () => {
       emblaApi.off('select', onSelect)
       emblaApi.off('pointerDown', clearAutoPlayTimer)
-      emblaApi.off('pointerUp', () => {})
+      emblaApi.off('pointerUp', () => { })
       clearAutoPlayTimer()
     }
   }, [emblaApi, onSelect, clearAutoPlayTimer, startAutoPlayTimer, heroMedia])
@@ -90,6 +90,8 @@ export default function HeroClient({ user, heroMedia }: Props) {
     // eslint-disable-next-line
     setMounted(true)
   }, [])
+
+
 
   // Handler for when video ends
   const handleVideoEnded = useCallback(() => {
@@ -107,11 +109,10 @@ export default function HeroClient({ user, heroMedia }: Props) {
         {/* Embla Carousel Viewport */}
         <div className="absolute inset-0 w-full h-full" ref={emblaRef}>
           <div className="flex h-full w-full touch-pan-y">
-            {heroMedia.map((media, index) => (
+            {heroMedia.sort((a, b) => a.order - b.order).map((media, index) => (
               <div
                 key={media._id}
                 className="relative flex-[0_0_100%] min-w-0 h-full w-full"
-                style={{ opacity: 0.6 }}
               >
                 {media.mediaType === 'image' && media.image?.secure_url && (
                   <Image
@@ -123,53 +124,42 @@ export default function HeroClient({ user, heroMedia }: Props) {
                     sizes="100vw"
                   />
                 )}
-                {media.mediaType === 'video' && media.videoUrl && (
+                {media.mediaType === 'video' && media.video?.secure_url && (
                   <video
                     ref={(el) => {
                       videoRefs.current[index] = el
                     }}
+                    disablePictureInPicture
+                    controlsList="nopictureinpicture"
                     muted
                     playsInline
                     preload={index === 0 ? "auto" : "metadata"}
                     onEnded={handleVideoEnded}
+                    aria-hidden="true"
                     className="absolute inset-0 w-full h-full object-cover object-center"
                   >
-                    <source src={media.videoUrl} type="video/mp4" />
+                    <source src={media.video.secure_url} type="video/mp4" />
                   </video>
                 )}
               </div>
             ))}
           </div>
         </div>
-
-        {/* Vignette */}
         <div
-          className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/40 pointer-events-none"
+          className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"
           aria-hidden="true"
         />
 
         {/* Centered content */}
         <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-6 pointer-events-none">
           <AnimatePresence>
-            {mounted && (
-              <motion.h1
-                initial={{ opacity: 0, y: 24 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
-                className="text-white text-3xl sm:text-5xl md:text-6xl font-bold tracking-normal mb-6 leading-none uppercase"
-              >
-                {user?.name}
-              </motion.h1>
-            )}
-          </AnimatePresence>
-
-          <AnimatePresence>
             {mounted && user?.tagline && (
               <motion.p
                 initial={{ opacity: 0, y: 14 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.55 }}
-                className="text-white/40 text-xs sm:text-sm tracking-[0.22em] uppercase font-light max-w-xs sm:max-w-sm"
+                className="text-left text-white/95 text-2xl md:text-4xl lg:text-5xl tracking-tighter capitalize font-semibold max-w-full lg:max-w-5xl px-4 whitespace-pre-line drop-shadow-xs "
+              // style={{ textShadow: '0 2px 10px rgba(0,0,0,0.5)' }}
               >
                 {user?.tagline}
               </motion.p>

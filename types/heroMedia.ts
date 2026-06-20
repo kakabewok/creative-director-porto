@@ -5,7 +5,7 @@ export interface HeroMedia {
   title: string
   mediaType: 'image' | 'video'
   image?: CloudinaryAsset
-  videoUrl?: string
+  video?: CloudinaryAsset
   order: number
   isActive: boolean
 }

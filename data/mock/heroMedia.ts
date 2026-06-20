@@ -11,7 +11,7 @@ export const mockHeroMedia: HeroMedia[] = [
       width: 2000,
       height: 1333,
     },
-    order: 1,
+    order: 3,
     isActive: true,
   },
   {
@@ -31,8 +31,13 @@ export const mockHeroMedia: HeroMedia[] = [
     _id: 'media-3',
     title: 'Art Video 1',
     mediaType: 'video',
-    videoUrl: 'https://res.cloudinary.com/demo/video/upload/v1689230554/video/c_fill,h_1080,w_1920/sea_turtle.mp4',
-    order: 3,
+    video: {
+      secure_url: 'https://res.cloudinary.com/demo/video/upload/elephants.mp4',
+      public_id: 'mock-3',
+      width: 1920,
+      height: 1080,
+    },
+    order: 1,
     isActive: true,
   },
   {
@@ -78,7 +83,12 @@ export const mockHeroMedia: HeroMedia[] = [
     _id: 'media-7',
     title: 'Art Video 2',
     mediaType: 'video',
-    videoUrl: 'https://res.cloudinary.com/demo/video/upload/v1689230554/video/c_fill,h_1080,w_1920/elephants.mp4',
+    video: {
+      secure_url: 'https://res.cloudinary.com/demo/video/upload/elephants.mp4',
+      public_id: 'mock-7',
+      width: 1920,
+      height: 1080,
+    },
     order: 7,
     isActive: true,
   },
