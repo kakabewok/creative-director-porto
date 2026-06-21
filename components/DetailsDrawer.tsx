@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { X } from 'lucide-react'
 import type { Project } from '@/types'
 import PortableTextRenderer from '@/components/PortableTextRenderer'
-import React from 'react'
 
 interface Props {
   project: Project | null
@@ -75,23 +74,22 @@ export default function DetailsDrawer({ project, onClose }: Props) {
 
               <p className='text-slate-600/70 dark:text-white/30 text-xs tracking-widest uppercase mb-6'>{project.year}</p>
 
-              {/* <dl className="grid grid-cols-2 gap-y-5 gap-x-4">
-                {project.year ? (
-                  <React.Fragment key="year">
-                    <dt className="text-slate-950 dark:text-white/30 text-xs tracking-widest uppercase">Year</dt>
-                    <dd className="text-slate-900 dark:text-white/70 text-sm font-light">{project.year}</dd>
-                  </React.Fragment>
-                ) : null}
-
-                {project.category ? (
-                  <React.Fragment key="category">
-                    <dt className="text-slate-950 dark:text-white/30 text-xs tracking-widest uppercase">Category</dt>
-                    <dd className="text-slate-900 dark:text-white/70 text-sm font-light">{project.category}</dd>
-                  </React.Fragment>
-                ) : null}
-              </dl> */}
-
-              {/* <div className="w-full h-px bg-black/8 dark:bg-white/8 mb-4" /> */}
+              {/* Category badges */}
+              {/* {(() => {
+                const cats = project.categories || []
+                return cats.length > 0 ? (
+                  <div className="flex flex-wrap gap-1.5 mb-6">
+                    {cats.map((cat) => (
+                      <span
+                        key={cat}
+                        className="inline-block px-3 py-1 text-[10px] tracking-widest uppercase font-light border border-slate-300 dark:border-white/15 text-slate-600 dark:text-white/50 rounded-xs"
+                      >
+                        {cat}
+                      </span>
+                    ))}
+                  </div>
+                ) : null
+              })()} */}
 
               {/* Description */}
               {project.description ? (

@@ -20,7 +20,6 @@ export const projectSchema = {
       type: 'number',
       group: 'basic',
       description: 'Lower number = appears first. Leave blank to sort by creation date.',
-      // initialValue: 99,
     },
     {
       name: 'title',
@@ -77,24 +76,32 @@ export const projectSchema = {
       group: 'basic',
       description: 'e.g. Creative Director, Art Director, Photographer, etc.',
     },
+    // ── NEW: Multi-select categories ──
     {
-      name: 'category',
-      title: 'Category',
-      type: 'string',
+      name: 'categories',
+      title: 'Categories',
+      type: 'array',
       group: 'basic',
+      description: 'Select one or more categories for this project.',
+      of: [{ type: 'string' }],
       options: {
         list: [
+          { title: 'Segment Development', value: 'Segment Development' },
+          { title: 'Performance Production', value: 'Performance Production' },
+          { title: 'Mass Choreography Coordination', value: 'Mass Choreography Coordination' },
+          { title: 'Creative Execution', value: 'Creative Execution' },
+          { title: 'Stadium Ceremony Production', value: 'Stadium Ceremony Production' },
+          { title: 'Creative Concept', value: 'Creative Concept' },
+          { title: 'Scenography', value: 'Scenography' },
+          { title: 'Projection Mapping', value: 'Projection Mapping' },
+          { title: 'Visual Storytelling', value: 'Visual Storytelling' },
+          { title: 'Family Musical Experience Design', value: 'Family Musical Experience Design' },
           { title: 'Creative Direction', value: 'Creative Direction' },
-          { title: 'Branding & Identity', value: 'Branding' },
-          { title: 'Digital Campaigns', value: 'Digital Campaign' },
-          { title: 'Commercials / Film', value: 'Commercials' },
-          { title: 'Photography', value: 'Photography' },
-          { title: 'Videography', value: 'Videography' },
-          { title: 'Experiential / Spatial', value: 'Experiential' },
         ],
-        layout: 'radio',
+        layout: 'grid',
       },
     },
+    // ── DEPRECATED: legacy category has been completely removed ──
     {
       name: 'year',
       title: 'Year',
@@ -183,7 +190,14 @@ export const projectSchema = {
   preview: {
     select: {
       title: 'title',
-      subtitle: 'category',
+      categories: 'categories',
+    },
+    prepare({ title, categories }: any) {
+      const subtitle = categories?.length
+        ? categories.join(', ')
+        : 'No category'
+      return { title, subtitle }
     },
   },
 }
+

@@ -6,29 +6,53 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { Search } from 'lucide-react'
-import type { Project, ProjectCategory } from '@/types'
+import type { Project } from '@/types'
 import { getProjectCoverSrc } from '@/lib/projectImage'
 import { useDebounce } from '@/hooks/useDebounce'
-
-const CATEGORIES: ProjectCategory[] = ['Videography', 'Branding', 'Photography', 'Digital Campaign', 'Creative Direction']
 
 interface Props {
   projects: Project[]
 }
+
+
 
 function SearchClientInner({ projects }: Props) {
   const router = useRouter()
   const searchParams = useSearchParams()
 
   const initialQuery = searchParams.get('q') || ''
-  const initialCategory = (searchParams.get('category') as ProjectCategory) || null
+  const initialCategories = searchParams.get('category')
+    ? searchParams.get('category')!.split(',')
+    : []
 
   const [query, setQuery] = useState(initialQuery)
-  const [activeCategory, setActiveCategory] = useState<ProjectCategory | null>(initialCategory)
+  const [activeCategories, setActiveCategories] = useState<Set<string>>(
+    new Set(initialCategories)
+  )
 
   const debouncedQuery = useDebounce(query, 300)
 
-  // Sync state to URL
+  // ── Derive dynamic category list from actual project data ──
+  const availableCategories = useMemo(() => {
+    const catSet = new Set<string>()
+    for (const project of projects) {
+      for (const cat of (project.categories || [])) {
+        catSet.add(cat)
+      }
+    }
+    // Sort alphabetically for consistent display
+    return Array.from(catSet).sort()
+  }, [projects])
+
+  // ── Category counts ──
+  const categoryCounts = useMemo(() => {
+    return availableCategories.reduce<Record<string, number>>((acc, cat) => {
+      acc[cat] = projects.filter((p) => (p.categories || []).includes(cat)).length
+      return acc
+    }, {})
+  }, [projects, availableCategories])
+
+  // ── Sync state to URL ──
   useEffect(() => {
     const params = new URLSearchParams(searchParams.toString())
 
@@ -38,8 +62,8 @@ function SearchClientInner({ projects }: Props) {
       params.delete('q')
     }
 
-    if (activeCategory) {
-      params.set('category', activeCategory)
+    if (activeCategories.size > 0) {
+      params.set('category', Array.from(activeCategories).join(','))
     } else {
       params.delete('category')
     }
@@ -47,39 +71,55 @@ function SearchClientInner({ projects }: Props) {
     const queryString = params.toString()
     const newUrl = queryString ? `/search?${queryString}` : '/search'
 
-    // Compare without the leading ? for searchParams.toString()
     const currentQueryString = searchParams.toString()
     const currentUrl = currentQueryString ? `/search?${currentQueryString}` : '/search'
 
     if (currentUrl !== newUrl) {
       router.replace(newUrl, { scroll: false })
     }
-  }, [debouncedQuery, activeCategory, router, searchParams])
+  }, [debouncedQuery, activeCategories, router, searchParams])
 
-  const categoryCounts = useMemo(() => {
-    return CATEGORIES.reduce<Record<string, number>>((acc, cat) => {
-      acc[cat] = projects.filter((p) => p.category === cat).length
-      return acc
-    }, {})
-  }, [projects])
+  // ── Toggle a category chip ──
+  const toggleCategory = (cat: string) => {
+    setActiveCategories((prev) => {
+      const next = new Set(prev)
+      if (next.has(cat)) {
+        next.delete(cat)
+      } else {
+        next.add(cat)
+      }
+      return next
+    })
+  }
 
+  // ── Filter results (OR logic for categories) ──
   const results = useMemo(() => {
     let list = projects
-    if (activeCategory) list = list.filter((p) => p.category === activeCategory)
+
+    // Category filter (OR: project matches if ANY of its categories is selected)
+    if (activeCategories.size > 0) {
+      list = list.filter((p) => {
+        const projCats = p.categories || []
+        return projCats.some((cat) => activeCategories.has(cat))
+      })
+    }
+
+    // Text search
     if (debouncedQuery.trim()) {
       const q = debouncedQuery.trim().toLowerCase()
       list = list.filter(
         (p) =>
           p.title.toLowerCase().includes(q) ||
-          p.category?.toLowerCase().includes(q) ||
+          (p.categories || []).some((c) => c.toLowerCase().includes(q)) ||
           p.role?.toLowerCase().includes(q) ||
           p.year?.includes(q)
       )
     }
-    return list
-  }, [projects, debouncedQuery, activeCategory])
 
-  const showResults = debouncedQuery.trim() !== '' || activeCategory !== null
+    return list
+  }, [projects, debouncedQuery, activeCategories])
+
+  const showResults = debouncedQuery.trim() !== '' || activeCategories.size > 0
 
   return (
     <div className="h-[calc(100dvh-68px)] bg-white dark:bg-black flex flex-col">
@@ -105,26 +145,31 @@ function SearchClientInner({ projects }: Props) {
           </div>
         </div>
 
-        {/* Categories — centered under input */}
-        <div className="flex flex-col items-center gap-5">
-          <p className="text-slate-900 dark:text-white/90 text-[11px] tracking-[0.25em] uppercase">or explore by</p>
-          <div className="flex flex-wrap justify-center gap-1.5 lg:gap-2">
-            {CATEGORIES.map((cat) => (
-              <button
-                key={cat}
-                id={`category-${cat.toLowerCase().replace(/\s+/g, '-')}`}
-                onClick={() => setActiveCategory(activeCategory === cat ? null : cat)}
-                aria-pressed={activeCategory === cat}
-                className={`cursor-pointer px-5 py-2 rounded-xs text-xs tracking-widest uppercase font-light border transition-all duration-400 ${activeCategory === cat
-                  ? 'bg-slate-950 dark:bg-white text-slate-50 dark:text-black border-slate-950 dark:border-white'
-                  : 'border-slate-900 dark:border-white/90 text-slate-900 dark:text-white/90 hover:border-slate-700 dark:hover:border-slate-200 hover:text-slate-700 dark:hover:text-slate-200'
-                  }`}
-              >
-                {cat} ({categoryCounts[cat] ?? 0})
-              </button>
-            ))}
+        {/* Categories — dynamic chips, only show categories used by projects */}
+        {availableCategories.length > 0 && (
+          <div className="flex flex-col items-center gap-5">
+            <p className="text-slate-900 dark:text-white/90 text-[11px] tracking-[0.25em] uppercase">or explore by</p>
+            <div className="flex flex-wrap justify-center gap-1.5 lg:gap-2">
+              {availableCategories.map((cat) => {
+                const isActive = activeCategories.has(cat)
+                return (
+                  <button
+                    key={cat}
+                    id={`category-${cat.toLowerCase().replace(/\s+/g, '-')}`}
+                    onClick={() => toggleCategory(cat)}
+                    aria-pressed={isActive}
+                    className={`cursor-pointer px-5 py-2 rounded-xs text-xs tracking-widest uppercase font-light border transition-all duration-400 ${isActive
+                      ? 'bg-slate-950 dark:bg-white text-slate-50 dark:text-black border-slate-950 dark:border-white'
+                      : 'border-slate-900 dark:border-white/90 text-slate-900 dark:text-white/90 hover:border-slate-700 dark:hover:border-slate-200 hover:text-slate-700 dark:hover:text-slate-200'
+                      }`}
+                  >
+                    {cat} ({categoryCounts[cat] ?? 0})
+                  </button>
+                )
+              })}
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       {/* ── Results ── */}

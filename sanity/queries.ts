@@ -44,7 +44,7 @@ export const projectsQuery = `*[_type == "project"] | order(order asc, _createdA
   slug,
   description,
   role,
-  category,
+  categories,
   year,
   coverImage{
     secure_url,
@@ -75,7 +75,7 @@ export const projectBySlugQuery = `*[_type == "project" && slug.current == $slug
   slug,
   description,
   role,
-  category,
+  categories,
   year,
   coverImage{
     secure_url,
@@ -101,5 +101,5 @@ export const projectBySlugQuery = `*[_type == "project" && slug.current == $slug
 }`
 
 export const categoriesQuery = `*[_type == "project"]{
-  category
+  categories
 }`

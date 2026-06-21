@@ -11,10 +11,16 @@ export interface GalleryItem {
 }
 
 export type ProjectCategory =
-  | 'Videography'
-  | 'Branding'
-  | 'Photography'
-  | 'Digital Campaign'
+  | 'Segment Development'
+  | 'Performance Production'
+  | 'Mass Choreography Coordination'
+  | 'Creative Execution'
+  | 'Stadium Ceremony Production'
+  | 'Creative Concept'
+  | 'Scenography'
+  | 'Projection Mapping'
+  | 'Visual Storytelling'
+  | 'Family Musical Experience Design'
   | 'Creative Direction'
 
 export interface Project {
@@ -24,7 +30,7 @@ export interface Project {
     current: string
   }
   year: string
-  category: ProjectCategory
+  categories?: string[]
   role?: string
   description?: any // PortableText blocks
   coverImage?: CloudinaryAsset

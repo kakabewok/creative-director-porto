@@ -7,7 +7,7 @@ import { useClient } from 'sanity'
 interface ProjectItem {
   _id: string
   title: string
-  category: string
+  categories?: string[]
 }
 
 export function BulkDeleteWidget() {
@@ -22,7 +22,7 @@ export function BulkDeleteWidget() {
     setLoading(true)
     try {
       const data = await client.fetch<ProjectItem[]>(
-        `*[_type == "project"] | order(_createdAt desc) { _id, title, category }`
+        `*[_type == "project"] | order(_createdAt desc) { _id, title, categories }`
       )
       setProjects(data)
       setSelectedIds(new Set())
@@ -122,7 +122,7 @@ export function BulkDeleteWidget() {
                     />
                     <Box flex={1}>
                       <Text size={1} weight="medium">{project.title || 'Untitled'}</Text>
-                      <Text size={0} muted>{project.category || 'No category'}</Text>
+                      <Text size={0} muted>{project.categories?.length ? project.categories.join(', ') : 'No category'}</Text>
                     </Box>
                   </Flex>
                 ))}

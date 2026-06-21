@@ -59,7 +59,7 @@ export const mockProjects: Project[] = [
       }
     ],
     role: 'Lead Photographer',
-    category: 'Photography' as any,
+    categories: [],
     year: '2024',
     coverImage: { secure_url: PLACEHOLDER_IMAGES['proj-2'], public_id: 'mock-cover-2' },
     gallery: [
@@ -84,7 +84,7 @@ export const mockProjects: Project[] = [
       }
     ],
     role: 'Art Director',
-    category: 'Branding' as any,
+    categories: [],
     year: '2024',
     coverImage: { secure_url: PLACEHOLDER_IMAGES['proj-3'], public_id: 'mock-cover-3' },
     gallery: [
@@ -108,7 +108,7 @@ export const mockProjects: Project[] = [
       }
     ],
     role: 'Campaign Director',
-    category: 'Digital Campaign' as any,
+    categories: [],
     year: '2024',
     coverImage: { secure_url: PLACEHOLDER_IMAGES['proj-4'], public_id: 'mock-cover-4' },
     gallery: [
@@ -132,7 +132,7 @@ export const mockProjects: Project[] = [
       }
     ],
     role: 'Photographer',
-    category: 'Photography' as any,
+    categories: [],
     year: '2024',
     coverImage: { secure_url: PLACEHOLDER_IMAGES['proj-5'], public_id: 'mock-cover-5' },
     gallery: [
@@ -157,7 +157,7 @@ export const mockProjects: Project[] = [
       }
     ],
     role: 'Director',
-    category: 'Videography' as any,
+    categories: [],
     year: '2024',
     coverImage: { secure_url: PLACEHOLDER_IMAGES['proj-6'], public_id: 'mock-cover-6' },
     gallery: [
@@ -180,7 +180,7 @@ export const mockProjects: Project[] = [
       }
     ],
     role: 'Brand Designer',
-    category: 'Branding' as any,
+    categories: [],
     year: '2024',
     coverImage: { secure_url: PLACEHOLDER_IMAGES['proj-7'], public_id: 'mock-cover-7' },
     gallery: [] as any,
@@ -200,7 +200,7 @@ export const mockProjects: Project[] = [
       }
     ],
     role: 'Photographer',
-    category: 'Photography' as any,
+    categories: [],
     year: '2023',
     coverImage: { secure_url: PLACEHOLDER_IMAGES['proj-8'], public_id: 'mock-cover-8' },
     gallery: [] as any,
@@ -220,7 +220,7 @@ export const mockProjects: Project[] = [
       }
     ],
     role: 'Director of Photography',
-    category: 'Videography' as any,
+    categories: [],
     year: '2023',
     coverImage: { secure_url: PLACEHOLDER_IMAGES['proj-9'], public_id: 'mock-cover-9' },
     gallery: [] as any,
@@ -240,7 +240,7 @@ export const mockProjects: Project[] = [
       }
     ],
     role: 'Photographer',
-    category: 'Photography' as any,
+    categories: [],
     year: '2023',
     coverImage: { secure_url: PLACEHOLDER_IMAGES['proj-10'], public_id: 'mock-cover-10' },
     gallery: [] as any,
@@ -260,7 +260,7 @@ export const mockProjects: Project[] = [
       }
     ],
     role: 'Campaign Manager',
-    category: 'Digital Campaign' as any,
+    categories: [],
     year: '2023',
     coverImage: { secure_url: PLACEHOLDER_IMAGES['proj-11'], public_id: 'mock-cover-11' },
     gallery: [] as any,
@@ -280,7 +280,7 @@ export const mockProjects: Project[] = [
       }
     ],
     role: 'Creative Director',
-    category: 'Digital Campaign' as any,
+    categories: [],
     year: '2023',
     coverImage: { secure_url: PLACEHOLDER_IMAGES['proj-12'], public_id: 'mock-cover-12' },
     gallery: [] as any,
@@ -300,7 +300,7 @@ export const mockProjects: Project[] = [
       }
     ],
     role: 'Director',
-    category: 'Videography' as any,
+    categories: [],
     year: '2023',
     coverImage: { secure_url: PLACEHOLDER_IMAGES['proj-13'], public_id: 'mock-cover-13' },
     gallery: [] as any,
@@ -320,7 +320,7 @@ export const mockProjects: Project[] = [
       }
     ],
     role: 'Photographer',
-    category: 'Photography' as any,
+    categories: [],
     year: '2023',
     coverImage: { secure_url: PLACEHOLDER_IMAGES['proj-14'], public_id: 'mock-cover-14' },
     gallery: [] as any,
@@ -340,7 +340,7 @@ export const mockProjects: Project[] = [
       }
     ],
     role: 'Art Director',
-    category: 'Branding' as any,
+    categories: [],
     year: '2022',
     coverImage: { secure_url: PLACEHOLDER_IMAGES['proj-15'], public_id: 'mock-cover-15' },
     gallery: [] as any,
@@ -360,7 +360,7 @@ export const mockProjects: Project[] = [
       }
     ],
     role: 'Creative Director',
-    category: 'Branding' as any,
+    categories: [],
     year: '2022',
     coverImage: { secure_url: PLACEHOLDER_IMAGES['proj-16'], public_id: 'mock-cover-16' },
     gallery: [] as any,
@@ -380,7 +380,7 @@ export const mockProjects: Project[] = [
       }
     ],
     role: 'Cinematographer',
-    category: 'Videography' as any,
+    categories: [],
     year: '2022',
     coverImage: { secure_url: PLACEHOLDER_IMAGES['proj-17'], public_id: 'mock-cover-17' },
     gallery: [] as any,
@@ -400,7 +400,7 @@ export const mockProjects: Project[] = [
       }
     ],
     role: 'Photographer',
-    category: 'Photography' as any,
+    categories: [],
     year: '2022',
     coverImage: { secure_url: PLACEHOLDER_IMAGES['proj-18'], public_id: 'mock-cover-18' },
     gallery: [] as any,
@@ -420,7 +420,7 @@ export const mockProjects: Project[] = [
       }
     ],
     role: 'Art Director',
-    category: 'Branding' as any,
+    categories: [],
     year: '2022',
     coverImage: { secure_url: PLACEHOLDER_IMAGES['proj-19'], public_id: 'mock-cover-19' },
     gallery: [] as any,
@@ -440,7 +440,7 @@ export const mockProjects: Project[] = [
       }
     ],
     role: 'Campaign Director',
-    category: 'Digital Campaign' as any,
+    categories: [],
     year: '2022',
     coverImage: { secure_url: PLACEHOLDER_IMAGES['proj-20'], public_id: 'mock-cover-20' },
     gallery: [] as any,
@@ -460,7 +460,7 @@ export const mockProjects: Project[] = [
       }
     ],
     role: 'Director & Editor',
-    category: 'Videography' as any,
+    categories: [],
     year: '2022',
     coverImage: { secure_url: PLACEHOLDER_IMAGES['proj-21'], public_id: 'mock-cover-21' },
     gallery: [] as any,
@@ -480,7 +480,7 @@ export const mockProjects: Project[] = [
       }
     ],
     role: 'Lead Photographer',
-    category: 'Photography' as any,
+    categories: [],
     year: '2021',
     coverImage: { secure_url: PLACEHOLDER_IMAGES['proj-22'], public_id: 'mock-cover-22' },
     gallery: [] as any,
@@ -500,7 +500,7 @@ export const mockProjects: Project[] = [
       }
     ],
     role: 'Lead Designer',
-    category: 'Branding' as any,
+    categories: [],
     year: '2021',
     coverImage: { secure_url: PLACEHOLDER_IMAGES['proj-23'], public_id: 'mock-cover-23' },
     gallery: [] as any,
@@ -520,7 +520,7 @@ export const mockProjects: Project[] = [
       }
     ],
     role: 'Creative Director',
-    category: 'Digital Campaign' as any,
+    categories: [],
     year: '2021',
     coverImage: { secure_url: PLACEHOLDER_IMAGES['proj-24'], public_id: 'mock-cover-24' },
     gallery: [] as any,
@@ -540,7 +540,7 @@ export const mockProjects: Project[] = [
       }
     ],
     role: 'Director',
-    category: 'Videography' as any,
+    categories: [],
     year: '2021',
     coverImage: { secure_url: PLACEHOLDER_IMAGES['proj-25'], public_id: 'mock-cover-25' },
     gallery: [] as any,
@@ -560,7 +560,7 @@ export const mockProjects: Project[] = [
       }
     ],
     role: 'Documentary Photographer',
-    category: 'Photography' as any,
+    categories: [],
     year: '2021',
     coverImage: { secure_url: PLACEHOLDER_IMAGES['proj-26'], public_id: 'mock-cover-26' },
     gallery: [] as any,
@@ -580,7 +580,7 @@ export const mockProjects: Project[] = [
       }
     ],
     role: 'Art Director',
-    category: 'Branding' as any,
+    categories: [],
     year: '2021',
     coverImage: { secure_url: PLACEHOLDER_IMAGES['proj-27'], public_id: 'mock-cover-27' },
     gallery: [] as any,
@@ -600,7 +600,7 @@ export const mockProjects: Project[] = [
       }
     ],
     role: 'Digital Strategist',
-    category: 'Digital Campaign' as any,
+    categories: [],
     year: '2021',
     coverImage: { secure_url: PLACEHOLDER_IMAGES['proj-28'], public_id: 'mock-cover-28' },
     gallery: [] as any,
@@ -620,7 +620,7 @@ export const mockProjects: Project[] = [
       }
     ],
     role: 'Creative Director',
-    category: 'Videography' as any,
+    categories: [],
     year: '2020',
     coverImage: { secure_url: PLACEHOLDER_IMAGES['proj-29'], public_id: 'mock-cover-29' },
     gallery: [] as any,
@@ -640,7 +640,7 @@ export const mockProjects: Project[] = [
       }
     ],
     role: 'Photographer',
-    category: 'Photography' as any,
+    categories: [],
     year: '2020',
     coverImage: { secure_url: PLACEHOLDER_IMAGES['proj-30'], public_id: 'mock-cover-30' },
     gallery: [] as any,
@@ -660,7 +660,7 @@ export const mockProjects: Project[] = [
       }
     ],
     role: 'Brand Designer',
-    category: 'Branding' as any,
+    categories: [],
     year: '2020',
     coverImage: { secure_url: PLACEHOLDER_IMAGES['proj-31'], public_id: 'mock-cover-31' },
     gallery: [] as any,
@@ -680,7 +680,7 @@ export const mockProjects: Project[] = [
       }
     ],
     role: 'Campaign Director',
-    category: 'Digital Campaign' as any,
+    categories: [],
     year: '2020',
     coverImage: { secure_url: PLACEHOLDER_IMAGES['proj-32'], public_id: 'mock-cover-32' },
     gallery: [] as any,
@@ -700,7 +700,7 @@ export const mockProjects: Project[] = [
       }
     ],
     role: 'Director',
-    category: 'Videography' as any,
+    categories: [],
     year: '2020',
     coverImage: { secure_url: PLACEHOLDER_IMAGES['proj-33'], public_id: 'mock-cover-33' },
     gallery: [] as any,
@@ -720,7 +720,7 @@ export const mockProjects: Project[] = [
       }
     ],
     role: 'Architecture Photographer',
-    category: 'Photography' as any,
+    categories: [],
     year: '2020',
     coverImage: { secure_url: PLACEHOLDER_IMAGES['proj-34'], public_id: 'mock-cover-34' },
     gallery: [] as any,
@@ -740,7 +740,7 @@ export const mockProjects: Project[] = [
       }
     ],
     role: 'Art Director',
-    category: 'Branding' as any,
+    categories: [],
     year: '2020',
     coverImage: { secure_url: PLACEHOLDER_IMAGES['proj-35'], public_id: 'mock-cover-35' },
     gallery: [] as any,

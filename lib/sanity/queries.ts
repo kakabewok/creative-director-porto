@@ -6,7 +6,7 @@ export const PROJECTS_QUERY = groq`
     title,
     slug,
     year,
-    category,
+    categories,
     role,
     description,
     coverImage {
@@ -76,7 +76,7 @@ export const PROJECT_BY_SLUG_QUERY = groq`
     title,
     slug,
     year,
-    category,
+    categories,
     role,
     description,
     coverImage {
