@@ -275,11 +275,11 @@ const MediaCarousel = forwardRef<MediaCarouselHandle, Props>(({ items, onIndexCh
               />
 
               {/* Caption */}
-              {item.caption && item.type !== 'video' && (
+              {/* {item.caption && item.type !== 'video' && (
                 <div className="absolute bottom-12 left-4 right-4 pointer-events-none z-10">
                   <p className="text-white/35 text-xs tracking-wider">{item.caption}</p>
                 </div>
-              )}
+              )} */}
             </div>
           )
         })}

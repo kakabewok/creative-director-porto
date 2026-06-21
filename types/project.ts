@@ -15,6 +15,7 @@ export type ProjectCategory =
   | 'Branding'
   | 'Photography'
   | 'Digital Campaign'
+  | 'Creative Direction'
 
 export interface Project {
   _id: string

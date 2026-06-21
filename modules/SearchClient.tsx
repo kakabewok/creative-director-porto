@@ -10,7 +10,7 @@ import type { Project, ProjectCategory } from '@/types'
 import { getProjectCoverSrc } from '@/lib/projectImage'
 import { useDebounce } from '@/hooks/useDebounce'
 
-const CATEGORIES: ProjectCategory[] = ['Videography', 'Branding', 'Photography', 'Digital Campaign']
+const CATEGORIES: ProjectCategory[] = ['Videography', 'Branding', 'Photography', 'Digital Campaign', 'Creative Direction']
 
 interface Props {
   projects: Project[]

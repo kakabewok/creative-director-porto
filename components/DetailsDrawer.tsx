@@ -67,13 +67,15 @@ export default function DetailsDrawer({ project, onClose }: Props) {
               <X size={16} />
             </button>
 
-            <div className="px-8 pt-16 pb-12 space-y-8">
+            <div className="px-8 pt-16 pb-12">
               {/* Title */}
-              <h2 className="text-slate-900 dark:text-white text-2xl font-light tracking-tight leading-snug">
+              <h2 className="text-slate-900 dark:text-white text-2xl font-light tracking-tight leading-snug mb-1">
                 {project.title}
               </h2>
 
-              <dl className="grid grid-cols-2 gap-y-5 gap-x-4">
+              <p className='text-slate-600/70 dark:text-white/30 text-xs tracking-widest uppercase mb-6'>{project.year}</p>
+
+              {/* <dl className="grid grid-cols-2 gap-y-5 gap-x-4">
                 {project.year ? (
                   <React.Fragment key="year">
                     <dt className="text-slate-950 dark:text-white/30 text-xs tracking-widest uppercase">Year</dt>
@@ -87,9 +89,9 @@ export default function DetailsDrawer({ project, onClose }: Props) {
                     <dd className="text-slate-900 dark:text-white/70 text-sm font-light">{project.category}</dd>
                   </React.Fragment>
                 ) : null}
-              </dl>
+              </dl> */}
 
-              <div className="w-full h-px bg-black/8 dark:bg-white/8" />
+              {/* <div className="w-full h-px bg-black/8 dark:bg-white/8 mb-4" /> */}
 
               {/* Description */}
               {project.description ? (

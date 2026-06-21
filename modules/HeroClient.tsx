@@ -14,6 +14,7 @@ interface Props {
 
 export default function HeroClient({ user, heroMedia }: Props) {
   const [mounted, setMounted] = useState<boolean>(false)
+  const [selectedIndex, setSelectedIndex] = useState<number>(0)
 
   // Embla carousel setup
   const [emblaRef, emblaApi] = useEmblaCarousel(
@@ -44,6 +45,7 @@ export default function HeroClient({ user, heroMedia }: Props) {
   const onSelect = useCallback(() => {
     if (!emblaApi) return
     const index = emblaApi.selectedScrollSnap()
+    setSelectedIndex(index)
 
     // Pause all videos
     videoRefs.current.forEach((video) => {
@@ -153,13 +155,12 @@ export default function HeroClient({ user, heroMedia }: Props) {
         {/* Centered content */}
         <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-6 pointer-events-none">
           <AnimatePresence>
-            {mounted && user?.tagline && (
+            {mounted && selectedIndex === 0 && user?.tagline && (
               <motion.p
                 initial={{ opacity: 0, y: 14 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.55 }}
                 className="lg:leading-normal text-left text-white/95 text-xl md:text-2xl lg:text-3xl tracking-tighter capitalize font-semibold max-w-full lg:max-w-5xl px-4 whitespace-pre-line drop-shadow-xs "
-              // style={{ textShadow: '0 2px 10px rgba(0,0,0,0.5)' }}
               >
                 {user?.tagline}
               </motion.p>
