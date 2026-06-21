@@ -75,7 +75,13 @@ export default function WorkNavSwitcher({ visible = true }: Props) {
                   key={id}
                   href={href}
                   id={`work-nav-${id}`}
-                  // scroll={false}
+                  scroll={true}
+                  onClick={() => {
+                    // Reset scroll position when switching views
+                    window.scrollTo({ top: 0, behavior: 'smooth' })
+                    // Also clear any saved scroll position from sessionStorage
+                    sessionStorage.removeItem('workScrollY')
+                  }}
                   aria-current={isModeActive ? 'page' : undefined}
                   aria-label={`Switch to ${label} view`}
                   className={`font-normal flex items-center gap-1.5 px-4 py-2 rounded-xs text-xs tracking-widest uppercase transition-all duration-400 ${isModeActive

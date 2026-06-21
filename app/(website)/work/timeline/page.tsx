@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { fetchProjects } from '@/lib/sanity/fetchers'
 import TimelineView from '@/components/TimelineView'
+import { getLatestYear } from '@/lib/getLatestYear'
 
 export const metadata: Metadata = {
   title: 'Work — Timeline',
@@ -10,7 +11,10 @@ export const metadata: Metadata = {
 export default async function TimelinePage() {
   const projects = await fetchProjects()
 
-  const sorted = [...projects].sort((a, b) => (a.order ?? 99) - (b.order ?? 99))
+  // Sort by most recent year descending (newest first)
+  const sorted = [...projects].sort(
+    (a, b) => getLatestYear(b.year) - getLatestYear(a.year)
+  )
 
   return (
     <main className="min-h-screen bg-white dark:bg-black" aria-label="Work timeline view">
