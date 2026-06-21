@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -19,6 +20,13 @@ interface Props {
 
 export default function WorkNavSwitcher({ visible = true }: Props) {
   const pathname = usePathname()
+
+  // Ensure scroll is reset to top instantly when the route changes
+  // useEffect(() => {
+  //   if (VIEW_ROUTES.includes(pathname) || pathname === '/') {
+  //     window.scrollTo(0, 0)
+  //   }
+  // }, [pathname])
 
   // Auto-hide on project detail pages (/work/[slug])
   const isSlugPage = pathname.startsWith('/work/') && !VIEW_ROUTES.includes(pathname)
@@ -77,9 +85,11 @@ export default function WorkNavSwitcher({ visible = true }: Props) {
                   id={`work-nav-${id}`}
                   scroll={true}
                   onClick={() => {
-                    // Reset scroll position when switching views
-                    window.scrollTo({ top: 0, behavior: 'smooth' })
-                    // Also clear any saved scroll position from sessionStorage
+                    window.scrollTo({
+                      top: 0,
+                      behavior: 'smooth',
+                    })
+                    // Clear any saved scroll position from sessionStorage
                     sessionStorage.removeItem('workScrollY')
                   }}
                   aria-current={isModeActive ? 'page' : undefined}
