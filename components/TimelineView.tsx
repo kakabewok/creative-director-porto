@@ -68,7 +68,7 @@ export default function TimelineView({ projects }: Props) {
           containerRef.current.scrollTop = parseInt(savedY)
           sessionStorage.removeItem('workScrollY')
         }
-      }, 50)
+      }, 800)
     }
   }, [mounted])
 
@@ -257,11 +257,11 @@ export default function TimelineView({ projects }: Props) {
                       <Link
                         href={`/work/${pt.project.slug.current}`}
                         onClick={() => sessionStorage.setItem('workScrollY', containerRef.current?.scrollTop.toString() ?? '0')}
-                        className={`group flex flex-col justify-center gap-[2px] cursor-pointer transition-all duration-300 hover:translate-x-1 hover:opacity-100 ${pt.isActive ? "opacity-100" : "opacity-95"
+                        className={`group flex flex-col justify-center gap-[2px] cursor-pointer transition-all duration-900 hover:translate-x-1 hover:opacity-100 ${pt.isActive ? "opacity-100" : "opacity-95"
                           }`}
                       >
                         <span
-                          className={`uppercase leading-none tracking-tight max-w-[140px] md:max-w-[220px] wrap-break-words transition-colors duration-300 ${pt.isActive
+                          className={`uppercase leading-none tracking-tight max-w-[140px] md:max-w-[220px] wrap-break-words transition-all duration-500 ${pt.isActive
                             ? "text-black dark:text-white font-bold text-[16px] md:text-[19px]"
                             : "text-neutral-300 dark:text-neutral-600 font-medium text-[11px] md:text-[14px]"
                             }`}
@@ -270,7 +270,7 @@ export default function TimelineView({ projects }: Props) {
                         </span>
 
                         <span
-                          className={`tracking-[0.15em] transition-colors duration-300 ${pt.isActive
+                          className={`tracking-[0.15em] transition-all duration-500 ${pt.isActive
                             ? "text-black dark:text-white font-medium text-[9px] md:text-[11px]"
                             : "text-neutral-400 dark:text-neutral-500 font-normal text-[9px] md:text-[11px]"
                             }`}

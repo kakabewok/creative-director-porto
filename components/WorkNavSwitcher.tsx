@@ -21,13 +21,6 @@ interface Props {
 export default function WorkNavSwitcher({ visible = true }: Props) {
   const pathname = usePathname()
 
-  // Ensure scroll is reset to top instantly when the route changes
-  // useEffect(() => {
-  //   if (VIEW_ROUTES.includes(pathname) || pathname === '/') {
-  //     window.scrollTo(0, 0)
-  //   }
-  // }, [pathname])
-
   // Auto-hide on project detail pages (/work/[slug])
   const isSlugPage = pathname.startsWith('/work/') && !VIEW_ROUTES.includes(pathname)
   const shouldShow = visible && !isSlugPage
@@ -105,7 +98,8 @@ export default function WorkNavSwitcher({ visible = true }: Props) {
             })}
           </div>
         </motion.div>
-      )}
-    </AnimatePresence>
+      )
+      }
+    </AnimatePresence >
   )
 }

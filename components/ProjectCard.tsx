@@ -62,7 +62,7 @@ export default function ProjectCard({ project, index, coverSrc, mode = 'list', p
             <h2 className="text-slate-900 dark:text-white/80 text-sm font-semibold tracking-widest uppercase group-hover:text-slate-800 dark:group-hover:text-slate-50 transition-colors duration-300">
               {project.title}
             </h2>
-            <span className="text-slate-900 dark:text-white/80 text-xs tracking-wider">
+            <span className="hidden md:flex text-slate-900 dark:text-white/80 text-sm tracking-wider">
               {project.year}
             </span>
           </div>

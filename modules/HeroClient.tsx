@@ -162,7 +162,7 @@ export default function HeroClient({ user, heroMedia }: Props) {
                 transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.55 }}
                 className="lg:leading-normal text-left text-white/95 text-xl md:text-2xl lg:text-3xl tracking-tighter capitalize font-semibold max-w-full lg:max-w-5xl px-4 whitespace-pre-line drop-shadow-xs "
               >
-                {user?.tagline}
+                "{user?.tagline}"
               </motion.p>
             )}
           </AnimatePresence>
