@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { motion, useScroll } from 'framer-motion'
 import Image from 'next/image'
 import type { Project } from '@/types'
@@ -11,30 +11,25 @@ interface Props {
   projects: Project[]
 }
 
+// SSR-safe useLayoutEffect: falls back to useEffect on the server
+const useIsomorphicLayoutEffect =
+  typeof window !== 'undefined' ? useLayoutEffect : useEffect
+
 export default function TimelineView({ projects }: Props) {
   const [isDark, setIsDark] = useState(false)
   const [windowWidth, setWindowWidth] = useState(1200)
   const [mounted, setMounted] = useState(false)
+  const [scrollRestored, setScrollRestored] = useState(false)
 
   const containerRef = useRef<HTMLDivElement>(null)
+  // Track whether we need to restore scroll at all
+  const needsScrollRestore = useRef(false)
 
   const { scrollYProgress } = useScroll({
     container: containerRef,
   })
 
   const [activeIndex, setActiveIndex] = useState(0)
-
-  // useEffect(() => {
-  //   const savedY = sessionStorage.getItem('workScrollY')
-  //   if (savedY && containerRef.current) {
-  //     setTimeout(() => { // ← TAMBAH TIMEOUT
-  //       if (containerRef.current) {
-  //         containerRef.current.scrollTop = parseInt(savedY)
-  //         sessionStorage.removeItem('workScrollY')
-  //       }
-  //     }, 50)
-  //   }
-  // }, [])
 
   useEffect(() => {
     const check = () => setIsDark(document.documentElement.classList.contains('dark'))
@@ -56,20 +51,58 @@ export default function TimelineView({ projects }: Props) {
     const handleResize = () => setWindowWidth(window.innerWidth)
     handleResize()
     window.addEventListener('resize', handleResize)
+    // Check if there's a saved scroll position on mount
+    const savedY = sessionStorage.getItem('workScrollY')
+    needsScrollRestore.current = !!savedY
+    // If no saved scroll, mark as restored immediately
+    if (!savedY) {
+      setScrollRestored(true)
+    }
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
-  useEffect(() => {
-    if (!mounted) return
+  // Restore scroll position BEFORE the browser paints (useLayoutEffect)
+  // This runs synchronously after DOM mutations but before the browser
+  // has a chance to paint, so the user never sees scrollTop: 0.
+  useIsomorphicLayoutEffect(() => {
+    if (!mounted || !needsScrollRestore.current) return
+
     const savedY = sessionStorage.getItem('workScrollY')
-    if (savedY && containerRef.current) {
-      setTimeout(() => {
-        if (containerRef.current) {
-          containerRef.current.scrollTop = parseInt(savedY)
-          sessionStorage.removeItem('workScrollY')
-        }
-      }, 800)
+    if (!savedY || !containerRef.current) {
+      setScrollRestored(true)
+      return
     }
+
+    const targetScroll = parseInt(savedY)
+
+    // Try to restore immediately — works if content is already tall enough
+    const tryRestore = () => {
+      if (!containerRef.current) return false
+      containerRef.current.scrollTop = targetScroll
+      // Verify it actually scrolled (content might not be tall enough yet)
+      return Math.abs(containerRef.current.scrollTop - targetScroll) < 2
+    }
+
+    if (tryRestore()) {
+      sessionStorage.removeItem('workScrollY')
+      setScrollRestored(true)
+      return
+    }
+
+    // If content isn't ready yet, use a short polling loop with rAF
+    // (e.g., images loading, dynamic content expanding the scroll height)
+    let attempts = 0
+    const maxAttempts = 30 // ~500ms at 60fps
+    const poll = () => {
+      attempts++
+      if (tryRestore() || attempts >= maxAttempts) {
+        sessionStorage.removeItem('workScrollY')
+        setScrollRestored(true)
+        return
+      }
+      requestAnimationFrame(poll)
+    }
+    requestAnimationFrame(poll)
   }, [mounted])
 
   useEffect(() => {
@@ -105,9 +138,15 @@ export default function TimelineView({ projects }: Props) {
     )
   }
 
+  // Keep container invisible until scroll is restored to prevent flash
+  const isReady = scrollRestored
+
   // overflow-hidden
   return (
-    <div className="h-screen overflow-hidden w-full">
+    <div
+      className="h-screen overflow-hidden w-full transition-opacity duration-200"
+      style={{ opacity: isReady ? 1 : 0 }}
+    >
       <div
         ref={containerRef}
         className="h-full overflow-y-auto scroll-smooth no-scrollbar touch-pan-y"
@@ -257,12 +296,12 @@ export default function TimelineView({ projects }: Props) {
                       <Link
                         href={`/work/${pt.project.slug.current}`}
                         onClick={() => sessionStorage.setItem('workScrollY', containerRef.current?.scrollTop.toString() ?? '0')}
-                        className={`group flex flex-col justify-center gap-[2px] cursor-pointer transition-all duration-900 hover:translate-x-1 hover:opacity-100 ${pt.isActive ? "opacity-100" : "opacity-95"
+                        className={`group flex flex-col justify-center gap-[2px] cursor-pointer transition-all duration-600 hover:opacity-100 ${pt.isActive ? "opacity-100" : "opacity-95"
                           }`}
                       >
                         <span
-                          className={`uppercase leading-none tracking-tight max-w-[140px] md:max-w-[220px] wrap-break-words transition-all duration-500 ${pt.isActive
-                            ? "text-black dark:text-white font-bold text-[16px] md:text-[19px]"
+                          className={`uppercase leading-none tracking-tight max-w-[140px] md:max-w-[420px] wrap-break-words transition-all duration-600 ${pt.isActive
+                            ? "text-black dark:text-white font-bold text-[16px] md:text-[17px]"
                             : "text-neutral-300 dark:text-neutral-600 font-medium text-[11px] md:text-[14px]"
                             }`}
                         >
@@ -270,7 +309,7 @@ export default function TimelineView({ projects }: Props) {
                         </span>
 
                         <span
-                          className={`tracking-[0.15em] transition-all duration-500 ${pt.isActive
+                          className={`tracking-[0.15em] transition-all duration-600 ${pt.isActive
                             ? "text-black dark:text-white font-medium text-[9px] md:text-[11px]"
                             : "text-neutral-400 dark:text-neutral-500 font-normal text-[9px] md:text-[11px]"
                             }`}
