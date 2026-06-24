@@ -122,7 +122,7 @@ export function BulkDeleteWidget() {
                     />
                     <Box flex={1}>
                       <Text size={1} weight="medium">{project.title || 'Untitled'}</Text>
-                      <Text size={0} muted>{project.categories?.length ? project.categories.join(', ') : 'No category'}</Text>
+                      {/* <Text className='mt-2' size={0} muted>{project.categories?.length ? project.categories.join(', ') : 'No category'}</Text> */}
                     </Box>
                   </Flex>
                 ))}
