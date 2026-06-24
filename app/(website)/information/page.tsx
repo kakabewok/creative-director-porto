@@ -9,6 +9,8 @@ import {
 } from 'react-icons/si';
 import { FaLinkedin } from 'react-icons/fa'
 import { FaXTwitter } from 'react-icons/fa6'
+import { FiMail } from 'react-icons/fi'
+
 
 export const metadata: Metadata = {
   title: 'Information',
@@ -20,6 +22,7 @@ const SOCIAL_ICONS: Record<string, React.ReactNode> = {
   pinterest: <SiPinterest className="text-[#BD081C]" />,
   linkedin: <FaLinkedin className="text-[#0A66C2]" />,
   x: <FaXTwitter className="text-slate-900 dark:text-white" />,
+  email: <FiMail className="text-slate-900 dark:text-white mt-0.5" />,
 };
 
 export default async function InformationPage() {
@@ -136,11 +139,13 @@ export default async function InformationPage() {
               {user.email && (
                 <div>
                   <p className="text-slate-950 dark:text-white/90 text-xs tracking-widest uppercase mb-2">Email</p>
+
                   <a
                     href={`mailto:${user.email}`}
-                    className="text-slate-400 hover:text-slate-950 dark:text-white/40 dark:hover:text-white text-sm transition-all duration-400"
+                    className="flex items-center gap-2 text-sm text-slate-400 hover:text-slate-950 dark:text-white/40 dark:hover:text-white hover:border-white/30 transition-all duration-400"
                   >
-                    {user.email}
+                    {SOCIAL_ICONS['email'] ?? '↗'}
+                    <span>{user.email}</span>
                   </a>
                 </div>
               )}
