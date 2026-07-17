@@ -117,7 +117,7 @@ function VideoSlide({ videoUrl, caption, isActive }: { videoUrl: string, caption
             onClick={handlePlayTrigger}
           >
             {thumbUrl ? (
-              <Image src={thumbUrl} fill alt="Video thumbnail" className="object-cover transition-transform duration-700 group-hover:scale-105" />
+              <Image src={thumbUrl} fill alt="Video thumbnail" className="object-contain transition-transform duration-700 group-hover:scale-105" />
             ) : (
               <div className="absolute inset-0 bg-zinc-900 flex items-center justify-center">
                 <span className="text-white/20 text-xs tracking-widest uppercase">Video</span>
@@ -252,7 +252,7 @@ const MediaCarousel = forwardRef<MediaCarouselHandle, Props>(({ items, onIndexCh
                   src={imgSrc}
                   alt={item.caption || "Gallery item"}
                   fill
-                  className="object-cover"
+                  className="object-contain"
                   priority={index === 0}
                   sizes="100vw"
                 />
@@ -270,7 +270,8 @@ const MediaCarousel = forwardRef<MediaCarouselHandle, Props>(({ items, onIndexCh
 
               {/* Bottom gradient for overlay readability */}
               <div
-                className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none"
+                // className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none"
+                className="absolute inset-0 bg-transparent pointer-events-none"
                 aria-hidden="true"
               />
 
