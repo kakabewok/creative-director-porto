@@ -187,7 +187,7 @@ export default async function InformationPage() {
             <h1 className='text-slate-950 dark:text-white/90 font-semibold text-lg md:text-xl mb-5 tracking-tight'>DOWNLOADS</h1>
 
             <div className="flex flex-col sm:flex-row gap-4 mb-[420px]">
-              <a
+              {/* <a
                 href={process.env.NEXT_PUBLIC_ASSETS_HD_URL}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -198,7 +198,25 @@ export default async function InformationPage() {
                   High Resolution Images
                 </span>
                 <span className="text-slate-700 hover:text-slate-950 dark:text-white/20 text-xs dark:group-hover:text-white/50 transition-colors ml-8">↗</span>
-              </a>
+              </a> */}
+              <div className="relative group inline-block">
+                <button
+                  type="button"
+                  disabled
+                  className="duration-400 flex items-center justify-between w-full px-6 py-4 border border-slate-200 dark:border-white/10 opacity-50 cursor-not-allowed transition-all"
+                  aria-label="High Resolution Images (Coming Soon)"
+                >
+                  <span className="text-slate-400 dark:text-white/40 text-sm font-light">
+                    High Resolution Images
+                  </span>
+                  <span className="text-slate-400 dark:text-white/20 text-xs ml-8">↗</span>
+                </button>
+                
+                {/* tooltip */}
+                <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 hidden group-hover:block px-3 py-1 bg-slate-900 dark:bg-slate-800 text-white text-xs rounded shadow-lg whitespace-nowrap z-10">
+                  High-res assets are on the way
+                </div>
+              </div>
               <a
                 href="/cv/rangga-djoned-cv.pdf"
                 download
