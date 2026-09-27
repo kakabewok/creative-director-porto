@@ -39,7 +39,7 @@ export default function HeroClient({ user, heroMedia }: Props) {
     // Auto advance after 4 seconds for images
     timerRef.current = setTimeout(() => {
       if (emblaApi) emblaApi.scrollNext()
-    }, 4000)
+    }, 7000)
   }, [emblaApi, clearAutoPlayTimer])
 
   const onSelect = useCallback(() => {
